@@ -100,6 +100,12 @@ int get_char( void );
 
 void save_screen( void );
 
+/*
+ *	Automatically save a screen shot each time 
+ */
+
+extern int auto_save_screen;
+
 /**
  *	Clear from the current cursor position to the end of line.
  */

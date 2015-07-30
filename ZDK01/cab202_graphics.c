@@ -12,6 +12,8 @@
 #define ABS(x)							((x >= 0) ? x : -1*x)
 #define SIGN(x)							((x > 0) - (x < 0))
 
+int auto_save_screen = 0;
+
 /**
 *	Set up the terminal display for curses-based graphics.
 */
@@ -30,6 +32,9 @@ void setup_screen( void ) {
 
 	// Enable the keypad.
 	keypad( stdscr, TRUE );
+
+	// Erase any previous content that may be lingering in this screen.
+	clear();
 }
 
 /**
@@ -50,6 +55,9 @@ void clear_screen( void ) {
 *	Make the current contents of the window visible.
 */
 void show_screen( void ) {
+	if ( auto_save_screen ) {
+		save_screen();
+	}
 	refresh();
 }
 
@@ -61,7 +69,7 @@ void draw_char( int x, int y, char value ) {
 }
 
 void draw_line( int x1, int y1, int x2, int y2, char value ) {
-
+#if 0
 	if ( x1 == x2 ) {
 		//Draw vertical line
 		unsigned char i;
@@ -79,7 +87,7 @@ void draw_line( int x1, int y1, int x2, int y2, char value ) {
 	else {
 		// Figure out octant
 		unsigned int oct;
-		float g = ( (float) y2 - y1 ) / ( (float) x2 - x1 );
+		float g = ( (float)y2 - y1 ) / ( (float)x2 - x1 );
 
 		if ( x2 > x1 ) {
 			if ( g > 1 ) {
@@ -129,7 +137,7 @@ void draw_line( int x1, int y1, int x2, int y2, char value ) {
 		}
 
 		unsigned int i1, i, i2, c;
-		float dx = (float) x2 - x1, dy = (float) y2 - y1, m;
+		float dx = (float)x2 - x1, dy = (float)y2 - y1, m;
 
 		if ( useX ) {
 			m = dy / dx;
@@ -170,6 +178,38 @@ void draw_line( int x1, int y1, int x2, int y2, char value ) {
 			}
 		}
 	}
+#else
+	if ( x1 == x2 ) {
+		// Draw vertical line
+		for ( int i = y1; ( y2 > y1 ) ? i <= y2 : i >= y2; ( y2 > y1 ) ? i++ : i-- ) {
+			draw_char( x1, i, value );
+		}
+	}
+	else if ( y1 == y2 ) {
+		// Draw horizontal line
+		for ( int i = x1; ( x2 > x1 ) ? i <= x2 : i >= x2; ( x2 > x1 ) ? i++ : i-- ) {
+			draw_char( i, y1, value );
+		}
+	}
+	else {
+		// Get Bresenhaming...
+		float dx = x2-x1;
+		float dy = y2-y1;
+		float err = 0.0;
+		float derr = ABS( dy/dx );
+
+		for ( int x = x1, y = y1; ( dx > 0 ) ? x <= x2 : x >= x2; ( dx > 0 ) ? x++ : x-- ) {
+			draw_char( x, y, value );
+			err += derr;
+			while ( err >= 0.5 && ( ( dy > 0 ) ? y <= y2 : y >= y2 ) ) {
+				draw_char( x, y, value );
+				y += ( dy > 0 ) - ( dy < 0 );
+
+				err -= 1.0;
+			}
+		}
+	}
+#endif
 }
 
 void draw_string( int x, int y, char * text ) {
@@ -227,15 +267,21 @@ void save_screen( void ) {
 	int width = screen_width();
 	int height = screen_height();
 
+	fprintf( f, "Frame\n" );
+	fprintf( f, "width=%d\n", width );
+	fprintf( f, "height=%d\n", height );
+
 	for ( int y = 0; y < height; y++ ) {
 		for ( int x = 0; x < width; x++ ) {
 			char c = mvinch( y, x ) & 0xff;
 
 			if ( c != ' ' ) {
-				fprintf( f, "%d,%d,%d\n", x, y, (int) c );
+				fprintf( f, "%d,%d,%d\n", x, y, (int)c );
 			}
 		}
 	}
+
+	fprintf( f, "EndFrame\n" );
 
 	fclose( f );
 }

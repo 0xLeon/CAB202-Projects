@@ -18,7 +18,7 @@
 timer_id create_timer( long milliseconds ) {
 	assert( milliseconds > 0 );
 
-	timer_id timer = (timer_id) malloc( sizeof(timer_t) );
+	timer_id timer = (timer_id) malloc( sizeof(cab202_timer_t) );
 
 	timer->milliseconds = milliseconds;
 	reset_timer( timer );
