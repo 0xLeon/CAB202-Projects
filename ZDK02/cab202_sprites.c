@@ -12,7 +12,7 @@ sprite_id create_sprite( double x, double y, int width, int height, char * image
 	assert( height > 0 );
 	assert( image != NULL );
 
-	sprite_id sprite = (sprite_id) malloc( sizeof( sprite_t ) );
+	sprite_id sprite = (sprite_id)malloc( sizeof( sprite_t ) );
 
 	if ( sprite != NULL ) {
 		sprite->is_visible = TRUE;
@@ -22,6 +22,7 @@ sprite_id create_sprite( double x, double y, int width, int height, char * image
 		sprite->height = height;
 		sprite->dx = 0;
 		sprite->dy = 0;
+
 		sprite->bitmap = malloc( width * height * sizeof( sprite->bitmap[0] ) );
 
 		if ( sprite->bitmap != NULL ) {
@@ -49,8 +50,8 @@ void draw_sprite( sprite_id sprite ) {
 
 	if ( !sprite->is_visible ) return;
 
-	int x = (int) round( sprite->x );
-	int y = (int) round( sprite->y );
+	int x = (int)round( sprite->x );
+	int y = (int)round( sprite->y );
 	int offset = 0;
 
 	for ( int row = 0; row < sprite->height; row++ ) {
@@ -69,7 +70,7 @@ void draw_sprite( sprite_id sprite ) {
 /*
  *	turn_sprite:
  *
- *	Sets the internally stored direction. This is the steps that is taken when 
+ *	Sets the internally stored direction. This is the steps that is taken when
  *	the sprite moves forward or backward.
  *
  *	The new direction is relative to the old one. If the old direction is 0,0 then

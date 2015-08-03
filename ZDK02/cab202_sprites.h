@@ -29,7 +29,7 @@
  *		dx, dy: A pair of floating point values that will update the sprite location 
  *				each time the sprite moves forward.
  *
- *		is_visible: Current visibility of the sprite. TRUE == visible; FALSE == invisible.
+ *		is_visible: Current visibility of the sprite. TRUE == visible; false == invisible.
  *
  *		bitmap: an array of curses-attributed characters that represents the image. 0 is 
  *				treated as transparent.
@@ -50,10 +50,9 @@ typedef struct sprite {
 typedef sprite_t * sprite_id;
 
 /*
- *	create_simple_sprite:
+ *	create_sprite:
  *
- *	Initialise a sprite, appending it into the z buffer and saving its initial background.
- *	The sprite is then displayed at the coordinates specified by (x,y).
+ *	Initialise a sprite.
  *
  *	Input:
  *		x, y:	The initial location of the sprite. Floating point values are
@@ -62,10 +61,13 @@ typedef sprite_t * sprite_id;
  *
  *		width, height: The dimensions of the sprite.
  *
- *		bitmap:	The characters to show.
+ *		bitmap:	The characters to show. A dynamically allocated copy of the bitmap
+ *				is created. If you alter the bitmap pointer later, care must be taken 
+ *				to ensure that memory resources are preserved, restored and deallocated 
+ *				correctly.
  *
  *	Output:
- *		Returns the ID of an initialised simple sprite object.
+ *		Returns the address of an initialised sprite object.
  */
 
 sprite_id create_sprite( double x, double y, int width, int height, char * bitmap );

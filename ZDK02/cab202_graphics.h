@@ -8,12 +8,12 @@
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
 
-// define constants to represent the non-standardised boolean values TRUE and FALSE.
+// define constants to represent the non-standardised bool values TRUE and false.
 #undef TRUE
 #define TRUE    1
 
-#undef FALSE
-#define FALSE   0
+#undef false
+#define false   0
 
 
 /**
@@ -95,14 +95,41 @@ int wait_char( void );
 int get_char( void );
 
 /**
+ *	The name of the text file in which screen shots are written. 	
+ */
+
+#define CAB202_SCREEN_NAME ("zdk_screen.txt")
+
+/**
 *	Saves a screen shot to an automatically named local file.
 */
 
 void save_screen( void );
 
-/**
- *	Clear from the current cursor position to the end of line.
+/*
+ *	Automatically save a screen shot each time if this is non-zero.
  */
-void erase_line( void );
+
+extern int auto_save_screen;
+
+/**
+ *	This function is provided to support programmatic emulation
+ *	of a resized terminal window.
+ *	Subsequent calls to screen_width() and screen_height() will 
+ *	return the supplied values of width and height.
+ */
+
+void override_screen_size( int width, int height );
+
+/**
+ *	This function is provided to support programmatic emulation
+ *	of a resized terminal window. It undoes the effects of
+ *	override_screen_size.
+ *	Subsequent calls to screen_width() and screen_height() will 
+ *	return the width and height of the current terminal window,\
+ *	respectively.
+ */
+
+void use_default_screen_size( void );
 
 #endif /* GRAPHICS_H_ */
