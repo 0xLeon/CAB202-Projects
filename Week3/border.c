@@ -22,7 +22,7 @@ void draw_border() {
 	show_screen();
 }
 
-int main( void ) {
+int main() {
 	setup_screen();
 	
 	draw_border();
