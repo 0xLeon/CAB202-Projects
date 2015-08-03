@@ -27,6 +27,8 @@ void running_zombie() {
 	
 	int x = width * 4 / 5;
 	int y = height * 4 / 5;
+	int x_old;
+	int y_old;
 	
 	int score = 0;
 	int turn = 0;
@@ -41,6 +43,9 @@ void running_zombie() {
 	turn++;
 	
 	while ((key != 'q') && (key >= 0)) {
+		x_old = x;
+		y_old = y;
+		
 		switch (key) {
 			case '4':
 				x--;
@@ -70,6 +75,11 @@ void running_zombie() {
 				x--;
 				y++;
 				break;
+		}
+		
+		if ((x == x_old) && (y == y_old)) {
+			key = wait_char();
+			continue;
 		}
 		
 		if ((turn % 5) == 0) {
