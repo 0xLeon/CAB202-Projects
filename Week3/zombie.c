@@ -7,7 +7,7 @@
 
 void draw_score(int x, int y, int score) {
 	char i_to_s[I_TO_S_LENGTH];
-	char str[I_TO_S_LENGTH + 7];
+	char str[I_TO_S_LENGTH + 8];
 	
 	snprintf(i_to_s, I_TO_S_LENGTH, "%d", score);
 	stpcpy(str, "Score: ");
