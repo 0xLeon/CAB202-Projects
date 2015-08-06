@@ -1,7 +1,7 @@
 all: intlist countdown border zombie
 
 LIBS=-lzdk02 -lncurses -lm
-DIRS=-I../ZDK02 -L../ZDK02
+DIRS=-I../../ZDK02 -L../../ZDK02
 FLAGS=-std=gnu99 -D_XOPEN_SOURCE=500 -Wall -Werror
 
 clean:
@@ -15,8 +15,8 @@ intlist: intlist.c
 countdown: countdown.c
 	gcc $(FLAGS) $@.c -o $@ 
 
-border: border.c ../ZDK02/libzdk02.a
+border: border.c ../../ZDK02/libzdk02.a
 	gcc $(FLAGS) $@.c -o $@ $(DIRS) $(LIBS) 
 
-zombie: zombie.c ../ZDK02/libzdk02.a
+zombie: zombie.c ../../ZDK02/libzdk02.a
 	gcc $(FLAGS) $@.c -o $@ $(DIRS) $(LIBS) 
