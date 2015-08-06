@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdbool.h>
 #include "cab202_graphics.h"
 #include "cab202_timers.h"
@@ -7,7 +8,7 @@
 #define SIGN(x)		((x > 0) - (x < 0))
 #define WAIT_TIME	100L
 
-int main() {
+int main(int argc, char* argv[]) {
 	vertex_t waypoints[] = {
 		{35, 15},
 		{45, 5},
@@ -15,8 +16,14 @@ int main() {
 		{17, 2},
 	};
 	
+	char c = '+';
+	
+	if (argc > 1) {
+		c = argv[1][0];
+	}
+	
 	setup_screen();
-	walk_waypoints(waypoints, 4, true, '+');
+	walk_waypoints(waypoints, 4, true, c);
 	wait_char();
 	cleanup_screen();
 	
