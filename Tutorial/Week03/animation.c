@@ -16,14 +16,14 @@ int main() {
 	};
 	
 	setup_screen();
-	walk_waypoints(waypoints, 4, '+');
+	walk_waypoints(waypoints, 4, true, '+');
 	wait_char();
 	cleanup_screen();
 	
 	return 0;
 }
 
-void walk_waypoints(vertex_t* vertices, int vertices_c, char c) {
+void walk_waypoints(vertex_t* vertices, int vertices_c, bool return_start, char c) {
 	if (vertices_c < 1) {
 		return;
 	}
@@ -38,7 +38,7 @@ void walk_waypoints(vertex_t* vertices, int vertices_c, char c) {
 			walk_waypoints_interpolate(vertices[i], vertices[i + 1], c);
 		}
 		
-		if (vertices_c > 2) {
+		if (return_start && (vertices_c > 2)) {
 			walk_waypoints_interpolate(vertices[vertices_c - 1], vertices[0], c);
 		}
 	}

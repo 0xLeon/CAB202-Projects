@@ -6,7 +6,7 @@ typedef struct vertex {
 	int y;
 } vertex_t;
 
-void walk_waypoints(vertex_t* vertices, int vertices_c, char c);
+void walk_waypoints(vertex_t* vertices, int vertices_c, bool return_start, char c);
 
 void walk_waypoints_interpolate(vertex_t a, vertex_t b, char c);
 
