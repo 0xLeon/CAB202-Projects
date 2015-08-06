@@ -4,6 +4,7 @@
 #include "animation.h"
 
 #define ABS(x)		(((x) >= 0) ? (x) : -(x))
+#define SIGN(x)		((x > 0) - (x < 0))
 #define WAIT_TIME	100L
 
 int main() {
@@ -67,7 +68,7 @@ void walk_waypoints_interpolate(vertex_t a, vertex_t b, char c) {
 			while (err >= 0.5 && ((dy > 0) ? y <= b.y : y >= b.y)) {
 				walk_waypoints_draw_avatar(x, y, c);
 				
-				y += (dy > 0) - (dy < 0);
+				y += SIGN(dy);
 
 				err -= 1.0;
 			}
