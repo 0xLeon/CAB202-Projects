@@ -5,6 +5,7 @@
 #include <time.h>
 #include "cab202_timers.h"
 #include "cab202_graphics.h"
+#include "cab202_sprites.h"
 
 // ----------------------------------------------------------------------
 // Declare constants
@@ -40,35 +41,49 @@ bool on_racetrack(int x, int y) {
 	return (inside_ellipse(x, y, x0, y0, xr_outer, yr_outer, p) && !inside_ellipse(x, y, x0, y0, xr_inner, yr_inner, p));
 }
 
-void draw_racetrack() {
-	for (int y = 0, y_max = screen_height(), x_max = screen_width(); y < y_max; y++) {
-		for (int x = 0; x < x_max; x++) {
-			if (!on_racetrack(x, y)) {
-				draw_char(x, y, '&');
+sprite_id generate_racetrack() {
+	int width = screen_width();
+	int height = screen_height();
+	char buffer[width * height];
+	
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			if (on_racetrack(x, y)) {
+				buffer[y * width + x] = ' ';
+			}
+			else {
+				buffer[y * width + x] = '&';
 			}
 		}
 	}
+	
+	return create_sprite(0, 0, width, height, buffer);
+}
+
+void draw_racetrack(sprite_id racetrack) {
+	draw_sprite(racetrack);
 }
 
 void draw_zombie(int x, int y, bool zombie_alive) {
 	draw_char(x, y, (zombie_alive ? 'Z' : 'X'));
 }
 
-void update_view(int zombie_x, int zombie_y, bool zombie_alive) {
+void update_view(sprite_id racetrack, int zombie_x, int zombie_y, bool zombie_alive) {
 	clear_screen();
-	draw_racetrack();
+	draw_racetrack(racetrack);
 	draw_zombie(zombie_x, zombie_y, zombie_alive);
 	show_screen();
 }
 
 void zombie_racer(int start_x, int start_y) {
+	sprite_id racetrack = generate_racetrack();
 	int x = start_x;
 	int y = start_y;
 
 	int dir = 0; // Start facing North.
 
 	bool alive = on_racetrack(x, y);
-	update_view(x, y, alive);
+	update_view(racetrack, x, y, alive);
 	int key = wait_char();
 
 	while ((key != 'q') && (key >= 0) && alive) {
@@ -113,7 +128,7 @@ void zombie_racer(int start_x, int start_y) {
 		}
 
 		alive = on_racetrack(x, y);
-		update_view(x, y, alive);
+		update_view(racetrack, x, y, alive);
 		timer_pause(100);
 		key = wait_char();
 	}
