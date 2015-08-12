@@ -44,7 +44,14 @@ bool on_racetrack(int x, int y) {
 sprite_id generate_racetrack() {
 	int width = screen_width();
 	int height = screen_height();
-	char buffer[width * height];
+	char* buffer;
+	
+	buffer = malloc(width * height * sizeof(char));
+	
+	if (buffer == NULL) {
+		fprintf(stderr, "%s", "Couldn't initialize racetrack buffer.\nNot enough memory!");
+		abort();
+	}
 	
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
@@ -132,6 +139,10 @@ void zombie_racer(int start_x, int start_y) {
 		timer_pause(100);
 		key = wait_char();
 	}
+	
+	free(racetrack->bitmap);
+	racetrack->bitmap = NULL;
+	destroy_sprite(racetrack);
 	
 	timer_pause(1000);
 }
