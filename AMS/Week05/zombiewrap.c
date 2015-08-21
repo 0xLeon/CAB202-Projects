@@ -7,7 +7,7 @@
 #include "cab202_sprites.h"
 #include "cab202_timers.h"
 
-#define	CYCLE_DELTA	1000
+#define	CYCLE_DELTA	70
 #define ZOMBIE_START_X	50.0
 #define ZOMBIE_START_Y	4.0
 #define ZOMBIE_DELTA_X	0.8
@@ -16,12 +16,12 @@
 
 // Structure to hold game data.
 typedef struct Game {
-	int screen_width;
-	int screen_height;
 	timer_id timer;
 	sprite_id zombie;
 	int laps;
 	bool over;
+	// int screen_width;
+	// int screen_height;
 } Game;
 
 void setup_zombie(Game* game) {
@@ -35,7 +35,7 @@ void setup_zombie(Game* game) {
 	
 	memset(buf, 'Z', 1);
 	
-	get_screen_size(game->screen_width, game->screen_height);
+	// get_screen_size(game->screen_width, game->screen_height);
 	game->laps = 0;
 	game->over = false;
 	game->timer = create_timer(CYCLE_DELTA);
@@ -59,7 +59,9 @@ bool update_zombie(Game* game) {
 	zombie_new_x = (int) round(game->zombie->x);
 	
 	// if (game->screen_width < zombie_new_x) {
-	if (zombie_new_x >= game->screen_width) {
+	// if (zombie_new_x >= game->screen_width) {
+	if (zombie_new_x >= screen_width()) {
+		zombie_new_x = 0;
 		game->zombie->x = 0;
 		game->laps++;
 		
