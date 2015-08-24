@@ -182,6 +182,17 @@ void draw_game(game_p game) {
 	}
 }
 
+void recycle_game(game_p game) {
+	assert(NULL != game);
+
+	for (int i = 0; i < game->game_object_count; i++) {
+		if ((NULL != game->game_objects[i]) && game->game_objects[i]->recycle) {
+			destroy_game_object(game->game_objects[i]);
+			game->game_objects[i] = NULL;
+		}
+	}
+}
+
 void destroy_game(game_p game) {
 	assert(NULL != game);
 	

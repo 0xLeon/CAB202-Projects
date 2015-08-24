@@ -53,6 +53,8 @@ bool update_game(game_p game);
 
 void draw_game(game_p game);
 
+void recycle_game(game_p game);
+
 void destroy_game(game_p game);
 
 

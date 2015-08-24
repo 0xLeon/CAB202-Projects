@@ -37,6 +37,8 @@ bool update_level(game_level_p level, game_update_p update, game_p game);
 
 void draw_level(game_level_p game_level);
 
+void recycle_level(game_level_p game_level);
+
 void destroy_level(game_level_p game_level);
 
 

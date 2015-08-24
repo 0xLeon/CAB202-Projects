@@ -125,6 +125,17 @@ void draw_level(game_level_p level) {
 	}
 }
 
+void recycle_level(game_level_p game_level) {
+	assert(NULL != game_level);
+
+	for (int i = 0; i < game_level->game_object_count; i++) {
+		if ((NULL != game_level->game_objects[i]) && game_level->game_objects[i]->recycle) {
+			destroy_game_object(game_level->game_objects[i]);
+			game_level->game_objects[i] = NULL;
+		}
+	}
+}
+
 void destroy_level(game_level_p level) {
 	assert(NULL != level);
 
