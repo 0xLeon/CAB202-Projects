@@ -33,7 +33,8 @@ void setup_zombie(Game* game) {
 		return;
 	}
 	
-	memset(buf, 'Z', 1);
+	// memset(buf, 'Z', 1);
+	*buf = 'Z';
 	
 	// get_screen_size(game->screen_width, game->screen_height);
 	game->laps = 0;
