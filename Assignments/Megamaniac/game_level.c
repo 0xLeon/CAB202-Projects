@@ -16,6 +16,7 @@ game_level_p create_level(int initial_game_object_count) {
 
 	memset(level, 0, sizeof(game_level_t));
 
+	level->paused = false;
 	level->load = NULL;
 	level->update = NULL;
 	level->unload = NULL;

@@ -12,6 +12,7 @@
 typedef void (*void_level_func_p)(game_level_p self, game_p game);
 typedef bool (*update_level_func_p)(game_level_p self, game_update_p update, game_p game);
 typedef struct game_level {
+	bool paused;
 	int game_object_count;
 	game_object_p* game_objects;
 

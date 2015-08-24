@@ -158,7 +158,12 @@ bool update_game(game_p game) {
 		}
 
 		if (NULL != game->current_level) {
-			didUpdate = update_level(game->current_level, update_ptr, game) || didUpdate;
+			if (!game->current_level->paused) {
+				didUpdate = update_level(game->current_level, update_ptr, game) || didUpdate;
+			}
+			else {
+				recycle_level(game->current_level);
+			}
 		}
 	}
 	

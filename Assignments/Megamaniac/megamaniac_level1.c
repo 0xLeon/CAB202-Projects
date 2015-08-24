@@ -73,6 +73,8 @@ void level1_load(game_level_p self, game_p megamaniac) {
 	i += level1_load_enemies(self, megamaniac, i);
 
 	self->game_objects[i++] = level1_create_bomb_dropper(megamaniac);
+
+	self->paused = false;
 }
 
 // TODO: null checks for game objects
