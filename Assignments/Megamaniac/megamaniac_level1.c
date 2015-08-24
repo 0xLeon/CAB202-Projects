@@ -396,8 +396,48 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 	}
 
 	bool didMove = move_game_object(self);
+	game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, level->game_objects, level->game_object_count, NULL);
 
-	if (self->y > (game->screen_height - 4)) {
+	if ((((int) round(self->x)) == ((int) round(go_player->x))) && (((int) round(self->y)) == ((int) round(go_player->y)))) {
+		self->active = false;
+		self->recycle = true;
+
+		game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, game->game_objects, game->game_object_count, NULL);
+		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
+
+		go_lives_data->current_value--;
+
+		if (go_lives_data->current_value < 1) {
+			// TODO: error checking
+			level_add_game_object(level, level1_create_lost_screen(game));
+
+			go_player->active = false;
+			go_player->recycle = true;
+
+			level->paused = true;
+		}
+		else {
+			// TODO: error checking
+			// level_add_game_object(level, level1_create_player(game));
+			go_player->x = (game->screen_width) / 2;
+		}
+
+		for (int i = 0; i < level->game_object_count; i++) {
+			if ((NULL != level->game_objects[i]) && level->game_objects[i]->active) {
+				switch (level->game_objects[i]->type) {
+					case GO_TYPE_BULLET:
+					case GO_TYPE_BOMB:
+						level->game_objects[i]->active = false;
+						level->game_objects[i]->recycle = true;
+						break;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	if (((int) round(self->y)) >= (game->screen_height - 3)) {
 		// destroy bomb
 		self->active = false;
 		self->recycle = true;

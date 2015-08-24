@@ -96,8 +96,15 @@ bool go_restart_update(game_object_p self, game_update_p update, game_p game, ga
 		if ((NULL == game->current_level) || (NULL ==  game->current_level->load) || (NULL == game->current_level->unload)) {
 			return false;
 		}
+
+		// TODO: error checking
+		game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, game->game_objects, game->game_object_count, NULL);
+		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 		
-		game->drop_frame = true;
+		if (go_lives_data->current_value < 1) {
+			go_lives_data->current_value = MEGAMANIAC_START_LIVES;
+		}
+
 		game->current_level->unload(game->current_level, game);
 		game->current_level->load(game->current_level, game);
 
@@ -202,12 +209,7 @@ bool go_lives_update(game_object_p self, game_update_p update, game_p game, game
 		didUpdate = true;
 	}
 
-	if (go_lives_data->current_value < 1) {
-		// TODO: disable input
-		// TODO: show message
-
-		didUpdate = true;
-	}
+	// TODO: maybe move lost screen display here?
 
 	return didUpdate;
 }
