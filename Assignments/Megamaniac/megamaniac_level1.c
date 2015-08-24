@@ -422,3 +422,22 @@ game_object_p level1_create_bomb(game_p game, int x, int y) {
 
 	return go_bomb;
 }
+
+
+game_object_p level1_create_lost_screen(game_p game) {
+	assert(NULL != game);
+
+	char* text = "             You lost!              Press 'r' to restart or 'q' to quit.";
+	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LEVEL_NAME, 0., 0, 0., 0., 0L, text);
+
+	if (NULL == go_lost_screen) {
+		return NULL;
+	}
+
+	go_lost_screen->width = 36;
+	go_lost_screen->height = 2;
+	go_lost_screen->x = (game->screen_width - go_lost_screen->width) / 2;
+	go_lost_screen->y = (game->screen_height - go_lost_screen->height) / 2;
+
+	return go_lost_screen;
+}

@@ -23,5 +23,6 @@
 #define GO_TYPE_BULLET		20
 #define GO_TYPE_BOMB_DROPPER	21
 #define GO_TYPE_BOMB		22
+#define GO_TYPE_LOST_SCREEN	23
 
 #endif

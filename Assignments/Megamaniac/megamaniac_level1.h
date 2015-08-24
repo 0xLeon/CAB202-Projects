@@ -19,4 +19,6 @@ game_object_p level1_create_bomb_dropper(game_p game);
 
 game_object_p level1_create_bomb(game_p game, int x, int y);
 
+game_object_p level1_create_lost_screen(game_p game);
+
 #endif
