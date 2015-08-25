@@ -29,7 +29,7 @@ game_p create_game(double framerate, int initial_game_object_count, int initial_
 	game->running = true;
 	game->redraw = true;
 
-	game->framerate_timer = game_create_timer((int) round(1000. / framerate));
+	game->framerate_timer = game_create_timer((long) round(1000. / framerate));
 
 	if (NULL == game->framerate_timer) {
 		return NULL;
