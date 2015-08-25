@@ -42,6 +42,7 @@ game_p create_game(double framerate, int initial_game_object_count, int initial_
 		game->game_objects = malloc(game->game_object_count * sizeof(game_object_p));
 		
 		if (NULL == game->game_objects) {
+			free(game->framerate_timer);
 			free(game);
 			
 			return NULL;
@@ -62,6 +63,7 @@ game_p create_game(double framerate, int initial_game_object_count, int initial_
 				free(game->game_objects);
 			}
 
+			free(game->framerate_timer);
 			free(game);
 
 			return NULL;
@@ -220,7 +222,8 @@ void destroy_game(game_p game) {
 
 		free(game->levels);
 	}
-	
+
+	free(game->framerate_timer);
 	free(game);
 }
 
