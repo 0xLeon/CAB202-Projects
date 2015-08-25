@@ -367,6 +367,8 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 }
 
 game_object_p level1_create_bomb_dropper(game_p megamaniac) {
+	assert(NULL != megamaniac);
+
 	game_object_p go_bomb_dropper = create_null_game_object(GO_TYPE_BOMB_DROPPER);
 
 	if (NULL == go_bomb_dropper) {
