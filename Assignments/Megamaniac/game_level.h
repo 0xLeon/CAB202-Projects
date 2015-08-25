@@ -36,11 +36,11 @@ bool level_add_game_object(game_level_p level, game_object_p game_object);
 
 bool update_level(game_level_p level, game_update_p update, game_p game);
 
-void draw_level(game_level_p game_level);
+void draw_level(game_level_p level);
 
-void recycle_level(game_level_p game_level);
+void recycle_level(game_level_p level);
 
-void destroy_level(game_level_p game_level);
+void destroy_level(game_level_p level);
 
 
 void level_default_unload(game_level_p self, game_p game);
