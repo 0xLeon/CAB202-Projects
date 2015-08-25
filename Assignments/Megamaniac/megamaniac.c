@@ -101,9 +101,16 @@ bool go_restart_update(game_object_p self, game_update_p update, game_p game, ga
 		game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, game->game_objects, game->game_object_count, NULL);
 		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 		
+		// TODO: error checking
+		game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
+		go_additional_data_comparable_int_p go_score_data = (go_additional_data_comparable_int_p) go_score->additional_data;
+
 		if (go_lives_data->current_value < 1) {
 			go_lives_data->current_value = MEGAMANIAC_START_LIVES;
 		}
+
+		// TODO: reset score only after all lives lost
+		go_score_data->current_value = MEGAMANIAC_START_SCORE;
 
 		game->current_level->unload(game->current_level, game);
 		game->current_level->load(game->current_level, game);
