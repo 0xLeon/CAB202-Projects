@@ -120,9 +120,9 @@ bool go_player_updater(game_object_p self, game_update_p update, game_p game, ga
 
 			return true;
 		case 's':
-			/*if (NULL != find_game_object_by_type(GO_TYPE_BULLET, level->game_objects, level->game_object_count, NULL)) {
+			if (NULL != find_game_object_by_type(GO_TYPE_BULLET, level->game_objects, level->game_object_count, NULL)) {
 				return false;
-			}*/
+			}
 
 			// TODO: error checks
 			level_add_game_object(level, level1_create_bullet(game, (int) round(self->x)));
