@@ -15,10 +15,10 @@ game_object_p level1_create_enemy1_mover(game_p megamaniac);
 
 game_object_p level1_create_bullet(game_p megamaniac, int x);
 
-game_object_p level1_create_bomb_dropper(game_p game);
+game_object_p level1_create_bomb_dropper(game_p megamaniac);
 
-game_object_p level1_create_bomb(game_p game, int x, int y);
+game_object_p level1_create_bomb(game_p megamaniac, int x, int y);
 
-game_object_p level1_create_lost_screen(game_p game);
+game_object_p level1_create_lost_screen(game_p megamaniac);
 
 #endif

@@ -366,7 +366,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 	return false;
 }
 
-game_object_p level1_create_bomb_dropper(game_p game) {
+game_object_p level1_create_bomb_dropper(game_p megamaniac) {
 	game_object_p go_bomb_dropper = create_null_game_object(GO_TYPE_BOMB_DROPPER);
 
 	if (NULL == go_bomb_dropper) {
@@ -449,8 +449,8 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 	return didMove;
 }
 
-game_object_p level1_create_bomb(game_p game, int x, int y) {
-	assert(NULL != game);
+game_object_p level1_create_bomb(game_p megamaniac, int x, int y) {
+	assert(NULL != megamaniac);
 	assert(x > -1);
 
 	game_object_p go_bomb = create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., 0.6, 300L, "*");
@@ -465,8 +465,8 @@ game_object_p level1_create_bomb(game_p game, int x, int y) {
 }
 
 
-game_object_p level1_create_lost_screen(game_p game) {
-	assert(NULL != game);
+game_object_p level1_create_lost_screen(game_p megamaniac) {
+	assert(NULL != megamaniac);
 
 	char* text = "             You lost!              Press 'r' to restart or 'q' to quit.";
 	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LEVEL_NAME, 0., 0, 0., 0., 0L, text);
@@ -477,8 +477,8 @@ game_object_p level1_create_lost_screen(game_p game) {
 
 	go_lost_screen->width = 36;
 	go_lost_screen->height = 2;
-	go_lost_screen->x = (game->screen_width - go_lost_screen->width) / 2;
-	go_lost_screen->y = (game->screen_height - go_lost_screen->height) / 2;
+	go_lost_screen->x = (megamaniac->screen_width - go_lost_screen->width) / 2;
+	go_lost_screen->y = (megamaniac->screen_height - go_lost_screen->height) / 2;
 
 	return go_lost_screen;
 }
