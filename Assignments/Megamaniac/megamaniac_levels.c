@@ -234,7 +234,7 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 
 				if ((enemy_counter == 0) && (i < (game->current_level->game_object_count))) {
 					for (int j = i + 1; j < game->current_level->game_object_count; j++) {
-						if (megamaniac_game_object_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[j]->active) {
+						if (megamaniac_game_object_is_enemy(game->current_level->game_objects[j]) && game->current_level->game_objects[j]->active) {
 							enemy_counter++;
 							break;
 						}
