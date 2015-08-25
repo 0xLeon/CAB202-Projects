@@ -53,7 +53,9 @@ game_object_p create_null_game_object(int type) {
 }
 
 game_object_p create_dynamic_string_game_object(int type, double x, double y, double dx, double dy, long interval, int buffer_size, const char* format, ...) {
+	assert(buffer_size > 0);
 	assert(NULL != format);
+	assert(strlen(format) > 0);
 
 	char* buffer = malloc((buffer_size + 1) * sizeof(char));
 	va_list args;
@@ -71,7 +73,8 @@ game_object_p create_dynamic_string_game_object(int type, double x, double y, do
 }
 
 game_object_p create_static_string_game_object(int type, double x, double y, double dx, double dy, long interval, char* s) {
-	assert((NULL != s) && (strlen(s) > 0));
+	assert(NULL != s);
+	assert(strlen(s) > 0);
 
 	int s_length = strlen(s);
 	char* buffer = malloc(s_length * sizeof(char));
@@ -134,6 +137,10 @@ void destroy_game_object(game_object_p game_object) {
 
 
 game_object_p find_game_object_by_type(int type, game_object_p* game_objects, int game_object_count, game_object_descriptor_p go_descriptor) {
+	assert(type > GO_TYPE_NONE);
+	assert(NULL != game_objects);
+	assert(game_object_count > -1);
+
 	for (int i = 0; i < game_object_count; i++) {
 		if ((NULL != game_objects[i]) && (game_objects[i]->type == type)) {
 			if (NULL != go_descriptor) {

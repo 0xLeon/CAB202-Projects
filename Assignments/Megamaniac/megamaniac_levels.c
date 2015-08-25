@@ -31,6 +31,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name) {
 	assert(NULL != megamaniac);
 	assert(NULL != level_name);
+	assert(strlen(level_name) > 0);
 
 	int x = (megamaniac->screen_width - strlen(level_name)) / 2;
 	int y = megamaniac->screen_height - 1;

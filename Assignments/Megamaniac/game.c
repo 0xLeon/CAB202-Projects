@@ -13,7 +13,7 @@
 //-------------------------------------------
 
 game_p create_game(double framerate, int initial_game_object_count, int initial_level_count) {
-	assert(framerate > 0);
+	assert(framerate > 0.);
 	assert(initial_game_object_count > -1);
 	
 	game_p game = malloc(sizeof(game_t));

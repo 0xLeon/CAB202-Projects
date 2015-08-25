@@ -90,10 +90,10 @@ bool level_add_game_object(game_level_p level, game_object_p game_object) {
 }
 
 bool update_level(game_level_p level, game_update_p update, game_p game) {
-	assert(NULL != game);
 	assert(NULL != level);
 	assert(NULL != update);
-
+	assert(NULL != game);
+	
 	bool didUpdate = false;
 
 	if (NULL != level->update) {

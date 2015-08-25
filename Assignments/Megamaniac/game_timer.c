@@ -4,7 +4,7 @@
 #include "cab202_timers.h"
 
 timer_id game_create_timer(long milliseconds) {
-	assert(milliseconds > 0);
+	assert(milliseconds > 0L);
 
 	timer_id timer = malloc(sizeof(cab202_timer_t));
 

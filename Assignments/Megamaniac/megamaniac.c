@@ -152,6 +152,8 @@ game_object_p setup_go_line(game_p megamaniac) {
 
 game_object_p setup_go_credits(game_p megamaniac, char* credits) {
 	assert(NULL != megamaniac);
+	assert(NULL != credits);
+	assert(strlen(credits) > 0);
 
 	return create_static_string_game_object(GO_TYPE_CREDITS, 1., megamaniac->screen_height - 2, 0., 0., 0L, credits);
 }
@@ -223,6 +225,7 @@ bool go_lives_update(game_object_p self, game_update_p update, game_p game, game
 
 game_object_p setup_go_lives(game_p megamaniac, int initial_lives) {
 	assert(NULL != megamaniac);
+	assert(initial_lives > -1);
 
 	int buffer_size = 12;
 	game_object_p go_lives = create_dynamic_string_game_object(GO_TYPE_LIVES, megamaniac->screen_width - buffer_size, megamaniac->screen_height - 1, 0., 0., 0L, buffer_size, "Lives:% 5d", ((initial_lives > 9999) ? 9999 : initial_lives));

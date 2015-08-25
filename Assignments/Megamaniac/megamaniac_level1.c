@@ -77,6 +77,11 @@ void level1_load(game_level_p self, game_p megamaniac) {
 }
 
 int level1_load_enemies(game_level_p self, game_p megamaniac, int offset) {
+	assert(NULL != self);
+	assert(NULL != megamaniac);
+	assert(offset > -1);
+	assert(offset < self->game_object_count);
+
 	int enemy_x_odd = (int) round(((megamaniac->screen_width) / 2.) - ((ENEMY_HORIZONTAL_SPACING + 1) * (ENEMY_ROW_ODD_COUNT - 1) / 2));
 	int enemy_x_even = (int) round(((megamaniac->screen_width) / 2.) - ((ENEMY_HORIZONTAL_SPACING + 1) * (ENEMY_ROW_EVEN_COUNT - 1) / 2));
 	int enemy_y = 1;
