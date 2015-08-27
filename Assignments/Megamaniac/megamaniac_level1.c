@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include "game_types.h"
 #include "game.h"
 #include "megamaniac.h"
 #include "megamaniac_go_data.h"
