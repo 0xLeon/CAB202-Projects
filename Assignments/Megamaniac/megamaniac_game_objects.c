@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
-#include "game.h"
 #include "game_types.h"
+#include "game.h"
 #include "game_object.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
+#include "megamaniac_game_objects.h"
 #include "megamaniac.h"
-#include "megamaniac_levels.h"
 
 //-------------------------------------------------------
 // Game Object Update Methods Forward Declarations
