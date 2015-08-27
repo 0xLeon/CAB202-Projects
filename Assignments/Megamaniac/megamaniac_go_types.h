@@ -20,5 +20,6 @@
 #define GO_TYPE_BOMB_DROPPER	17
 #define GO_TYPE_BOMB		18
 #define GO_TYPE_LOST_SCREEN	19
+#define GO_TYPE_LEVEL_CHANGER	20
 
 #endif

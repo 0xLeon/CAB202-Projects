@@ -9,6 +9,7 @@
 #include "megamaniac_go_types.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_level1.h"
+#include "megamaniac_level2.h"
 
 #define MEGAMANIAC_CREDITS	"Stefan Hahn (n9529977)"
 #define MEGAMANIAC_START_SCORE	0
@@ -36,11 +37,12 @@ void start_megamaniac() {
 }
 
 game_p setup_megamaniac() {
-	game_p megamaniac = create_game(10., 6, 5);
+	game_p megamaniac = create_game(10., 8, 5);
 	int i = 0;
 
 	megamaniac->game_objects[i++] = setup_go_quit_checker(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_restart(megamaniac);
+	megamaniac->game_objects[i++] = setup_go_level_changer(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_line(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_credits(megamaniac, MEGAMANIAC_CREDITS);
 	megamaniac->game_objects[i++] = setup_go_score(megamaniac, MEGAMANIAC_START_SCORE);
@@ -49,6 +51,7 @@ game_p setup_megamaniac() {
 
 	i = 0;
 	megamaniac->levels[i++] = level1_create_level(megamaniac);
+	megamaniac->levels[i++] = level2_create_level(megamaniac);
 
 	megamaniac->current_level = megamaniac->levels[0];
 	
@@ -133,6 +136,68 @@ game_object_p setup_go_restart(game_p megamaniac) {
 	go_restart->update = go_restart_update;
 
 	return go_restart;
+}
+
+
+bool go_level_changer_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+	assert(NULL != self);
+	assert(NULL != update);
+	assert(NULL != game);
+
+	if (update->key == 'l') {
+
+		int current_level_index = -1;
+		game_level_p next_level = NULL;
+
+		for (int i = 0; i < game->level_count; i++) {
+			if (game->levels[i] == game->current_level) {
+				current_level_index = i;
+				break;
+			}
+		}
+
+		next_level = game->levels[((current_level_index + 1) % game->level_count)];
+
+		for (int i = current_level_index + 1; next_level != game->current_level; i = (i + 1) % game->level_count) {
+			if (NULL != next_level) {
+				game_object_p go_player = NULL;
+				double go_player_x = 0.;
+				double go_player_y = 0.;
+
+				go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+				go_player_x = go_player->x;
+				go_player_y = go_player->y;
+
+				game->current_level->unload(game->current_level, game);
+				game->current_level = next_level;
+				game->current_level->load(game->current_level, game);
+
+				go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+				go_player->x = go_player_x;
+				go_player->y = go_player_y;
+
+				return true;
+			}
+
+			next_level = game->levels[((i + 1) % game->level_count)];
+		}
+	}
+
+	return false;
+}
+
+game_object_p setup_go_level_changer(game_p megamaniac) {
+	assert(NULL != megamaniac);
+
+	game_object_p go_level_changer = create_null_game_object(GO_TYPE_LEVEL_CHANGER);
+
+	if (NULL == go_level_changer) {
+		return NULL;
+	}
+
+	go_level_changer->update = go_level_changer_update;
+
+	return go_level_changer;
 }
 
 
