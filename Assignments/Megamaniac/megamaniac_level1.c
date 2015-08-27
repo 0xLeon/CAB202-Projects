@@ -7,7 +7,7 @@
 #include "megamaniac.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
-#include "megamaniac_levels.h"
+#include "megamaniac_game_objects.h"
 #include "megamaniac_level1.h"
 
 #define LEVEL1_LEVEL_NAME		"Level 1 - Basic"

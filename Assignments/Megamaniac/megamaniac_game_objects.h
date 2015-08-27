@@ -1,5 +1,5 @@
-#ifndef MEGAMANIAC_LEVELS_H_
-#define MEGAMANIAC_LEVELS_H_
+#ifndef MEGAMANIAC_GAME_OBJECTS_H_
+#define MEGAMANIAC_GAME_OBJECTS_H_
 
 #include <stdbool.h>
 #include "game_types.h"

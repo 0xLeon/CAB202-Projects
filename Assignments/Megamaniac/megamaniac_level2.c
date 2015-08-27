@@ -6,7 +6,7 @@
 #include "megamaniac.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
-#include "megamaniac_levels.h"
+#include "megamaniac_game_objects.h"
 #include "megamaniac_level2.h"
 
 #define LEVEL2_LEVEL_NAME			"Level 2 - Harmonic"

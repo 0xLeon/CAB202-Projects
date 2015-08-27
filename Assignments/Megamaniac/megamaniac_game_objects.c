@@ -361,6 +361,7 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 			go_player->x = (game->screen_width) / 2;
 		}
 
+		// Remove all bullets and bombs from the screen
 		for (int i = 0; i < game->current_level->game_object_count; i++) {
 			if ((NULL != game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
 				switch (game->current_level->game_objects[i]->type) {
