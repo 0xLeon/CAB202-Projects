@@ -208,16 +208,21 @@ bool go_level_changer_update(game_object_p self, game_update_p update, game_p ga
 				double go_player_y = 0.;
 
 				go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
-				go_player_x = go_player->x;
-				go_player_y = go_player->y;
+				
+				if (NULL != go_player) {
+					go_player_x = go_player->x;
+					go_player_y = go_player->y;
+				}
 
 				game->current_level->unload(game->current_level, game);
 				game->current_level = next_level;
 				game->current_level->load(game->current_level, game);
 
-				go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
-				go_player->x = go_player_x;
-				go_player->y = go_player_y;
+				if (NULL != go_player) {
+					go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+					go_player->x = go_player_x;
+					go_player->y = go_player_y;
+				}
 
 				return true;
 			}
