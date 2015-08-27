@@ -187,7 +187,7 @@ bool go_level_changer_update(game_object_p self, game_update_p update, game_p ga
 	assert(NULL != update);
 	assert(NULL != game);
 
-	if (update->key == 'l') {
+	if ((update->key == 'l') && !(game->current_level->paused)) {
 
 		int current_level_index = -1;
 		game_level_p next_level = NULL;
