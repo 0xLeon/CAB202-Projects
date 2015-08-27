@@ -2,6 +2,7 @@
 #define MEGAMANIAC_GO_DATA_H_
 
 typedef struct go_additional_data_comparable_int {
+	int initial_value;
 	int previous_value;
 	int current_value;
 } go_additional_data_comparable_int_t;
