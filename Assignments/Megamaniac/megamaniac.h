@@ -14,6 +14,8 @@ game_object_p setup_go_quit_checker(game_p megamaniac);
 
 game_object_p setup_go_restart(game_p megamaniac);
 
+game_object_p setup_go_pauser(game_p megamaniac);
+
 game_object_p setup_go_level_changer(game_p megamaniac);
 
 game_object_p setup_go_line(game_p megamaniac);

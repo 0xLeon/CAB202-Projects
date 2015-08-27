@@ -14,6 +14,8 @@ game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name);
 
 game_object_p megamaniac_create_lost_screen(game_p megamaniac);
 
+game_object_p megamaniac_create_pause_screen(game_p megamaniac);
+
 game_object_p megamaniac_create_player(game_p megamaniac);
 
 game_object_p megamaniac_create_bullet(game_p megamaniac, double x);

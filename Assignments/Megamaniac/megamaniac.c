@@ -8,6 +8,7 @@
 #include "megamaniac.h"
 #include "megamaniac_go_types.h"
 #include "megamaniac_go_data.h"
+#include "megamaniac_levels.h"
 #include "megamaniac_level1.h"
 #include "megamaniac_level2.h"
 
@@ -37,11 +38,12 @@ void start_megamaniac() {
 }
 
 game_p setup_megamaniac() {
-	game_p megamaniac = create_game(10., 8, 5);
+	game_p megamaniac = create_game(10., 9, 5);
 	int i = 0;
 
 	megamaniac->game_objects[i++] = setup_go_quit_checker(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_restart(megamaniac);
+	megamaniac->game_objects[i++] = setup_go_pauser(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_level_changer(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_line(megamaniac);
 	megamaniac->game_objects[i++] = setup_go_credits(megamaniac, MEGAMANIAC_CREDITS);
@@ -136,6 +138,47 @@ game_object_p setup_go_restart(game_p megamaniac) {
 	go_restart->update = go_restart_update;
 
 	return go_restart;
+}
+
+
+bool go_pauser_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+	assert(NULL != self);
+	assert(NULL != update);
+	assert(NULL != game);
+
+	bool didUpdate = false;
+
+	if (update->key == 'p') {
+		if (NULL != game->current_level) {
+			if (!game->current_level->paused) {
+				level_add_game_object(game->current_level, megamaniac_create_pause_screen(game));
+			}
+			else {
+				game_object_p go_lost_screen = find_game_object_by_type(GO_TYPE_PAUSE_SCREEN, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+				go_lost_screen->active = false;
+				go_lost_screen->recycle = true;
+			}
+
+			game->current_level->paused = !(game->current_level->paused);
+			didUpdate = true;
+		}
+	}
+
+	return didUpdate;
+}
+
+game_object_p setup_go_pauser(game_p megamaniac) {
+	assert(NULL != megamaniac);
+
+	game_object_p go_pauser = create_null_game_object(GO_TYPE_PAUSER);
+
+	if (NULL == go_pauser) {
+		return NULL;
+	}
+
+	go_pauser->update = go_pauser_update;
+
+	return go_pauser;
 }
 
 

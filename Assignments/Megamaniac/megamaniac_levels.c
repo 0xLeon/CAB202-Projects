@@ -57,6 +57,24 @@ game_object_p megamaniac_create_lost_screen(game_p megamaniac) {
 	return go_lost_screen;
 }
 
+game_object_p megamaniac_create_pause_screen(game_p megamaniac) {
+	assert(NULL != megamaniac);
+
+	char* text = "               Paused               Press 'r' to restart or 'q' to quit.        Press 'p' to continue.      ";
+	game_object_p go_pause_screen = create_static_string_game_object(GO_TYPE_PAUSE_SCREEN, 0., 0., 0., 0., 0L, text);
+
+	if (NULL == go_pause_screen) {
+		return NULL;
+	}
+
+	go_pause_screen->width = 36;
+	go_pause_screen->height = 3;
+	go_pause_screen->x = (megamaniac->screen_width - go_pause_screen->width) / 2;
+	go_pause_screen->y = (megamaniac->screen_height - go_pause_screen->height) / 2;
+
+	return go_pause_screen;
+}
+
 game_object_p megamaniac_create_player(game_p megamaniac) {
 	assert(NULL != megamaniac);
 

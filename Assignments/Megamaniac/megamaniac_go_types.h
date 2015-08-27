@@ -21,5 +21,7 @@
 #define GO_TYPE_BOMB		18
 #define GO_TYPE_LOST_SCREEN	19
 #define GO_TYPE_LEVEL_CHANGER	20
+#define GO_TYPE_PAUSER		21
+#define GO_TYPE_PAUSE_SCREEN	22
 
 #endif
