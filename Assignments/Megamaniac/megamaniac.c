@@ -51,14 +51,14 @@ game_p setup_megamaniac() {
 	game_p megamaniac = create_game(10., 9, 5);
 	int i = 0;
 
-	megamaniac->game_objects[i++] = setup_go_quit_checker(megamaniac);
-	megamaniac->game_objects[i++] = setup_go_restart(megamaniac);
-	megamaniac->game_objects[i++] = setup_go_pauser(megamaniac);
-	megamaniac->game_objects[i++] = setup_go_level_changer(megamaniac);
-	megamaniac->game_objects[i++] = setup_go_line(megamaniac);
-	megamaniac->game_objects[i++] = setup_go_credits(megamaniac, MEGAMANIAC_CREDITS);
-	megamaniac->game_objects[i++] = setup_go_score(megamaniac, MEGAMANIAC_START_SCORE);
-	megamaniac->game_objects[i++] = setup_go_lives(megamaniac, MEGAMANIAC_START_LIVES);
+	megamaniac->game_objects[i++] = megamaniac_create_quit_checker(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_restarter(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_pauser(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_level_changer(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_line(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_credits(megamaniac, MEGAMANIAC_CREDITS);
+	megamaniac->game_objects[i++] = megamaniac_create_score(megamaniac, MEGAMANIAC_START_SCORE);
+	megamaniac->game_objects[i++] = megamaniac_create_lives(megamaniac, MEGAMANIAC_START_LIVES);
 	// megamaniac->game_objects[i++] = setup_go_score_updater(megamaniac);
 
 	i = 0;
@@ -88,7 +88,7 @@ bool go_quit_checker_update(game_object_p self, game_update_p update, game_p gam
 	return false;
 }
 
-game_object_p setup_go_quit_checker(game_p megamaniac) {
+game_object_p megamaniac_create_quit_checker(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_quit_checker = create_null_game_object(GO_TYPE_QUIT);
@@ -103,7 +103,7 @@ game_object_p setup_go_quit_checker(game_p megamaniac) {
 }
 
 
-bool go_restart_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+bool go_restarter_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
 	assert(NULL != self);
 	assert(NULL != update);
 	assert(NULL != game);
@@ -137,7 +137,7 @@ bool go_restart_update(game_object_p self, game_update_p update, game_p game, ga
 	return false;
 }
 
-game_object_p setup_go_restart(game_p megamaniac) {
+game_object_p megamaniac_create_restarter(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_restart = create_null_game_object(GO_TYPE_RESTART);
@@ -146,7 +146,7 @@ game_object_p setup_go_restart(game_p megamaniac) {
 		return NULL;
 	}
 
-	go_restart->update = go_restart_update;
+	go_restart->update = go_restarter_update;
 
 	return go_restart;
 }
@@ -178,7 +178,7 @@ bool go_pauser_update(game_object_p self, game_update_p update, game_p game, gam
 	return didUpdate;
 }
 
-game_object_p setup_go_pauser(game_p megamaniac) {
+game_object_p megamaniac_create_pauser(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_pauser = create_null_game_object(GO_TYPE_PAUSER);
@@ -245,7 +245,7 @@ bool go_level_changer_update(game_object_p self, game_update_p update, game_p ga
 	return false;
 }
 
-game_object_p setup_go_level_changer(game_p megamaniac) {
+game_object_p megamaniac_create_level_changer(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_level_changer = create_null_game_object(GO_TYPE_LEVEL_CHANGER);
@@ -260,7 +260,7 @@ game_object_p setup_go_level_changer(game_p megamaniac) {
 }
 
 
-game_object_p setup_go_line(game_p megamaniac) {
+game_object_p megamaniac_create_line(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* buf = malloc(megamaniac->screen_width * sizeof(char));
@@ -274,7 +274,7 @@ game_object_p setup_go_line(game_p megamaniac) {
 	return create_game_object(GO_TYPE_LINE, 0., megamaniac->screen_height - 3, megamaniac->screen_width, 1, 0., 0., buf, 0);
 }
 
-game_object_p setup_go_credits(game_p megamaniac, char* credits) {
+game_object_p megamaniac_create_credits(game_p megamaniac, char* credits) {
 	assert(NULL != megamaniac);
 	assert(NULL != credits);
 	assert(strlen(credits) > 0);
@@ -300,7 +300,7 @@ bool go_score_update(game_object_p self, game_update_p update, game_p game, game
 	return false;
 }
 
-game_object_p setup_go_score(game_p megamaniac, int initial_score) {
+game_object_p megamaniac_create_score(game_p megamaniac, int initial_score) {
 	assert(NULL != megamaniac);
 
 	int buffer_size = 12;
@@ -347,7 +347,7 @@ bool go_lives_update(game_object_p self, game_update_p update, game_p game, game
 	return didUpdate;
 }
 
-game_object_p setup_go_lives(game_p megamaniac, int initial_lives) {
+game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
 	assert(NULL != megamaniac);
 	assert(initial_lives > -1);
 
@@ -373,7 +373,7 @@ game_object_p setup_go_lives(game_p megamaniac, int initial_lives) {
 	return go_lives;
 }
 
-bool go_score_updater_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+bool go_score_cheater_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
 	assert(NULL != self);
 	assert(NULL != update);
 	assert(NULL != game);
@@ -387,7 +387,7 @@ bool go_score_updater_update(game_object_p self, game_update_p update, game_p ga
 	return false;
 }
 
-game_object_p setup_go_score_updater(game_p megamaniac) {
+game_object_p megamaniac_create_score_cheater(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_score_updater = create_null_game_object(GO_TYPE_SCORE_CHEATER);
@@ -396,7 +396,7 @@ game_object_p setup_go_score_updater(game_p megamaniac) {
 		return NULL;
 	}
 
-	go_score_updater->update = go_score_updater_update;
+	go_score_updater->update = go_score_cheater_update;
 
 	return go_score_updater;
 }
