@@ -179,9 +179,11 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 
 			return true;
 		case 's':
+#ifndef GAME_DEBUG
 			if (NULL != find_game_object_by_type(GO_TYPE_BULLET, game->current_level->game_objects, game->current_level->game_object_count, NULL)) {
 				return false;
 			}
+#endif
 
 			// TODO: error checks
 			level_add_game_object(game->current_level, megamaniac_create_bullet(game, (int) round(self->x)));

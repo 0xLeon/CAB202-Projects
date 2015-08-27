@@ -1,6 +1,12 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#ifdef GAME_DEBUG
+#define NDEBUG
+#else
+#define _DEBUG
+#endif
+
 #include <stdbool.h>
 #include "cab202_timers.h"
 #include "game_types.h"
