@@ -43,7 +43,7 @@ game_object_p megamaniac_create_lost_screen(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* text = "             You lost!              Press 'r' to restart or 'q' to quit.";
-	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LEVEL_NAME, 0., 0., 0., 0., 0L, text);
+	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LOST_SCREEN, 0., 0., 0., 0., 0L, text);
 
 	if (NULL == go_lost_screen) {
 		return NULL;
