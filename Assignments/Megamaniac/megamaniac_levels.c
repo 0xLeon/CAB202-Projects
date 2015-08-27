@@ -122,7 +122,7 @@ game_object_p megamaniac_create_bomb(game_p megamaniac, double x, double y) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for screen location
 
-	game_object_p go_bomb = create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., .6, 300L, "*");
+	game_object_p go_bomb = create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., 1., 200L, "*");
 
 	if (NULL == go_bomb) {
 		return NULL;
