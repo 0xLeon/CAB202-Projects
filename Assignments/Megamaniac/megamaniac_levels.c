@@ -145,7 +145,7 @@ game_object_p megamaniac_create_bomb_dropper(game_p megamaniac) {
 	go_bomb_dropper->timer = game_create_timer(3000L);
 
 	if (NULL == go_bomb_dropper->timer) {
-		free(go_bomb_dropper);
+		destroy_game_object(go_bomb_dropper);
 
 		return NULL;
 	}

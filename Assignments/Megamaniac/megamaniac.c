@@ -188,7 +188,7 @@ game_object_p setup_go_score(game_p megamaniac, int initial_score) {
 	}
 
 	if (NULL == go_score_data) {
-		free(go_score);
+		destroy_game_object(go_score);
 
 		return NULL;
 	}
@@ -236,7 +236,7 @@ game_object_p setup_go_lives(game_p megamaniac, int initial_lives) {
 	}
 
 	if (NULL == go_lives_data) {
-		free(go_lives);
+		destroy_game_object(go_lives);
 
 		return NULL;
 	}
