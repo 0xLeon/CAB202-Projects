@@ -24,8 +24,6 @@
 
 void level1_load(game_level_p self, game_p megamaniac);
 
-int level1_load_enemies(game_level_p self, game_p megamaniac, int offset);
-
 
 //-------------------------------------------------------
 // Game Object Update Methods Forward Declarations
@@ -69,61 +67,12 @@ void level1_load(game_level_p self, game_p megamaniac) {
 	self->game_objects[i++] = megamaniac_create_player(megamaniac);
 	self->game_objects[i++] = megamaniac_create_enemy_mover(megamaniac, 500L, go_enemy1_mover_update);
 
-	i += level1_load_enemies(self, megamaniac, i);
+	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY1, ENEMY_ROW_COUNT, ENEMY_ROW_ODD_COUNT, ENEMY_ROW_EVEN_COUNT, ENEMY_HORIZONTAL_SPACING, ENEMY_VERTICAL_SPACING, NULL);
 
 	self->game_objects[i++] = megamaniac_create_bomb_dropper(megamaniac);
 
 	self->paused = false;
 }
-
-int level1_load_enemies(game_level_p self, game_p megamaniac, int offset) {
-	assert(NULL != self);
-	assert(NULL != megamaniac);
-	assert(offset > -1);
-	assert(offset < self->game_object_count);
-
-	int enemy_x_odd = (int) round(((megamaniac->screen_width) / 2.) - ((ENEMY_HORIZONTAL_SPACING + 1) * (ENEMY_ROW_ODD_COUNT - 1) / 2));
-	int enemy_x_even = (int) round(((megamaniac->screen_width) / 2.) - ((ENEMY_HORIZONTAL_SPACING + 1) * (ENEMY_ROW_EVEN_COUNT - 1) / 2));
-	int enemy_y = 1;
-	int enemy_count = 0;
-
-	// row 1
-	for (int x = enemy_x_odd, c = 0; c < ENEMY_ROW_ODD_COUNT; x += ENEMY_HORIZONTAL_SPACING + 1, c++) {
-		self->game_objects[offset] = megamaniac_create_enemy(megamaniac, x, enemy_y, GO_TYPE_ENEMY1, NULL);
-
-		if (NULL != self->game_objects[offset]) {
-			offset++;
-			enemy_count++;
-		}
-	}
-
-	enemy_y += ENEMY_VERTICAL_SPACING + 1;
-
-	// row 2
-	for (int x = enemy_x_even, c = 0; c < ENEMY_ROW_EVEN_COUNT; x += ENEMY_HORIZONTAL_SPACING + 1, c++) {
-		self->game_objects[offset] = megamaniac_create_enemy(megamaniac, x, enemy_y, GO_TYPE_ENEMY1, NULL);
-
-		if (NULL != self->game_objects[offset]) {
-			offset++;
-			enemy_count++;
-		}
-	}
-
-	enemy_y += ENEMY_VERTICAL_SPACING + 1;
-
-	// row 3
-	for (int x = enemy_x_odd, c = 0; c < ENEMY_ROW_ODD_COUNT; x += ENEMY_HORIZONTAL_SPACING + 1, c++) {
-		self->game_objects[offset] = megamaniac_create_enemy(megamaniac, x, enemy_y, GO_TYPE_ENEMY1, NULL);
-
-		if (NULL != self->game_objects[offset]) {
-			offset++;
-			enemy_count++;
-		}
-	}
-
-	return enemy_count;
-}
-
 
 //-------------------------------------------------------
 // Game Object Update Methods

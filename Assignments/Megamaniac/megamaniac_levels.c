@@ -155,6 +155,48 @@ game_object_p megamaniac_create_bomb_dropper(game_p megamaniac) {
 	return go_bomb_dropper;
 }
 
+int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megamaniac, int offset, int enemy_type, int row_count, int odd_count, int even_count, double horizontal_spacing, double vertical_spacing, game_object_update_f enemy_update_f) {
+	assert(NULL != level);
+	assert(NULL != megamaniac);
+	assert(offset > -1);
+	assert(offset < level->game_object_count);
+	assert(megamaniac_type_is_enemy(enemy_type));
+	assert(row_count > 0);
+	assert(((odd_count > 0) || (even_count > 0)));
+	assert(horizontal_spacing > 0);
+	assert(vertical_spacing > 0);
+	// TODO: assertion for offset, game object count, and proposed enemy count
+
+	double enemy_x_odd = ((megamaniac->screen_width) / 2.) - ((horizontal_spacing + 1.) * (odd_count - 1.) / 2.);
+	double enemy_x_even = ((megamaniac->screen_width) / 2.) - ((horizontal_spacing + 1.) * (even_count - 1.) / 2.);
+	double enemy_y = 1.;
+	int enemy_count = 0;
+
+	for (int i = 1; i <= row_count; i++, enemy_y += vertical_spacing + 1.) {
+		double x;
+		int max;
+
+		if ((i % 2) == 0) {
+			x = enemy_x_even;
+			max = even_count;
+		}
+		else {
+			x = enemy_x_odd;
+			max = odd_count;
+		}
+
+		for (int c = 0; c < max; c++, x += horizontal_spacing + 1.) {
+			level->game_objects[offset] = megamaniac_create_enemy(megamaniac, x, enemy_y, enemy_type, enemy_update_f);
+
+			if (NULL != level->game_objects[offset]) {
+				offset++;
+				enemy_count++;
+			}
+		}
+	}
+
+	return enemy_count;
+}
 
 //-------------------------------------------------------
 // Game Object Update Methods
@@ -386,7 +428,13 @@ bool megamaniac_game_object_is_enemy(game_object_p game_object) {
 		return false;
 	}
 
-	switch (game_object->type) {
+	return megamaniac_type_is_enemy(game_object->type);
+}
+
+bool megamaniac_type_is_enemy(int game_object_type) {
+	assert(game_object_type > GO_TYPE_NONE);
+
+	switch (game_object_type) {
 		case GO_TYPE_ENEMY1:
 		case GO_TYPE_ENEMY2:
 		case GO_TYPE_ENEMY3:
