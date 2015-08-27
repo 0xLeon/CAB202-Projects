@@ -42,13 +42,13 @@ typedef game_object_descriptor_t* game_object_descriptor_p;
 // Game Object Functions
 //-------------------------------------------
 
-game_object_p create_game_object(int type, double x, double y, int width, int height, double dx, double dy, char* bitmap, long interval);
+game_object_p create_game_object(int type, double x, double y, int width, int height, double dx, double dy, char* bitmap, long interval, game_object_update_f go_update);
 
-game_object_p create_null_game_object(int type);
+game_object_p create_null_game_object(int type, long interval, game_object_update_f go_update);
 
-game_object_p create_dynamic_string_game_object(int type, double x, double y, double dx, double dy, long interval, int buffer_size, const char* format, ...);
+game_object_p create_dynamic_string_game_object(int type, double x, double y, double dx, double dy, long interval, game_object_update_f go_update, int buffer_size, const char* format, ...);
 
-game_object_p create_static_string_game_object(int type, double x, double y, double dx, double dy, long interval, char* s);
+game_object_p create_static_string_game_object(int type, double x, double y, double dx, double dy, long interval, game_object_update_f go_update, char* s);
 
 void draw_game_object(game_object_p game_object);
 

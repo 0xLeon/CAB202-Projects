@@ -46,57 +46,25 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 game_object_p megamaniac_create_quit_checker(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_quit_checker = create_null_game_object(GO_TYPE_QUIT);
-
-	if (NULL == go_quit_checker) {
-		return NULL;
-	}
-
-	go_quit_checker->update = go_quit_checker_update;
-
-	return go_quit_checker;
+	return create_null_game_object(GO_TYPE_QUIT, 0L, go_quit_checker_update);
 }
 
 game_object_p megamaniac_create_restarter(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_restart = create_null_game_object(GO_TYPE_RESTART);
-
-	if (NULL == go_restart) {
-		return NULL;
-	}
-
-	go_restart->update = go_restarter_update;
-
-	return go_restart;
+	return create_null_game_object(GO_TYPE_RESTART, 0L, go_restarter_update);
 }
 
 game_object_p megamaniac_create_pauser(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_pauser = create_null_game_object(GO_TYPE_PAUSER);
-
-	if (NULL == go_pauser) {
-		return NULL;
-	}
-
-	go_pauser->update = go_pauser_update;
-
-	return go_pauser;
+	return create_null_game_object(GO_TYPE_PAUSER, 0L, go_pauser_update);
 }
 
 game_object_p megamaniac_create_level_changer(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_level_changer = create_null_game_object(GO_TYPE_LEVEL_CHANGER);
-
-	if (NULL == go_level_changer) {
-		return NULL;
-	}
-
-	go_level_changer->update = go_level_changer_update;
-
-	return go_level_changer;
+	return create_null_game_object(GO_TYPE_LEVEL_CHANGER, 0L, go_level_changer_update);
 }
 
 game_object_p megamaniac_create_line(game_p megamaniac) {
@@ -110,7 +78,7 @@ game_object_p megamaniac_create_line(game_p megamaniac) {
 
 	memset(buf, '-', megamaniac->screen_width);
 
-	return create_game_object(GO_TYPE_LINE, 0., megamaniac->screen_height - 3, megamaniac->screen_width, 1, 0., 0., buf, 0);
+	return create_game_object(GO_TYPE_LINE, 0., megamaniac->screen_height - 3, megamaniac->screen_width, 1, 0., 0., buf, 0, NULL);
 }
 
 game_object_p megamaniac_create_credits(game_p megamaniac, char* credits) {
@@ -118,14 +86,14 @@ game_object_p megamaniac_create_credits(game_p megamaniac, char* credits) {
 	assert(NULL != credits);
 	assert(strlen(credits) > 0);
 
-	return create_static_string_game_object(GO_TYPE_CREDITS, 1., megamaniac->screen_height - 2, 0., 0., 0L, credits);
+	return create_static_string_game_object(GO_TYPE_CREDITS, 1., megamaniac->screen_height - 2, 0., 0., 0L, NULL, credits);
 }
 
 game_object_p megamaniac_create_score(game_p megamaniac, int initial_score) {
 	assert(NULL != megamaniac);
 
 	int buffer_size = 12;
-	game_object_p go_score = create_dynamic_string_game_object(GO_TYPE_SCORE, megamaniac->screen_width - buffer_size, megamaniac->screen_height - 2, 0., 0., 0L, buffer_size, "Score:% 5d", ((initial_score > 9999) ? 9999 : initial_score));
+	game_object_p go_score = create_dynamic_string_game_object(GO_TYPE_SCORE, megamaniac->screen_width - buffer_size, megamaniac->screen_height - 2, 0., 0., 0L, go_score_update, buffer_size, "Score:% 5d", ((initial_score > 9999) ? 9999 : initial_score));
 	go_additional_data_comparable_int_p go_score_data = malloc(sizeof(go_additional_data_comparable_int_t));
 
 	if (NULL == go_score) {
@@ -142,7 +110,6 @@ game_object_p megamaniac_create_score(game_p megamaniac, int initial_score) {
 	go_score_data->previous_value = initial_score;
 	go_score_data->current_value = initial_score;
 	go_score->additional_data = (void*) go_score_data;
-	go_score->update = go_score_update;
 
 	return go_score;
 }
@@ -152,7 +119,7 @@ game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
 	assert(initial_lives > -1);
 
 	int buffer_size = 12;
-	game_object_p go_lives = create_dynamic_string_game_object(GO_TYPE_LIVES, megamaniac->screen_width - buffer_size, megamaniac->screen_height - 1, 0., 0., 0L, buffer_size, "Lives:% 5d", ((initial_lives > 9999) ? 9999 : initial_lives));
+	game_object_p go_lives = create_dynamic_string_game_object(GO_TYPE_LIVES, megamaniac->screen_width - buffer_size, megamaniac->screen_height - 1, 0., 0., 0L, go_lives_update, buffer_size, "Lives:% 5d", ((initial_lives > 9999) ? 9999 : initial_lives));
 	go_additional_data_comparable_int_p go_lives_data = malloc(sizeof(go_additional_data_comparable_int_t));
 
 	if (NULL == go_lives) {
@@ -169,7 +136,6 @@ game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
 	go_lives_data->current_value = initial_lives;
 	go_lives_data->previous_value = initial_lives;
 	go_lives->additional_data = (void*) go_lives_data;
-	go_lives->update = go_lives_update;
 
 	return go_lives;
 }
@@ -177,15 +143,7 @@ game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
 game_object_p megamaniac_create_score_cheater(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_score_updater = create_null_game_object(GO_TYPE_SCORE_CHEATER);
-
-	if (NULL == go_score_updater) {
-		return NULL;
-	}
-
-	go_score_updater->update = go_score_cheater_update;
-
-	return go_score_updater;
+	return create_null_game_object(GO_TYPE_SCORE_CHEATER, 0L, go_score_cheater_update);
 }
 
 game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name) {
@@ -196,14 +154,14 @@ game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name) 
 	int x = (megamaniac->screen_width - strlen(level_name)) / 2;
 	int y = megamaniac->screen_height - 1;
 
-	return create_static_string_game_object(GO_TYPE_LEVEL_NAME, x, y, 0., 0., 0L, level_name);
+	return create_static_string_game_object(GO_TYPE_LEVEL_NAME, x, y, 0., 0., 0L, NULL, level_name);
 }
 
 game_object_p megamaniac_create_lost_screen(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* text = "             You lost!              Press 'r' to restart or 'q' to quit.";
-	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LOST_SCREEN, 0., 0., 0., 0., 0L, text);
+	game_object_p go_lost_screen = create_static_string_game_object(GO_TYPE_LOST_SCREEN, 0., 0., 0., 0., 0L, NULL, text);
 
 	if (NULL == go_lost_screen) {
 		return NULL;
@@ -221,7 +179,7 @@ game_object_p megamaniac_create_pause_screen(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* text = "               Paused               Press 'r' to restart or 'q' to quit.        Press 'p' to continue.      ";
-	game_object_p go_pause_screen = create_static_string_game_object(GO_TYPE_PAUSE_SCREEN, 0., 0., 0., 0., 0L, text);
+	game_object_p go_pause_screen = create_static_string_game_object(GO_TYPE_PAUSE_SCREEN, 0., 0., 0., 0., 0L, NULL, text);
 
 	if (NULL == go_pause_screen) {
 		return NULL;
@@ -238,30 +196,14 @@ game_object_p megamaniac_create_pause_screen(game_p megamaniac) {
 game_object_p megamaniac_create_player(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_player = create_static_string_game_object(GO_TYPE_PLAYER, (megamaniac->screen_width) / 2, megamaniac->screen_height - 4, 0., 0., 0L, "$");
-
-	if (NULL == go_player) {
-		return NULL;
-	}
-
-	go_player->update = go_player_update;
-
-	return go_player;
+	return create_static_string_game_object(GO_TYPE_PLAYER, (megamaniac->screen_width) / 2, megamaniac->screen_height - 4, 0., 0., 0L, go_player_update, "$");
 }
 
 game_object_p megamaniac_create_bullet(game_p megamaniac, double x) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for screen location
 
-	game_object_p go_bullet = create_static_string_game_object(GO_TYPE_BULLET, x, megamaniac->screen_height - 5, 0., -1., 70L, "|");
-
-	if (NULL == go_bullet) {
-		return NULL;
-	}
-
-	go_bullet->update = go_bullet_update;
-
-	return go_bullet;
+	return create_static_string_game_object(GO_TYPE_BULLET, x, megamaniac->screen_height - 5, 0., -1., 70L, go_bullet_update, "|");
 }
 
 game_object_p megamaniac_create_enemy(game_p megamaniac, double x, double y, int enemy_type, game_object_update_f enemy_update_f) {
@@ -269,15 +211,7 @@ game_object_p megamaniac_create_enemy(game_p megamaniac, double x, double y, int
 	// TODO: assertion for enemy_type
 	// TODO: assertion for screen location
 
-	game_object_p go_enemy = create_static_string_game_object(enemy_type, x, y, 1., 0., 0L, "@");
-
-	if (NULL == go_enemy) {
-		return NULL;
-	}
-
-	go_enemy->update = enemy_update_f;
-
-	return go_enemy;
+	return create_static_string_game_object(enemy_type, x, y, 1., 0., 0L, enemy_update_f, "@");
 }
 
 game_object_p megamaniac_create_enemy_mover(game_p megamaniac, long interval, game_object_update_f enemy_mover_update_f) {
@@ -285,52 +219,20 @@ game_object_p megamaniac_create_enemy_mover(game_p megamaniac, long interval, ga
 	assert(interval > -1L);
 	assert(NULL != enemy_mover_update_f);
 
-	game_object_p go_enemy_mover = create_game_object(GO_TYPE_ENEMY_MOVER, 0., 0., 0, 0, 0., 0., NULL, interval);
-
-	if (NULL == go_enemy_mover) {
-		return NULL;
-	}
-
-	go_enemy_mover->update = enemy_mover_update_f;
-
-	return go_enemy_mover;
+	return create_game_object(GO_TYPE_ENEMY_MOVER, 0., 0., 0, 0, 0., 0., NULL, interval, enemy_mover_update_f);
 }
 
 game_object_p megamaniac_create_bomb(game_p megamaniac, double x, double y) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for screen location
 
-	game_object_p go_bomb = create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., 1., 200L, "*");
-
-	if (NULL == go_bomb) {
-		return NULL;
-	}
-
-	go_bomb->update = go_bomb_update;
-
-	return go_bomb;
+	return create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., 1., 200L, go_bomb_update, "*");
 }
 
 game_object_p megamaniac_create_bomb_dropper(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_object_p go_bomb_dropper = create_null_game_object(GO_TYPE_BOMB_DROPPER);
-
-	if (NULL == go_bomb_dropper) {
-		return NULL;
-	}
-
-	go_bomb_dropper->timer = game_create_timer(3000L);
-
-	if (NULL == go_bomb_dropper->timer) {
-		destroy_game_object(go_bomb_dropper);
-
-		return NULL;
-	}
-
-	go_bomb_dropper->update = go_bomb_dropper_update;
-
-	return go_bomb_dropper;
+	return create_null_game_object(GO_TYPE_BOMB_DROPPER, 3000L, go_bomb_dropper_update);;
 }
 
 int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megamaniac, int offset, int enemy_type, int row_count, int odd_count, int even_count, double horizontal_spacing, double vertical_spacing, game_object_update_f enemy_update_f) {

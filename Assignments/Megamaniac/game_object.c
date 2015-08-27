@@ -13,7 +13,7 @@
 // Game Object Functions
 //-------------------------------------------
 
-game_object_p create_game_object(int type, double x, double y, int width, int height, double dx, double dy, char* bitmap, long interval) {
+game_object_p create_game_object(int type, double x, double y, int width, int height, double dx, double dy, char* bitmap, long interval, game_object_update_f go_update) {
 	assert(type > GO_TYPE_NONE);
 	assert(width > -1);
 	assert(height > -1);
@@ -38,21 +38,27 @@ game_object_p create_game_object(int type, double x, double y, int width, int he
 	game_object->bitmap = bitmap;
 	game_object->timer = NULL;
 	game_object->recycle = false;
-	game_object->update = NULL;
+	game_object->update = go_update;
 	game_object->additional_data = NULL;
 
 	if (interval > 0) {
 		game_object->timer = create_timer(interval);
+
+		if (NULL == game_object->timer) {
+			destroy_game_object(game_object);
+
+			return NULL;
+		}
 	}
 
 	return game_object;
 }
 
-game_object_p create_null_game_object(int type) {
-	return create_game_object(type, 0., 0., 0, 0, 0., 0., NULL, 0L);
+game_object_p create_null_game_object(int type, long interval, game_object_update_f go_update) {
+	return create_game_object(type, 0., 0., 0, 0, 0., 0., NULL, interval, go_update);
 }
 
-game_object_p create_dynamic_string_game_object(int type, double x, double y, double dx, double dy, long interval, int buffer_size, const char* format, ...) {
+game_object_p create_dynamic_string_game_object(int type, double x, double y, double dx, double dy, long interval, game_object_update_f go_update, int buffer_size, const char* format, ...) {
 	assert(buffer_size > 0);
 	assert(NULL != format);
 	assert(strlen(format) > 0);
@@ -69,10 +75,10 @@ game_object_p create_dynamic_string_game_object(int type, double x, double y, do
 	memset(buffer, ' ', buffer_size + 1);
 	vsprintf(buffer, format, args);
 
-	return create_game_object(type, x, y, buffer_size - 1, 1, dx, dy, buffer, interval);
+	return create_game_object(type, x, y, buffer_size - 1, 1, dx, dy, buffer, interval, go_update);
 }
 
-game_object_p create_static_string_game_object(int type, double x, double y, double dx, double dy, long interval, char* s) {
+game_object_p create_static_string_game_object(int type, double x, double y, double dx, double dy, long interval, game_object_update_f go_update, char* s) {
 	assert(NULL != s);
 	assert(strlen(s) > 0);
 
@@ -86,7 +92,7 @@ game_object_p create_static_string_game_object(int type, double x, double y, dou
 	memset(buffer, ' ', s_length);
 	memcpy(buffer, s, s_length);
 
-	return create_game_object(type, x, y, s_length, 1, dx, dy, buffer, interval);
+	return create_game_object(type, x, y, s_length, 1, dx, dy, buffer, interval, go_update);
 }
 
 void draw_game_object(game_object_p game_object) {
