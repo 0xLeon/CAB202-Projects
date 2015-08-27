@@ -257,7 +257,7 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 
 	int enemy_counter = 0;
 	for (int i = 0; i < game->current_level->game_object_count; i++) {
-		if ((NULL != game->current_level->game_objects[i]) && (game->current_level->game_objects[i]->type == GO_TYPE_ENEMY1) && game->current_level->game_objects[i]->active) {
+		if ((NULL != game->current_level->game_objects[i]) && megamaniac_game_object_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
 			enemy_counter++;
 
 			if ((((int) round(self->x)) == ((int) round(game->current_level->game_objects[i]->x))) && (((int) round(self->y + 1)) == ((int) round(game->current_level->game_objects[i]->y)))) {
@@ -384,13 +384,13 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 
 	for (int i = 0; i < game->current_level->game_object_count; i++) {
 		if (NULL != game->current_level->game_objects[i]) {
-			switch (game->current_level->game_objects[i]->type) {
-				case GO_TYPE_ENEMY1:
-					enemy_count++;
-					break;
-				case GO_TYPE_BOMB:
-					bomb_count++;
-					break;
+			if (megamaniac_game_object_is_enemy(game->current_level->game_objects[i])) {
+				enemy_count++;
+				continue;
+			}
+			else if (game->current_level->game_objects[i]->type == GO_TYPE_BOMB) {
+				bomb_count++;
+				continue;
 			}
 		}
 	}
@@ -402,7 +402,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 	enemy_index = rand() % (enemy_count + 1);
 
 	for (int i = 0, c = 0; i < game->current_level->game_object_count; i++) {
-		if ((NULL != game->current_level->game_objects[i]) && (game->current_level->game_objects[i]->type == GO_TYPE_ENEMY1)) {
+		if ((NULL != game->current_level->game_objects[i]) && megamaniac_game_object_is_enemy(game->current_level->game_objects[i])) {
 			if (c == enemy_index) {
 				// TODO: error checks
 				level_add_game_object(game->current_level, megamaniac_create_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1)));
