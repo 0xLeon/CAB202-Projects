@@ -7,4 +7,10 @@ typedef struct go_additional_data_comparable_int {
 } go_additional_data_comparable_int_t;
 typedef go_additional_data_comparable_int_t* go_additional_data_comparable_int_p;
 
+typedef struct go_additional_data_enemy2_mover {
+	double theta;
+	double dtheta;
+} go_additional_data_enemy2_mover_t;
+typedef go_additional_data_enemy2_mover_t* go_additional_data_enemy2_mover_p;
+
 #endif
