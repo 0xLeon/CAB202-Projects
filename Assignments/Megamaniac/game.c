@@ -7,6 +7,7 @@
 #include "cab202_graphics.h"
 #include "game_types.h"
 #include "game.h"
+#include <curses.h>
 
 //-------------------------------------------
 // Game Functions
@@ -124,6 +125,13 @@ void start_game_loop(game_p game) {
 		if (!timer_expired(game->framerate_timer)) {
 			if (game->redraw) {
 				clear_screen();
+
+#if 0
+				for (int y = 0, x = screen_width() - 1, ym = screen_height(); y < ym; ++y) {
+					draw_line(0, y, x, y, ' ');
+				}
+#endif
+
 				draw_game(game);
 				show_screen();
 			}
