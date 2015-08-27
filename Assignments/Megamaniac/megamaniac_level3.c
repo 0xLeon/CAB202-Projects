@@ -164,20 +164,8 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 				go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 
 				go_lives_data->current_value--;
-
-				if (go_lives_data->current_value < 1) {
-					// TODO: error checking
-					level_add_game_object(game->current_level, megamaniac_create_lost_screen(game));
-
-					go_player->active = false;
-					go_player->recycle = true;
-
-					game->current_level->paused = true;
-				}
-				else {
-					// TODO: get save location
-					go_player->x = (game->screen_width) / 2;
-				}
+				// TODO: find save respawn location
+				go_player->x = (game->screen_width) / 2;
 
 				// Remove all bullets and bombs from the screen
 				for (int i = 0; i < game->current_level->game_object_count; i++) {

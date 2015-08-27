@@ -436,10 +436,19 @@ bool go_lives_update(game_object_p self, game_update_p update, game_p game, game
 		sprintf(self->bitmap, "Lives:% 5d", ((go_lives_data->current_value > 9999) ? 9999 : go_lives_data->current_value));
 		go_lives_data->previous_value = go_lives_data->current_value;
 
+		if (go_lives_data->current_value < 1) {
+			// TODO: error checking
+			level_add_game_object(game->current_level, megamaniac_create_lost_screen(game));
+
+			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+			go_player->active = false;
+			go_player->recycle = true;
+
+			game->current_level->paused = true;
+		}
+
 		didUpdate = true;
 	}
-
-	// TODO: maybe move lost screen display here?
 
 	return didUpdate;
 }
@@ -583,21 +592,7 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 
 		go_lives_data->current_value--;
-
-		if (go_lives_data->current_value < 1) {
-			// TODO: error checking
-			level_add_game_object(game->current_level, megamaniac_create_lost_screen(game));
-
-			go_player->active = false;
-			go_player->recycle = true;
-
-			game->current_level->paused = true;
-		}
-		else {
-			// TODO: error checking
-			// level_add_game_object(level, level1_create_player(game));
-			go_player->x = (game->screen_width) / 2;
-		}
+		go_player->x = (game->screen_width) / 2;
 
 		// Remove all bullets and bombs from the screen
 		for (int i = 0; i < game->current_level->game_object_count; i++) {
