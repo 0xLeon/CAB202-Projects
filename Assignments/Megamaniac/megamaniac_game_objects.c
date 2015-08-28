@@ -472,19 +472,23 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 	assert(NULL != update);
 	assert(NULL != game);
 
+	bool didMove = false;
+
 	switch (update->key) {
 		case 'a':
 			if ((self->x - 1.) >= 0.) {
 				self->x -= 1.;
+				didMove = true;
 			}
 
-			return true;
+			break;
 		case 'd':
 			if ((self->x + 1.) <= (game->screen_width - 1)) {
 				self->x += 1.;
+				didMove = true;
 			}
 
-			return true;
+			break;
 		case 's':
 #ifndef GAME_DEBUG
 			if (NULL != find_game_object_by_type(GO_TYPE_BULLET, game->current_level->game_objects, game->current_level->game_object_count, NULL)) {
@@ -498,7 +502,47 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 			return true;
 	}
 
-	return false;
+	if (didMove) {
+		int player_x = (int) round(self->x);
+		int player_y = (int) round(self->y);
+		int enemy_x = 0;
+		int enemy_y = 0;
+
+		for (int i = 0; i < game->current_level->game_object_count; i++) {
+			if ((NULL != game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
+				enemy_x = (int) round(game->current_level->game_objects[i]->x);
+				enemy_x = (int) round(game->current_level->game_objects[i]->y);
+
+				if ((player_x == enemy_x) && (player_y == enemy_y)) {
+					game->current_level->game_objects[i]->active = false;
+					game->current_level->game_objects[i]->recycle = true;
+
+					game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, game->game_objects, game->game_object_count, NULL);
+					go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
+
+					go_lives_data->current_value--;
+					self->x = (game->screen_width) / 2;
+
+					// Remove all bullets and bombs from the screen
+					for (int i = 0; i < game->current_level->game_object_count; i++) {
+						if ((NULL != game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
+							switch (game->current_level->game_objects[i]->type) {
+								case GO_TYPE_BULLET:
+								case GO_TYPE_BOMB:
+									game->current_level->game_objects[i]->active = false;
+									game->current_level->game_objects[i]->recycle = true;
+									break;
+							}
+						}
+					}
+
+					break;
+				}
+			}
+		}
+	}
+
+	return didMove;
 }
 
 bool go_bullet_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
