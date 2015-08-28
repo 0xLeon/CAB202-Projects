@@ -22,9 +22,14 @@
 // Level Loading Methods Forward Declarations
 //-------------------------------------------------------
 
-void level2_load(game_level_p self, game_p megamaniac);
+void megamaniac_level2_load(game_level_p self, game_p megamaniac);
 
-int level2_load_enemy_mover(game_level_p self, game_p megamaniac, int offset);
+
+//-------------------------------------------------------
+// Game Object Creation Functions Forward Declarations
+//-------------------------------------------------------
+
+int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamaniac, int offset);
 
 
 //-------------------------------------------------------
@@ -39,7 +44,7 @@ bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p gam
 //-------------------------------------------------------
 
 // TODO: null checks for game objects
-game_level_p level2_create_level(game_p megamaniac) {
+game_level_p megamaniac_create_level2(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_level_p level2 = create_level(14);
@@ -48,7 +53,7 @@ game_level_p level2_create_level(game_p megamaniac) {
 		return NULL;
 	}
 
-	level2->load = level2_load;
+	level2->load = megamaniac_level2_load;
 	level2->unload = level_default_unload;
 
 	return level2;
@@ -59,30 +64,35 @@ game_level_p level2_create_level(game_p megamaniac) {
 // Level Loading Methods
 //------------------------------------------------------
 
-void level2_load(game_level_p self, game_p megamaniac) {
+void megamaniac_level2_load(game_level_p self, game_p megamaniac) {
 	assert(NULL != self);
 	assert(NULL != megamaniac);
 
 	int i = 0;
 
-	self->game_objects[i++] = megamaniac_create_level_name(megamaniac, LEVEL2_LEVEL_NAME);
-	self->game_objects[i++] = megamaniac_create_player(megamaniac);
+	self->game_objects[i++] = megamaniac_create_go_level_name(megamaniac, LEVEL2_LEVEL_NAME);
+	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
 	
-	i += level2_load_enemy_mover(self, megamaniac, i);
+	i += megamaniac_level2_create_go_enemy2_mover(self, megamaniac, i);
 	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY2, LEVEL2_ENEMY_ROW_COUNT, LEVEL2_ENEMY_ROW_ODD_COUNT, LEVEL2_ENEMY_ROW_EVEN_COUNT, LEVEL2_ENEMY_HORIZONTAL_SPACING, LEVEL2_ENEMY_VERTICAL_SPACING, NULL);
 
-	self->game_objects[i++] = megamaniac_create_bomb_dropper(megamaniac);
+	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
 
 	self->paused = false;
 }
 
-int level2_load_enemy_mover(game_level_p self, game_p megamaniac, int offset) {
+
+//-------------------------------------------------------
+// Game Object Creation Functions
+//-------------------------------------------------------
+
+int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamaniac, int offset) {
 	assert(NULL != self);
 	assert(NULL != megamaniac);
 	assert(offset > -1);
 	assert(offset < self->game_object_count);
 
-	game_object_p go_enemy_mover = megamaniac_create_enemy_mover(megamaniac, 300L, go_enemy2_mover_update);
+	game_object_p go_enemy_mover = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy2_mover_update);
 
 	if (NULL == go_enemy_mover) {
 		return 0;

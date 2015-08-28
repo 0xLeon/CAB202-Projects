@@ -5,6 +5,6 @@
 #include "game.h"
 #include "game_level.h"
 
-game_level_p level2_create_level(game_p megamaniac);
+game_level_p megamaniac_create_level2(game_p megamaniac);
 
 #endif

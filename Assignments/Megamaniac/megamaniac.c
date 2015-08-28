@@ -50,20 +50,20 @@ game_p setup_megamaniac() {
 	game_p megamaniac = create_game(10., 9, 5);
 	int i = 0;
 
-	megamaniac->game_objects[i++] = megamaniac_create_quit_checker(megamaniac);
-	megamaniac->game_objects[i++] = megamaniac_create_restarter(megamaniac);
-	megamaniac->game_objects[i++] = megamaniac_create_pauser(megamaniac);
-	megamaniac->game_objects[i++] = megamaniac_create_level_changer(megamaniac);
-	megamaniac->game_objects[i++] = megamaniac_create_line(megamaniac);
-	megamaniac->game_objects[i++] = megamaniac_create_credits(megamaniac, MEGAMANIAC_CREDITS);
-	megamaniac->game_objects[i++] = megamaniac_create_score(megamaniac, MEGAMANIAC_START_SCORE);
-	megamaniac->game_objects[i++] = megamaniac_create_lives(megamaniac, MEGAMANIAC_START_LIVES);
+	megamaniac->game_objects[i++] = megamaniac_create_go_quit_checker(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_go_restarter(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_go_pauser(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_go_level_changer(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_go_line(megamaniac);
+	megamaniac->game_objects[i++] = megamaniac_create_go_credits(megamaniac, MEGAMANIAC_CREDITS);
+	megamaniac->game_objects[i++] = megamaniac_create_go_score(megamaniac, MEGAMANIAC_START_SCORE);
+	megamaniac->game_objects[i++] = megamaniac_create_go_lives(megamaniac, MEGAMANIAC_START_LIVES);
 	// megamaniac->game_objects[i++] = setup_go_score_updater(megamaniac);
 
 	i = 0;
-	megamaniac->levels[i++] = level1_create_level(megamaniac);
-	megamaniac->levels[i++] = level2_create_level(megamaniac);
-	megamaniac->levels[i++] = level3_create_level(megamaniac);
+	megamaniac->levels[i++] = megamaniac_create_level1(megamaniac);
+	megamaniac->levels[i++] = megamaniac_create_level2(megamaniac);
+	megamaniac->levels[i++] = megamaniac_create_level3(megamaniac);
 
 	megamaniac->current_level = megamaniac->levels[0];
 	

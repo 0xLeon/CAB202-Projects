@@ -43,31 +43,31 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 // Game Object Creation Functions
 //-------------------------------------------------------
 
-game_object_p megamaniac_create_quit_checker(game_p megamaniac) {
+game_object_p megamaniac_create_go_quit_checker(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_QUIT, 0L, go_quit_checker_update);
 }
 
-game_object_p megamaniac_create_restarter(game_p megamaniac) {
+game_object_p megamaniac_create_go_restarter(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_RESTART, 0L, go_restarter_update);
 }
 
-game_object_p megamaniac_create_pauser(game_p megamaniac) {
+game_object_p megamaniac_create_go_pauser(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_PAUSER, 0L, go_pauser_update);
 }
 
-game_object_p megamaniac_create_level_changer(game_p megamaniac) {
+game_object_p megamaniac_create_go_level_changer(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_LEVEL_CHANGER, 0L, go_level_changer_update);
 }
 
-game_object_p megamaniac_create_line(game_p megamaniac) {
+game_object_p megamaniac_create_go_line(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* buf = malloc(megamaniac->screen_width * sizeof(char));
@@ -81,7 +81,7 @@ game_object_p megamaniac_create_line(game_p megamaniac) {
 	return create_game_object(GO_TYPE_LINE, 0., megamaniac->screen_height - 3, megamaniac->screen_width, 1, 0., 0., buf, 0, NULL);
 }
 
-game_object_p megamaniac_create_credits(game_p megamaniac, char* credits) {
+game_object_p megamaniac_create_go_credits(game_p megamaniac, char* credits) {
 	assert(NULL != megamaniac);
 	assert(NULL != credits);
 	assert(strlen(credits) > 0);
@@ -89,7 +89,7 @@ game_object_p megamaniac_create_credits(game_p megamaniac, char* credits) {
 	return create_static_string_game_object(GO_TYPE_CREDITS, 1., megamaniac->screen_height - 2, 0., 0., 0L, NULL, credits);
 }
 
-game_object_p megamaniac_create_score(game_p megamaniac, int initial_score) {
+game_object_p megamaniac_create_go_score(game_p megamaniac, int initial_score) {
 	assert(NULL != megamaniac);
 
 	int buffer_size = 12;
@@ -114,7 +114,7 @@ game_object_p megamaniac_create_score(game_p megamaniac, int initial_score) {
 	return go_score;
 }
 
-game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
+game_object_p megamaniac_create_go_lives(game_p megamaniac, int initial_lives) {
 	assert(NULL != megamaniac);
 	assert(initial_lives > -1);
 
@@ -140,13 +140,13 @@ game_object_p megamaniac_create_lives(game_p megamaniac, int initial_lives) {
 	return go_lives;
 }
 
-game_object_p megamaniac_create_score_cheater(game_p megamaniac) {
+game_object_p megamaniac_create_go_score_cheater(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_SCORE_CHEATER, 0L, go_score_cheater_update);
 }
 
-game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name) {
+game_object_p megamaniac_create_go_level_name(game_p megamaniac, char* level_name) {
 	assert(NULL != megamaniac);
 	assert(NULL != level_name);
 	assert(strlen(level_name) > 0);
@@ -157,7 +157,7 @@ game_object_p megamaniac_create_level_name(game_p megamaniac, char* level_name) 
 	return create_static_string_game_object(GO_TYPE_LEVEL_NAME, x, y, 0., 0., 0L, NULL, level_name);
 }
 
-game_object_p megamaniac_create_lost_screen(game_p megamaniac) {
+game_object_p megamaniac_create_go_lost_screen(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* text = "             You lost!              Press 'r' to restart or 'q' to quit.";
@@ -175,7 +175,7 @@ game_object_p megamaniac_create_lost_screen(game_p megamaniac) {
 	return go_lost_screen;
 }
 
-game_object_p megamaniac_create_pause_screen(game_p megamaniac) {
+game_object_p megamaniac_create_go_pause_screen(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	char* text = "               Paused               Press 'r' to restart or 'q' to quit.        Press 'p' to continue.      ";
@@ -193,20 +193,20 @@ game_object_p megamaniac_create_pause_screen(game_p megamaniac) {
 	return go_pause_screen;
 }
 
-game_object_p megamaniac_create_player(game_p megamaniac) {
+game_object_p megamaniac_create_go_player(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_static_string_game_object(GO_TYPE_PLAYER, (megamaniac->screen_width) / 2, megamaniac->screen_height - 4, 0., 0., 0L, go_player_update, "$");
 }
 
-game_object_p megamaniac_create_bullet(game_p megamaniac, double x) {
+game_object_p megamaniac_create_go_bullet(game_p megamaniac, double x) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for screen location
 
 	return create_static_string_game_object(GO_TYPE_BULLET, x, megamaniac->screen_height - 5, 0., -1., 70L, go_bullet_update, "|");
 }
 
-game_object_p megamaniac_create_enemy(game_p megamaniac, double x, double y, int enemy_type, game_object_update_f enemy_update_f) {
+game_object_p megamaniac_create_go_enemy(game_p megamaniac, double x, double y, int enemy_type, game_object_update_f enemy_update_f) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for enemy_type
 	// TODO: assertion for screen location
@@ -214,7 +214,7 @@ game_object_p megamaniac_create_enemy(game_p megamaniac, double x, double y, int
 	return create_static_string_game_object(enemy_type, x, y, 1., 0., 0L, enemy_update_f, "@");
 }
 
-game_object_p megamaniac_create_enemy_mover(game_p megamaniac, long interval, game_object_update_f enemy_mover_update_f) {
+game_object_p megamaniac_create_go_enemy_mover(game_p megamaniac, long interval, game_object_update_f enemy_mover_update_f) {
 	assert(NULL != megamaniac);
 	assert(interval > -1L);
 	assert(NULL != enemy_mover_update_f);
@@ -222,14 +222,14 @@ game_object_p megamaniac_create_enemy_mover(game_p megamaniac, long interval, ga
 	return create_game_object(GO_TYPE_ENEMY_MOVER, 0., 0., 0, 0, 0., 0., NULL, interval, enemy_mover_update_f);
 }
 
-game_object_p megamaniac_create_bomb(game_p megamaniac, double x, double y) {
+game_object_p megamaniac_create_go_bomb(game_p megamaniac, double x, double y) {
 	assert(NULL != megamaniac);
 	// TODO: assertion for screen location
 
 	return create_static_string_game_object(GO_TYPE_BOMB, x, y, 0., 1., 200L, go_bomb_update, "*");
 }
 
-game_object_p megamaniac_create_bomb_dropper(game_p megamaniac) {
+game_object_p megamaniac_create_go_bomb_dropper(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_BOMB_DROPPER, 3000L, go_bomb_dropper_update);;
@@ -266,7 +266,7 @@ int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megama
 		}
 
 		for (int c = 0; c < max; c++, x += horizontal_spacing + 1.) {
-			level->game_objects[offset] = megamaniac_create_enemy(megamaniac, x, enemy_y, enemy_type, enemy_update_f);
+			level->game_objects[offset] = megamaniac_create_go_enemy(megamaniac, x, enemy_y, enemy_type, enemy_update_f);
 
 			if (NULL != level->game_objects[offset]) {
 				offset++;
@@ -338,7 +338,7 @@ bool go_pauser_update(game_object_p self, game_update_p update, game_p game, gam
 	if (update->key == 'p') {
 		if (NULL != game->current_level) {
 			if (!game->current_level->paused) {
-				level_add_game_object(game->current_level, megamaniac_create_pause_screen(game));
+				level_add_game_object(game->current_level, megamaniac_create_go_pause_screen(game));
 			}
 			else {
 				game_object_p go_lost_screen = find_game_object_by_type(GO_TYPE_PAUSE_SCREEN, game->current_level->game_objects, game->current_level->game_object_count, NULL);
@@ -438,7 +438,7 @@ bool go_lives_update(game_object_p self, game_update_p update, game_p game, game
 
 		if (go_lives_data->current_value < 1) {
 			// TODO: error checking
-			level_add_game_object(game->current_level, megamaniac_create_lost_screen(game));
+			level_add_game_object(game->current_level, megamaniac_create_go_lost_screen(game));
 
 			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			go_player->active = false;
@@ -497,7 +497,7 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 #endif
 
 			// TODO: error checks
-			level_add_game_object(game->current_level, megamaniac_create_bullet(game, (int) round(self->x)));
+			level_add_game_object(game->current_level, megamaniac_create_go_bullet(game, (int) round(self->x)));
 
 			return true;
 	}
@@ -683,7 +683,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 
 	for (int i = 0; i < game->current_level->game_object_count; i++) {
 		if (NULL != game->current_level->game_objects[i]) {
-			if (megamaniac_game_object_is_enemy(game->current_level->game_objects[i])) {
+			if (megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
 				enemy_count++;
 				continue;
 			}
@@ -701,10 +701,10 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 	enemy_index = rand() % (enemy_count + 1);
 
 	for (int i = 0, c = 0; i < game->current_level->game_object_count; i++) {
-		if ((NULL != game->current_level->game_objects[i]) && megamaniac_game_object_is_enemy(game->current_level->game_objects[i])) {
+		if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
 			if (c == enemy_index) {
 				// TODO: error checks
-				level_add_game_object(game->current_level, megamaniac_create_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1)));
+				level_add_game_object(game->current_level, megamaniac_create_go_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1)));
 
 				return true;
 			}
@@ -722,7 +722,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 // Helper Functions
 //-------------------------------------------------------
 
-bool megamaniac_game_object_is_enemy(game_object_p game_object) {
+bool megamaniac_go_is_enemy(game_object_p game_object) {
 	if (NULL == game_object) {
 		return false;
 	}
