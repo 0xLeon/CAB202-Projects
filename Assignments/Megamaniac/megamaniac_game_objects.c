@@ -556,59 +556,62 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 
 	bool did_update = move_game_object(self);
 
-	if (self->y < 0.) {
-		// destroy bullet
-		self->active = false;
-		self->recycle = true;
+	if (did_update) {
+		if (self->y < 0.) {
+			// destroy bullet
+			self->active = false;
+			self->recycle = true;
 
-		return true;
-	}
+			return true;
+		}
 
-	int enemy_counter = 0;
-	for (int i = 0; i < game->current_level->game_object_count; i++) {
-		if ((NULL != game->current_level->game_objects[i]) && megamaniac_game_object_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
-			enemy_counter++;
+		int enemy_counter = 0;
+		for (int i = 0; i < game->current_level->game_object_count; i++) {
+			if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
+				enemy_counter++;
 
-			if ((((int) round(self->x)) == ((int) round(game->current_level->game_objects[i]->x))) && (((int) round(self->y + 1)) == ((int) round(game->current_level->game_objects[i]->y)))) {
-				// destroy enemy
-				game->current_level->game_objects[i]->active = false;
-				game->current_level->game_objects[i]->recycle = true;
-				enemy_counter--;
+				if ((((int) round(self->x)) == ((int) round(game->current_level->game_objects[i]->x))) && (((int) round(self->y + 1)) == ((int) round(game->current_level->game_objects[i]->y)))) {
+					// destroy enemy
+					game->current_level->game_objects[i]->active = false;
+					game->current_level->game_objects[i]->recycle = true;
+					enemy_counter--;
 
-				// TODO: error checking
-				game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
-				go_additional_data_comparable_int_p go_score_data = (go_additional_data_comparable_int_p) go_score->additional_data;
+					// TODO: error checking
+					game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
+					go_additional_data_comparable_int_p go_score_data = (go_additional_data_comparable_int_p) go_score->additional_data;
 
-				// destroy bullet
-				self->active = false;
-				self->recycle = true;
+					// destroy bullet
+					self->active = false;
+					self->recycle = true;
 
-				go_score_data->current_value += POINTS_PER_ENEMY;
+					go_score_data->current_value += POINTS_PER_ENEMY;
 
-				if ((enemy_counter == 0) && (i < (game->current_level->game_object_count))) {
-					for (int j = i + 1; j < game->current_level->game_object_count; j++) {
-						if (megamaniac_game_object_is_enemy(game->current_level->game_objects[j]) && game->current_level->game_objects[j]->active) {
-							enemy_counter++;
-							break;
+					if ((enemy_counter == 0) && (i < (game->current_level->game_object_count))) {
+						for (int j = i + 1; j < game->current_level->game_object_count; j++) {
+							if (megamaniac_go_is_enemy(game->current_level->game_objects[j]) && game->current_level->game_objects[j]->active) {
+								enemy_counter++;
+								break;
+							}
 						}
 					}
+
+					if (enemy_counter == 0) {
+						go_score_data->current_value += 500;
+
+						game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+						int player_current_x = (int) round(go_player->x);
+
+						// TODO: find actual level or just assume current level?
+						game->current_level->unload(game->current_level, game);
+						game->current_level->load(game->current_level, game);
+
+						go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+						go_player->x = player_current_x;
+					}
+
+					did_update = true;
+					break;
 				}
-
-				if (enemy_counter == 0) {
-					go_score_data->current_value += 500;
-
-					game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
-					int player_current_x = (int) round(go_player->x);
-
-					// TODO: find actual level or just assume current level?
-					game->current_level->unload(game->current_level, game);
-					game->current_level->load(game->current_level, game);
-
-					go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
-					go_player->x = player_current_x;
-				}
-
-				return true;
 			}
 		}
 	}
