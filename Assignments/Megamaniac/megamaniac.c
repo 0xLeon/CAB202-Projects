@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 #include <curses.h>
 #include "cab202_graphics.h"
 #include "game_types.h"
