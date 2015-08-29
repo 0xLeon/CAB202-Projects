@@ -148,7 +148,7 @@ game_object_p find_game_object_by_type(int type, game_object_p* game_objects, in
 	assert(game_object_count > -1);
 
 	for (int i = 0; i < game_object_count; i++) {
-		if ((NULL != game_objects[i]) && (game_objects[i]->type == type)) {
+		if ((NULL != game_objects[i]) && !(game_objects[i]->recycle) && (game_objects[i]->type == type)) {
 			if (NULL != go_descriptor) {
 				go_descriptor->game_object = game_objects[i];
 				go_descriptor->index = i;
