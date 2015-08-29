@@ -162,10 +162,7 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 				new_y = (int) round(game->current_level->game_objects[i]->y);
 			}
 
-			// TODO: collision detection with player
-
-			game_object_descriptor_t go_player_desc;
-			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, &go_player_desc);
+			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			
 			if ((new_x == ((int) round(go_player->x))) && (new_y == ((int) round(go_player->y)))) {
 				game->current_level->game_objects[i]->active = false;
