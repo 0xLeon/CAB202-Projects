@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <string.h>
+#include <curses.h>
 #include "cab202_graphics.h"
 #include "game_types.h"
 #include "game.h"
@@ -12,7 +13,6 @@
 #include "megamaniac_level1.h"
 #include "megamaniac_level2.h"
 #include "megamaniac_level3.h"
-#include <curses.h>
 
 #define MEGAMANIAC_CREDITS	"Stefan Hahn (n9529977)"
 #define MEGAMANIAC_START_SCORE	0
@@ -29,13 +29,12 @@ int main(int argc, char* argv[]) {
 	init_color(COLOR_GREEN, 518, 875, 31);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	bkgd(COLOR_PAIR(1));
-
 	attron(A_BOLD);
-	attron(COLOR_PAIR(1));
+
 	//---------------------------------------------
 	start_megamaniac();
 	//---------------------------------------------
-	attroff(COLOR_PAIR(1));
+	
 	attroff(A_BOLD);
 	
 	cleanup_screen();
