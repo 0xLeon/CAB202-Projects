@@ -19,6 +19,11 @@
 #define MEGAMANIAC_START_SCORE	0
 #define MEGAMANIAC_START_LIVES	3
 
+#ifdef ENDLESS_LIVES
+#undef MEGAMANIAC_START_LIVES
+#define MEGAMANIAC_START_LIVES	9999
+#endif
+
 void megamaniac_resize(game_p self, game_resize_descriptor_p resize_descriptor);
 
 
