@@ -152,6 +152,9 @@ void start_game_loop(game_p game) {
 						game->levels[i]->resize(game->levels[i], resize_descriptor_ptr, game);
 					}
 				}
+
+				update_game(game);
+
 				game->redraw = true;
 			}
 		}
