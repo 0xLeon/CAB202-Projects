@@ -162,9 +162,9 @@ void start_game_loop(game_p game) {
 				draw_game(game);
 				show_screen();
 			}
-
-			game->redraw = update_game(game);
 		}
+
+		game->redraw = update_game(game);
 
 		timer_pause(1L);
 	}
