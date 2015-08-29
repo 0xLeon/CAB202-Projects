@@ -54,6 +54,7 @@ game_level_p megamaniac_create_level2(game_p megamaniac) {
 	}
 
 	level2->load = megamaniac_level2_load;
+	level2->resize = megamaniac_level_default_resize;
 	level2->unload = level_default_unload;
 
 	return level2;

@@ -25,8 +25,6 @@
 
 void megamaniac_level1_load(game_level_p self, game_p megamaniac);
 
-void megamaniac_level1_resize(game_level_p self, game_resize_descriptor_p resize_descriptor, game_p game);
-
 //-------------------------------------------------------
 // Game Object Update Methods Forward Declarations
 //-------------------------------------------------------
@@ -49,7 +47,7 @@ game_level_p megamaniac_create_level1(game_p megamaniac) {
 	}
 
 	level1->load = megamaniac_level1_load;
-	level1->resize = megamaniac_level1_resize;
+	level1->resize = megamaniac_level_default_resize;
 	level1->unload = level_default_unload;
 
 	return level1;
@@ -77,37 +75,6 @@ void megamaniac_level1_load(game_level_p self, game_p megamaniac) {
 	self->paused = false;
 }
 
-void megamaniac_level1_resize(game_level_p self, game_resize_descriptor_p resize_descriptor, game_p game) {
-	assert(NULL != self);
-	assert(NULL != resize_descriptor);
-	assert(NULL != game);
-
-	game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, self->game_objects, self->game_object_count, NULL);
-	game_object_p go_level_name = find_game_object_by_type(GO_TYPE_LEVEL_NAME, self->game_objects, self->game_object_count, NULL);
-	game_object_p go_enemy = find_game_object_by_type(GO_TYPE_ENEMY1, self->game_objects, self->game_object_count, NULL);
-	
-	go_player->x = (int) round(go_player->x * resize_descriptor->width_ratio);
-	go_player->y = resize_descriptor->new_height - 4;
-
-	go_level_name->x = (resize_descriptor->new_width - strlen(go_level_name->bitmap)) / 2;
-	go_level_name->y = resize_descriptor->new_height - 1;
-	
-	double delta_enemy_x = (go_enemy->x * resize_descriptor->width_ratio) - go_enemy->x;
-	double delta_enemy_y = (go_enemy->y * resize_descriptor->height_ratio) - go_enemy->y;
-
-	for (int i = 0; i < self->game_object_count; ++i) {
-		if ((NULL != self->game_objects[i]) && !(self->game_objects[i]->recycle)) {
-			if (megamaniac_go_is_enemy(self->game_objects[i])) {
-				self->game_objects[i]->x += delta_enemy_x;
-				self->game_objects[i]->y += delta_enemy_y;
-			}
-			else if ((self->game_objects[i]->type == GO_TYPE_BOMB) || (self->game_objects[i]->type == GO_TYPE_BULLET)) {
-				self->game_objects[i]->x *= resize_descriptor->width_ratio;
-				self->game_objects[i]->y *= resize_descriptor->height_ratio;
-			}
-		}
-	}
-}
 
 //-------------------------------------------------------
 // Game Object Update Methods
