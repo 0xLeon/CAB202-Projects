@@ -73,9 +73,9 @@ void destroy_game(game_p game);
 // Colliding Functions
 //-------------------------------------------
 
-bool did_collide_box_box(rect_t box_a, rect_t box_b);
+bool did_collide_box_box(rect_p box_a, rect_p box_b);
 
-bool did_collide_box_game_object(rect_t box, game_object_p game_object);
+bool did_collide_box_game_object(rect_p box, game_object_p game_object);
 
 bool did_collide_game_object_game_object(game_object_p game_object_a, game_object_p game_object_b);
 

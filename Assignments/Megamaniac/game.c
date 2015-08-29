@@ -270,11 +270,11 @@ void destroy_game(game_p game) {
 // Colliding Functions
 //-------------------------------------------
 
-bool did_collide_box_box(rect_t box_a, rect_t box_b) {
-	return !((box_b.x0 > box_a.x1) || (box_b.x1 < box_a.x0) || (box_b.y0 > box_a.y1) || (box_b.y1 < box_a.y0));
+bool did_collide_box_box(rect_p box_a, rect_p box_b) {
+	return !((box_b->x0 > box_a->x1) || (box_b->x1 < box_a->x0) || (box_b->y0 > box_a->y1) || (box_b->y1 < box_a->y0));
 }
 
-bool did_collide_box_game_object(rect_t box, game_object_p game_object) {
+bool did_collide_box_game_object(rect_p box, game_object_p game_object) {
 	// TODO: implement
 	
 	return false;
