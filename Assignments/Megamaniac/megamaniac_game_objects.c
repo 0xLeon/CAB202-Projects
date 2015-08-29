@@ -196,7 +196,7 @@ game_object_p megamaniac_create_go_pause_screen(game_p megamaniac) {
 game_object_p megamaniac_create_go_player(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	return create_static_string_game_object(GO_TYPE_PLAYER, (megamaniac->screen_width) / 2, megamaniac->screen_height - 4, 0., 0., 0L, go_player_update, "$");
+	return create_static_string_game_object(GO_TYPE_PLAYER, (megamaniac->screen_width) / 2, megamaniac->screen_height - 4, 1., 0., 0L, go_player_update, "$");
 }
 
 game_object_p megamaniac_create_go_bullet(game_p megamaniac, double x) {
@@ -477,14 +477,14 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 	switch (update->key) {
 		case 'a':
 			if ((self->x - 1.) >= 0.) {
-				self->x -= 1.;
+				self->x -= self->dx;
 				didMove = true;
 			}
 
 			break;
 		case 'd':
 			if ((self->x + 1.) <= (game->screen_width - 1)) {
-				self->x += 1.;
+				self->x += self->dx;
 				didMove = true;
 			}
 
