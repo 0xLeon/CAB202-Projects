@@ -92,21 +92,21 @@ int megamaniac_level3_create_go_enemy3_mover(game_level_p self, game_p megamania
 	assert(offset < self->game_object_count);
 
 	game_object_p go_enemy_mover = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy3_mover_update);
+	go_additional_data_enemy2_mover_p go_enemy_mover_data = malloc(sizeof(go_additional_data_enemy2_mover_t));
 
 	if (NULL == go_enemy_mover) {
 		return 0;
 	}
 
-	go_enemy_mover->additional_data = malloc(sizeof(go_additional_data_enemy2_mover_t));
-
-	if (NULL == go_enemy_mover->additional_data) {
+	if (NULL == go_enemy_mover_data) {
 		destroy_game_object(go_enemy_mover);
 
 		return 0;
 	}
 
-	((go_additional_data_enemy2_mover_p) go_enemy_mover->additional_data)->theta = 0.;
-	((go_additional_data_enemy2_mover_p) go_enemy_mover->additional_data)->dtheta = 7.;
+	go_enemy_mover_data->theta = 0.;
+	go_enemy_mover_data->dtheta = 7.;
+	go_enemy_mover->additional_data = (void*) go_enemy_mover_data;
 
 	self->game_objects[offset++] = go_enemy_mover;
 
