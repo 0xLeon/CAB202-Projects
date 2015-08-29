@@ -11,6 +11,8 @@
 #include "cab202_timers.h"
 #include "game_types.h"
 #include "game_timer.h"
+#include "game_update.h"
+#include "game_resize.h"
 #include "game_level.h"
 #include "game_object.h"
 
@@ -26,6 +28,7 @@ typedef struct rect {
 } rect_t;
 typedef rect_t* rect_p;
 
+typedef void (*resize_game_func_p)(game_p self, game_resize_descriptor_p resize_descriptor);
 typedef struct game {
 	int screen_width;
 	int screen_height;
@@ -39,6 +42,8 @@ typedef struct game {
 	int level_count;
 	game_level_p* levels;
 	game_level_p current_level;
+
+	resize_game_func_p resize;
 } game_t;
 typedef game_t* game_p;
 

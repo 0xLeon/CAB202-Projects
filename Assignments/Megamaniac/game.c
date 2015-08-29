@@ -73,6 +73,8 @@ game_p create_game(double framerate, int initial_game_object_count, int initial_
 		memset(game->levels, 0, game->level_count * sizeof(game_level_p));
 	}
 
+	game->resize = NULL;
+
 	srand(time(NULL));
 	
 	return game;
@@ -119,9 +121,42 @@ bool set_level_count(game_p game, int new_level_count) {
 
 void start_game_loop(game_p game) {
 	assert(NULL != game);
+
+	int new_screen_width = game->screen_width;
+	int new_screen_height = game->screen_height;
+	int* new_screen_width_ptr = &new_screen_width;
+	int* new_screen_height_ptr = &new_screen_height;
 	
 	// TODO: separate and parallelize
 	do {
+		if (NULL != game->resize) {
+			get_screen_size_(new_screen_width_ptr, new_screen_height_ptr);
+
+			if ((new_screen_width != game->screen_width) || (new_screen_height != game->screen_height)) {
+				game_resize_descriptor_t resize_descriptor = {
+					.old_width = game->screen_width,
+					.old_height = game->screen_height,
+					.new_width = new_screen_width,
+					.new_height = new_screen_height,
+					.width_ratio = ((double) new_screen_width) / game->screen_width,
+					.height_ratio = ((double) new_screen_height) / game->screen_height
+				};
+				game_resize_descriptor_p resize_descriptor_ptr = &resize_descriptor;
+
+				game->screen_width = new_screen_width;
+				game->screen_height = new_screen_height;
+
+				game->resize(game, resize_descriptor_ptr);
+
+				for (int i = 0; i < game->level_count; ++i) {
+					if ((NULL != game->levels[i]) && (NULL != game->levels[i]->resize)) {
+						game->levels[i]->resize(game->levels[i], resize_descriptor_ptr, game);
+					}
+				}
+				game->redraw = true;
+			}
+		}
+
 		if (!timer_expired(game->framerate_timer)) {
 			if (game->redraw) {
 				clear_screen();

@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include "game_types.h"
+#include "game_update.h"
+#include "game_resize.h"
 #include "game_level.h"
 
 game_level_p create_level(int initial_game_object_count) {
@@ -19,6 +21,7 @@ game_level_p create_level(int initial_game_object_count) {
 	level->paused = false;
 	level->load = NULL;
 	level->update = NULL;
+	level->resize = NULL;
 	level->unload = NULL;
 
 	level->game_object_count = initial_game_object_count;

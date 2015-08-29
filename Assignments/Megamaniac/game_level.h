@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 #include "game_types.h"
+#include "game_update.h"
+#include "game_resize.h"
 #include "game_object.h"
 
 //-------------------------------------------
@@ -11,6 +13,7 @@
 
 typedef void (*void_level_func_p)(game_level_p self, game_p game);
 typedef bool (*update_level_func_p)(game_level_p self, game_update_p update, game_p game);
+typedef void (*resize_level_func_p)(game_level_p self, game_resize_descriptor_p resize_descriptor, game_p game);
 typedef struct game_level {
 	bool paused;
 	int game_object_count;
@@ -19,6 +22,7 @@ typedef struct game_level {
 	// methods
 	void_level_func_p load;
 	update_level_func_p update;
+	resize_level_func_p resize;
 	void_level_func_p unload;
 } game_level_t;
 typedef game_level_t* game_level_p;

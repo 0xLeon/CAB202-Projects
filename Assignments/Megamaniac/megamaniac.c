@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "cab202_graphics.h"
+#include "game_types.h"
 #include "game.h"
 #include "megamaniac.h"
 #include "megamaniac_go_types.h"
@@ -17,6 +18,9 @@
 #define MEGAMANIAC_START_SCORE	0
 #define MEGAMANIAC_START_LIVES	3
 
+void megamaniac_resize(game_p self, game_resize_descriptor_p resize_descriptor);
+
+
 int main(int argc, char* argv[]) {
 	setup_screen();
 	clear_screen();
@@ -24,6 +28,7 @@ int main(int argc, char* argv[]) {
 	start_color();
 	init_color(COLOR_GREEN, 518, 875, 31);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	bkgd(COLOR_PAIR(1));
 
 	attron(A_BOLD);
 	attron(COLOR_PAIR(1));
@@ -50,6 +55,8 @@ game_p setup_megamaniac() {
 	game_p megamaniac = create_game(10., 9, 5);
 	int i = 0;
 
+	megamaniac->resize = megamaniac_resize;
+
 	megamaniac->game_objects[i++] = megamaniac_create_go_quit_checker(megamaniac);
 	megamaniac->game_objects[i++] = megamaniac_create_go_restarter(megamaniac);
 	megamaniac->game_objects[i++] = megamaniac_create_go_pauser(megamaniac);
@@ -72,4 +79,26 @@ game_p setup_megamaniac() {
 	}
 	
 	return megamaniac;
+}
+
+void megamaniac_resize(game_p self, game_resize_descriptor_p resize_descriptor) {
+	assert(NULL != self);
+
+	game_object_descriptor_t go_line_descriptor;
+	game_object_p go_line = find_game_object_by_type(GO_TYPE_LINE, self->game_objects, self->game_object_count, &go_line_descriptor);
+	game_object_p go_credits = find_game_object_by_type(GO_TYPE_CREDITS, self->game_objects, self->game_object_count, NULL);
+	game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, self->game_objects, self->game_object_count, NULL);
+	game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, self->game_objects, self->game_object_count, NULL);
+
+
+	destroy_game_object(go_line);
+	self->game_objects[go_line_descriptor.index] = megamaniac_create_go_line(self);
+
+	go_credits->y = resize_descriptor->new_height - 2;
+
+	go_score->x = resize_descriptor->new_width - go_score->width - 1;
+	go_score->y = resize_descriptor->new_height - 2;
+
+	go_lives->x = resize_descriptor->new_width - go_lives->width - 1;
+	go_lives->y = resize_descriptor->new_height - 1;
 }
