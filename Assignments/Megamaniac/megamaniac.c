@@ -60,6 +60,10 @@ game_p setup_megamaniac() {
 	game_p megamaniac = create_game(10., 9, 5);
 	int i = 0;
 
+	if (NULL == megamaniac) {
+		return NULL;
+	}
+
 	megamaniac->resize = megamaniac_resize;
 
 	megamaniac->game_objects[i++] = megamaniac_create_go_quit_checker(megamaniac);
