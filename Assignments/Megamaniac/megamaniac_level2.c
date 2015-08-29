@@ -146,8 +146,8 @@ bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p gam
 			int new_y = (int) round(game->current_level->game_objects[i]->y);
 
 			if ((new_x >= game->screen_width) || (new_x < 0)) {
-				game->current_level->game_objects[i]->x = 0.;
-				new_x = 0;
+				game->current_level->game_objects[i]->x -= game->screen_width;
+				new_x = (int) round(game->current_level->game_objects[i]->x);
 			}
 
 			didMove = (old_x != new_x) || (old_y != new_y) || didMove;

@@ -106,7 +106,7 @@ bool go_enemy1_mover_update(game_object_p self, game_update_p update, game_p gam
 			didMove = move_game_object(game_objects[i]) || didMove;
 
 			if (game_objects[i]->x >= game->screen_width) {
-				game_objects[i]->x = 0.;
+				game_objects[i]->x -= game->screen_width;
 
 				didMove = true;
 			}

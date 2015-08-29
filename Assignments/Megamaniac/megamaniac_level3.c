@@ -145,20 +145,21 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 			int new_y = (int) round(game->current_level->game_objects[i]->y);
 
 			if (new_x >= game->screen_width) {
-				game->current_level->game_objects[i]->x = 0.;
-				new_x = 0;
+				game->current_level->game_objects[i]->x -= game->screen_width;
+				new_x = (int) round(game->current_level->game_objects[i]->x);
 			}
 			else if (new_x < 0) {
-				game->current_level->game_objects[i]->x = game->screen_width - 1;
+				game->current_level->game_objects[i]->x += game->screen_width;
+				new_x = (int) round(game->current_level->game_objects[i]->x);
 			}
 
 			if (new_y >= (game->screen_height - 3)) {
-				game->current_level->game_objects[i]->y = 0.;
-				new_y = 0;
+				game->current_level->game_objects[i]->y -= (game->screen_height - 3);
+				new_y = (int) round(game->current_level->game_objects[i]->y);
 			}
 			else if (new_y < 0) {
-				new_y = game->screen_height - 4;
-				game->current_level->game_objects[i]->y = new_y;
+				game->current_level->game_objects[i]->y += (game->screen_height - 3);
+				new_y = (int) round(game->current_level->game_objects[i]->y);
 			}
 
 			// TODO: collision detection with player
