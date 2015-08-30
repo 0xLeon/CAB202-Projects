@@ -61,4 +61,6 @@ bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_
 
 bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, game_object_p go_player, game_object_p* game_objects, int game_object_count);
 
+void megamaniac_wipe_projectiles(game_object_p* game_objects, int game_object_count);
+
 #endif

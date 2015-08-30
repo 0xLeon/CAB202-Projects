@@ -178,18 +178,7 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 					go_player->x = (game->screen_width) / 2;
 				}
 
-				// Remove all bullets and bombs from the screen
-				for (int i = 0; i < game->current_level->game_object_count; i++) {
-					if ((NULL != game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
-						switch (game->current_level->game_objects[i]->type) {
-							case GO_TYPE_BULLET:
-							case GO_TYPE_BOMB:
-								game->current_level->game_objects[i]->active = false;
-								game->current_level->game_objects[i]->recycle = true;
-								break;
-						}
-					}
-				}
+				megamaniac_wipe_projectiles(game->current_level->game_objects, game->current_level->game_object_count);
 
 				return true;
 			}
