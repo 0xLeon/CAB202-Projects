@@ -521,7 +521,10 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 					go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 
 					go_lives_data->current_value--;
-					self->x = (game->screen_width) / 2;
+
+					if (!megamaniac_binary_find_save_player_location(game, self, game->current_level->game_objects, game->current_level->game_object_count, 0, game->screen_width)) {
+						self->x = (game->screen_width) / 2;
+					}
 
 					// Remove all bullets and bombs from the screen
 					for (int i = 0; i < game->current_level->game_object_count; i++) {
@@ -639,7 +642,10 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 
 		go_lives_data->current_value--;
-		go_player->x = (game->screen_width) / 2;
+		
+		if (!megamaniac_binary_find_save_player_location(game, go_player, game->current_level->game_objects, game->current_level->game_object_count, 0, game->screen_width)) {
+			go_player->x = (game->screen_width) / 2;
+		}
 
 		// Remove all bullets and bombs from the screen
 		for (int i = 0; i < game->current_level->game_object_count; i++) {
@@ -743,4 +749,67 @@ bool megamaniac_type_is_enemy(int game_object_type) {
 		default:
 			return false;
 	}
+}
+
+bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_p go_player, game_object_p* game_objects, int game_object_count, int test_sector_x0, int test_sector_x1) {
+	if (test_sector_x1 < test_sector_x0) {
+		return false;
+	}
+
+	int current_test_x = test_sector_x0 + ((test_sector_x1 - test_sector_x0) / 2);
+
+	if (megamaniac_is_safe_player_location(current_test_x, go_player->y, go_player, game_objects, game_object_count)) {
+		go_player->x = current_test_x;
+		return true;
+	}
+	else {
+		int bias = rand() % 2;
+
+		if (bias == 0) {
+			// left, then right
+			return	megamaniac_binary_find_save_player_location(megamaniac, go_player, game_objects, game_object_count, test_sector_x0, current_test_x - 1) ||
+				megamaniac_binary_find_save_player_location(megamaniac, go_player, game_objects, game_object_count, current_test_x + 1, test_sector_x1);
+		}
+		else {
+			// right, then left
+			return	megamaniac_binary_find_save_player_location(megamaniac, go_player, game_objects, game_object_count, current_test_x + 1, test_sector_x1) ||
+				megamaniac_binary_find_save_player_location(megamaniac, go_player, game_objects, game_object_count, test_sector_x0, current_test_x - 1);
+		}
+	}
+}
+
+bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, game_object_p go_player, game_object_p* game_objects, int game_object_count) {
+	assert(NULL != go_player);
+	assert(go_player->type == GO_TYPE_PLAYER);
+	assert(NULL != game_objects);
+	assert(game_object_count > 1);
+
+	int enemy_count = 0;
+	rect_t player_rect = {
+		.x0 = (int) round(current_test_x - 10),
+		.y0 = (int) round(current_test_y - 5),
+		.x1 = (int) round(current_test_x + 10),
+		.y1 = (int) round(current_test_y + 1)
+	};
+	rect_t enemy_rect = {0, 0, 0, 0};
+	rect_p player_rect_ptr = &player_rect;
+	rect_p enemy_rect_ptr = &enemy_rect;
+
+
+	for (int i = 0; i < game_object_count; ++i) {
+		if ((NULL != game_objects[i]) && !(game_objects[i]->recycle) && megamaniac_go_is_enemy(game_objects[i])) {
+			enemy_count++;
+
+			enemy_rect.x0 = (int) round(game_objects[i]->x);
+			enemy_rect.y0 = (int) round(game_objects[i]->y);
+			enemy_rect.x1 = enemy_rect.x0;
+			enemy_rect.y1 = enemy_rect.y0;
+
+			if ((player_rect_ptr->x0 <= enemy_rect_ptr->x0) && (enemy_rect_ptr->x0 <= player_rect_ptr->x1) && (player_rect_ptr->y0 <= enemy_rect_ptr->y0) && (enemy_rect_ptr->y0 <= player_rect_ptr->y1)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

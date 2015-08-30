@@ -57,4 +57,8 @@ bool megamaniac_go_is_enemy(game_object_p game_object);
 
 bool megamaniac_type_is_enemy(int game_object_type);
 
+bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_p go_player, game_object_p* game_objects, int game_object_count, int test_sector_x0, int test_sector_x1);
+
+bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, game_object_p go_player, game_object_p* game_objects, int game_object_count);
+
 #endif

@@ -173,8 +173,10 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 				go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
 
 				go_lives_data->current_value--;
-				// TODO: find save respawn location
-				go_player->x = (game->screen_width) / 2;
+				
+				if (!megamaniac_binary_find_save_player_location(game, go_player, game->current_level->game_objects, game->current_level->game_object_count, 0, game->screen_width)) {
+					go_player->x = (game->screen_width) / 2;
+				}
 
 				// Remove all bullets and bombs from the screen
 				for (int i = 0; i < game->current_level->game_object_count; i++) {
