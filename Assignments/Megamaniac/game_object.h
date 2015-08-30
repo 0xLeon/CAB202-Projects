@@ -10,6 +10,7 @@
 #define GO_TYPE_NULL	0
 
 typedef bool (*game_object_update_f)(game_object_p self, game_update_p update, game_p game, game_level_p level);
+typedef void (*game_object_recycle_f)(game_object_p self, game_p game, game_level_p level);
 typedef struct game_object {
 	int type;
 	double x;
@@ -26,6 +27,7 @@ typedef struct game_object {
 
 	// methods
 	game_object_update_f update;
+	game_object_recycle_f destroy;	// TODO: second and third parameter always NULL for now
 
 	// additional data
 	void* additional_data;

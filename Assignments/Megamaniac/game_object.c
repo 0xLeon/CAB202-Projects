@@ -39,6 +39,7 @@ game_object_p create_game_object(int type, double x, double y, int width, int he
 	game_object->timer = NULL;
 	game_object->recycle = false;
 	game_object->update = go_update;
+	game_object->recycle = NULL;
 	game_object->additional_data = NULL;
 
 	if (interval > 0) {
@@ -120,6 +121,10 @@ void draw_game_object(game_object_p game_object) {
 
 void destroy_game_object(game_object_p game_object) {
 	assert(NULL != game_object);
+
+	if (NULL != game_object->destroy) {
+		game_object->destroy(game_object, NULL, NULL);
+	}
 
 	if (NULL != game_object->bitmap) {
 		free(game_object->bitmap);
