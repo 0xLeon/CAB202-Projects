@@ -1,6 +1,8 @@
 #ifndef MEGAMANIAC_GO_DATA_H_
 #define MEGAMANIAC_GO_DATA_H_
 
+#include "cab202_timers.h"
+
 typedef struct go_additional_data_comparable_int {
 	int initial_value;
 	int previous_value;
@@ -13,5 +15,16 @@ typedef struct go_additional_data_enemy2_mover {
 	double dtheta;
 } go_additional_data_enemy2_mover_t;
 typedef go_additional_data_enemy2_mover_t* go_additional_data_enemy2_mover_p;
+
+typedef struct go_additional_data_enemy4 {
+	timer_id direction_change_timer;
+	timer_id speed_change_timer;
+
+	double next_x;
+	double next_y;
+	double angle;
+	double speed;
+} go_additional_data_enemy4_t;
+typedef go_additional_data_enemy4_t* go_additional_data_enemy4_p;
 
 #endif

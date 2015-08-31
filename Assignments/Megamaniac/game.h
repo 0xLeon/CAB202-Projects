@@ -16,6 +16,10 @@
 #include "game_level.h"
 #include "game_object.h"
 
+
+#define GAME_SIGNUM(x)		(((x) > 0) - ((x) < 0))
+#define GAME_ABSOLUTE(x)	((x) * GAME_SIGNUM((x)))
+
 //-------------------------------------------
 // Type Definitions
 //-------------------------------------------
