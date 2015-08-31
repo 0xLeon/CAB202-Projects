@@ -28,6 +28,32 @@
 *.x86_64
 *.hex
 
+# GCC Output Files
+*.alignments
+*.asmcons
+*.barriers
+*.dfinish
+*.dfinit
+*.dwarf2
+*.expand
+*.final
+*.into_cfglayout
+*.ira
+*.jump
+*.jump2
+*.mach
+*.mode_sw
+*.nothrow
+*.outof_cfglayout
+*.pro_and_epilogue
+*.reginfo
+*.reload
+*.shorten
+*.split1
+*.split2
+*.stack
+*.vregs
+
 # Debug files
 *.dSYM/
 *.stackdump
