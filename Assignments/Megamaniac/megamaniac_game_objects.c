@@ -844,6 +844,7 @@ void megamaniac_wipe_projectiles(game_object_p* game_objects, int game_object_co
 	}
 }
 
+// TODO: what if both enemy and player moved and passed over each other
 bool megamaniac_test_enemy_player_collision(game_object_p go_enemy, game_object_p go_player, bool player_find_save_loc, bool wipe_projectiles, game_p megamaniac) {
 	assert(NULL != go_enemy);
 	assert(NULL != go_player);

@@ -96,6 +96,11 @@ void megamaniac_level4_load(game_level_p self, game_p megamaniac) {
 	self->paused = false;
 }
 
+
+//-------------------------------------------------------
+// Game Object Creation Functions
+//-------------------------------------------------------
+
 int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int offset) {
 	assert(NULL != level);
 	assert(NULL != megamaniac);
