@@ -743,7 +743,8 @@ bool megamaniac_move_enemy(game_object_p go_enemy, game_p megamaniac) {
 	after_x = (int) round(go_enemy->x);
 	after_y = (int) round(go_enemy->y);
 
-	if (after_x != before_x) {
+	// TODO: check the if statement, enemies wrap to late
+	// if (after_x != before_x) {
 		if (after_x >= megamaniac->screen_width) {
 			go_enemy->x -= megamaniac->screen_width;
 			after_x = (int) round(go_enemy->x);
@@ -752,9 +753,10 @@ bool megamaniac_move_enemy(game_object_p go_enemy, game_p megamaniac) {
 			go_enemy->x += megamaniac->screen_width;
 			after_x = (int) round(go_enemy->x);
 		}
-	}
+	// }
 
-	if (after_y != before_y) {
+	// TODO: check the if statement, enemies wrap to late
+	// if (after_y != before_y) {
 		if (after_y >= (megamaniac->screen_height - 3)) {
 			go_enemy->y -= (megamaniac->screen_height - 3);
 			after_y = (int) round(go_enemy->y);
@@ -763,7 +765,7 @@ bool megamaniac_move_enemy(game_object_p go_enemy, game_p megamaniac) {
 			go_enemy->y += (megamaniac->screen_height - 3);
 			after_y = (int) round(go_enemy->y);
 		}
-	}
+	// }
 
 	return ((after_x != before_x) || (after_y != before_y));
 }
