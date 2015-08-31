@@ -27,4 +27,11 @@ typedef struct go_additional_data_enemy4 {
 } go_additional_data_enemy4_t;
 typedef go_additional_data_enemy4_t* go_additional_data_enemy4_p;
 
+typedef struct go_additional_data_trace_drawer {
+	game_object_p game_object;
+	int previous_screen_x;
+	int previous_screen_y;
+} go_additional_data_trace_drawer_t;
+typedef go_additional_data_trace_drawer_t* go_additional_data_trace_drawer_p;
+
 #endif

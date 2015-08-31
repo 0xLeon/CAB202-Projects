@@ -23,5 +23,7 @@
 #define GO_TYPE_LEVEL_CHANGER	20
 #define GO_TYPE_PAUSER		21
 #define GO_TYPE_PAUSE_SCREEN	22
+#define GO_TYPE_TRACE_DRAWER	23
+#define GO_TYPE_TRACE		24
 
 #endif

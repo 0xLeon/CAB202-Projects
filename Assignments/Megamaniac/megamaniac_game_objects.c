@@ -38,6 +38,8 @@ bool go_bomb_update(game_object_p self, game_update_p update, game_p game, game_
 
 bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
 
+bool go_trace_drawer_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
+
 
 //-------------------------------------------------------
 // Game Object Creation Functions
@@ -233,6 +235,33 @@ game_object_p megamaniac_create_go_bomb_dropper(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	return create_null_game_object(GO_TYPE_BOMB_DROPPER, 3000L, go_bomb_dropper_update);
+}
+
+game_object_p megamaniac_create_go_trace_drawer(game_p megamaniac, game_object_p game_object) {
+	assert(NULL != megamaniac);
+	assert(NULL != game_object);
+
+	game_object_p go_trace_drawer = create_null_game_object(GO_TYPE_TRACE_DRAWER, 0L, go_trace_drawer_update);
+	go_additional_data_trace_drawer_p go_trace_drawer_data = NULL;
+
+	if (NULL == go_trace_drawer) {
+		return NULL;
+	}
+	go_trace_drawer_data = malloc(sizeof(go_additional_data_trace_drawer_t));
+
+	if (NULL == go_trace_drawer_data) {
+		destroy_game_object(go_trace_drawer);
+
+		return NULL;
+	}
+
+	go_trace_drawer_data->game_object = game_object;
+	go_trace_drawer_data->previous_screen_x = (int) round(game_object->x);
+	go_trace_drawer_data->previous_screen_y = (int) round(game_object->y);
+
+	go_trace_drawer->additional_data = go_trace_drawer_data;
+
+	return go_trace_drawer;
 }
 
 int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megamaniac, int offset, int enemy_type, int row_count, int odd_count, int even_count, double horizontal_spacing, double vertical_spacing, game_object_update_f enemy_update_f) {
@@ -696,6 +725,39 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 				c++;
 			}
 		}
+	}
+
+	return false;
+}
+
+bool go_trace_drawer_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+	assert(NULL != self);
+	assert(NULL != update);
+	assert(NULL != game);
+
+	go_additional_data_trace_drawer_p go_trace_drawer_data = (go_additional_data_trace_drawer_p) self->additional_data;
+	int current_screen_x = 0;
+	int current_screen_y = 0;
+
+	if (NULL == go_trace_drawer_data->game_object) {
+		self->active = false;
+		self->recycle = true;
+
+		return true;
+	}
+
+	current_screen_x = (int) round(go_trace_drawer_data->game_object->x);
+	current_screen_y = (int) round(go_trace_drawer_data->game_object->y);
+
+	if ((current_screen_x != go_trace_drawer_data->previous_screen_x) || (current_screen_y != go_trace_drawer_data->previous_screen_y)) {
+		game_object_p go_trace = create_static_string_game_object(GO_TYPE_TRACE, go_trace_drawer_data->previous_screen_x, go_trace_drawer_data->previous_screen_y, 0., 0., 0L, NULL, "+");
+
+		level_add_game_object(game->current_level, go_trace);
+
+		go_trace_drawer_data->previous_screen_x = current_screen_x;
+		go_trace_drawer_data->previous_screen_y = current_screen_y;
+
+		return true;
 	}
 
 	return false;
