@@ -18,13 +18,13 @@
 #define LEVEL4_ENEMY_VERTICAL_SPACING		2
 #define LEVEL4_ENEMY_HORIZONTAL_SPACING		5
 
-#define LEVEL4_ENEMY_INITIAL_DIRECTION_TIMER_LOWER	750
-#define LEVEL4_ENEMY_INITIAL_DIRECTION_TIMER_UPPER	2500
-#define LEVEL4_ENEMY_MIN_DISTANCE			7.5
-#define LEVEL4_ENEMY_INITIAL_SPEED_TIMER_LOWER		1000
-#define LEVEL4_ENEMY_INITIAL_SPEED_TIMER_UPPER		5000
+#define LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER	750
+#define LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_UPPER	3500
+#define LEVEL4_ENEMY_MIN_DISTANCE			10.
+#define LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER		1000
+#define LEVEL4_ENEMY_SPEED_CHANGE_TIMER_UPPER		5000
 #define LEVEL4_ENEMY_SPEED_MIN				3
-#define LEVEL4_ENEMY_SPEED_MAX				20
+#define LEVEL4_ENEMY_SPEED_MAX				14
 #define LEVEL4_ENEMY_POSITION_EPSLION			.099609375
 
 //-------------------------------------------------------
@@ -121,7 +121,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->direction_change_timer = create_timer(LEVEL4_ENEMY_INITIAL_DIRECTION_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_INITIAL_DIRECTION_TIMER_UPPER - LEVEL4_ENEMY_INITIAL_DIRECTION_TIMER_LOWER + 1)));
+			go_enemy_data->direction_change_timer = create_timer(LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_UPPER - LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + 1)));
 
 			if (NULL == go_enemy_data->direction_change_timer) {
 				destroy_game_object(go_enemy);
@@ -131,7 +131,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->speed_change_timer = create_timer(LEVEL4_ENEMY_INITIAL_SPEED_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_INITIAL_SPEED_TIMER_UPPER - LEVEL4_ENEMY_INITIAL_SPEED_TIMER_LOWER + 1)));
+			go_enemy_data->speed_change_timer = create_timer(LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_SPEED_CHANGE_TIMER_UPPER - LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER + 1)));
 
 			if (NULL == go_enemy_data->speed_change_timer) {
 				destroy_game_object(go_enemy);
