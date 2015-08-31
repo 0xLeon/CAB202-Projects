@@ -137,35 +137,14 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 			double dcos = (-1. * cos(1.1875 * go_enemy_mover_data->theta * M_PI / 180.) + 1.) - (-1. * cos(1.1875 * (go_enemy_mover_data->theta - go_enemy_mover_data->dtheta) * M_PI / 180.) + 1.);
 			double dcos_amp = round(game->screen_height / 8.);
 
+			game->current_level->game_objects[i]->dy = dcos_amp * dcos + (25. / game->screen_width);
+
 			// TODO: formation is lost when wrapping at top or bottom edge
-			int old_x = (int) round(game->current_level->game_objects[i]->x);
-			int old_y = (int) round(game->current_level->game_objects[i]->y);
-			game->current_level->game_objects[i]->x += game->current_level->game_objects[i]->dx;
-			game->current_level->game_objects[i]->y += dcos_amp * dcos + (25. / game->screen_width);
-			int new_x = (int) round(game->current_level->game_objects[i]->x);
-			int new_y = (int) round(game->current_level->game_objects[i]->y);
-
-			if (new_x >= game->screen_width) {
-				game->current_level->game_objects[i]->x -= game->screen_width;
-				new_x = (int) round(game->current_level->game_objects[i]->x);
-			}
-			else if (new_x < 0) {
-				game->current_level->game_objects[i]->x += game->screen_width;
-				new_x = (int) round(game->current_level->game_objects[i]->x);
-			}
-
-			if (new_y >= (game->screen_height - 3)) {
-				game->current_level->game_objects[i]->y -= (game->screen_height - 3);
-				new_y = (int) round(game->current_level->game_objects[i]->y);
-			}
-			else if (new_y < 0) {
-				game->current_level->game_objects[i]->y += (game->screen_height - 3);
-				new_y = (int) round(game->current_level->game_objects[i]->y);
-			}
+			didMove = megamaniac_move_enemy(game->current_level->game_objects[i], game) || didMove;
 
 			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			
-			if ((new_x == ((int) round(go_player->x))) && (new_y == ((int) round(go_player->y)))) {
+			if ((((int) round(game->current_level->game_objects[i]->x)) == ((int) round(go_player->x))) && (((int) round(game->current_level->game_objects[i]->y)) == ((int) round(go_player->y)))) {
 				game->current_level->game_objects[i]->active = false;
 				game->current_level->game_objects[i]->recycle = true;
 
@@ -182,8 +161,6 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 
 				return true;
 			}
-
-			didMove = (old_x != new_x) || (old_y != new_y) || didMove;
 		}
 	}
 

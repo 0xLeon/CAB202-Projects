@@ -729,6 +729,45 @@ bool megamaniac_type_is_enemy(int game_object_type) {
 	}
 }
 
+// TODO: make more generic by inputting boundary box object instead of game object with hardcoded limits
+bool megamaniac_move_enemy(game_object_p go_enemy, game_p megamaniac) {
+	assert(NULL != go_enemy);
+
+	int before_x = (int) round(go_enemy->x);
+	int before_y = (int) round(go_enemy->y);
+	int after_x = 0;
+	int after_y = 0;
+
+	go_enemy->x += go_enemy->dx;
+	go_enemy->y += go_enemy->dy;
+	after_x = (int) round(go_enemy->x);
+	after_y = (int) round(go_enemy->y);
+
+	if (after_x != before_x) {
+		if (after_x >= megamaniac->screen_width) {
+			go_enemy->x -= megamaniac->screen_width;
+			after_x = (int) round(go_enemy->x);
+		}
+		else if (after_x < 0) {
+			go_enemy->x += megamaniac->screen_width;
+			after_x = (int) round(go_enemy->x);
+		}
+	}
+
+	if (after_y != before_y) {
+		if (after_y >= (megamaniac->screen_height - 3)) {
+			go_enemy->y -= (megamaniac->screen_height - 3);
+			after_y = (int) round(go_enemy->y);
+		}
+		else if (after_y < 0) {
+			go_enemy->y += (megamaniac->screen_height - 3);
+			after_y = (int) round(go_enemy->y);
+		}
+	}
+
+	return ((after_x != before_x) || (after_y != before_y));
+}
+
 bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_p go_player, game_object_p* game_objects, int game_object_count, int test_sector_x0, int test_sector_x1) {
 	if (test_sector_x1 < test_sector_x0) {
 		return false;
