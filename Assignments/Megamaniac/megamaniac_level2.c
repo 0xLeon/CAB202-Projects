@@ -139,19 +139,9 @@ bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p gam
 			double dcos = (-1. * cos(1.1875 * go_enemy_mover_data->theta * M_PI / 180.) + 1.) - (-1. * cos(1.1875 * (go_enemy_mover_data->theta - go_enemy_mover_data->dtheta) * M_PI / 180.) + 1.);
 			double dcos_amp = round(game->screen_height / 8.);
 
-			int old_x = (int) round(game->current_level->game_objects[i]->x);
-			int old_y = (int) round(game->current_level->game_objects[i]->y);
-			game->current_level->game_objects[i]->x += game->current_level->game_objects[i]->dx;
-			game->current_level->game_objects[i]->y += dcos_amp * dcos;
-			int new_x = (int) round(game->current_level->game_objects[i]->x);
-			int new_y = (int) round(game->current_level->game_objects[i]->y);
+			game->current_level->game_objects[i]->dy = dcos_amp * dcos;
 
-			if ((new_x >= game->screen_width) || (new_x < 0)) {
-				game->current_level->game_objects[i]->x -= game->screen_width;
-				new_x = (int) round(game->current_level->game_objects[i]->x);
-			}
-
-			didMove = (old_x != new_x) || (old_y != new_y) || didMove;
+			didMove = megamaniac_move_enemy(game->current_level->game_objects[i], game);
 		}
 	}
 
