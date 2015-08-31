@@ -223,6 +223,8 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 				moved = megamaniac_move_enemy(go_enemy, game);
 
 				if (moved) {
+					game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+					
 					if (!go_enemy4_is_valid_enemy_position(go_enemy, enemies, enemy_count)) {
 						// invalid, return to previous point and find new direction
 						go_enemy->x = enemy_x;
@@ -233,6 +235,8 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 					else if (go_enemy4_reached_waypoint(go_enemy, go_enemy_data)) {
 						go_enemy4_find_next_waypoint(go_enemy, game);
 					}
+
+					megamaniac_test_enemy_player_collision(go_enemy, go_player, true, true, game);
 
 					did_update = true;
 				}
