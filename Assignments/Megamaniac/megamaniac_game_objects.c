@@ -795,6 +795,7 @@ bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_
 	}
 }
 
+// TODO: what about wrapping enemies (enemies at top edge with vecttor out of screen reappering on the bottom
 bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, game_object_p go_player, game_object_p* game_objects, int game_object_count) {
 	assert(NULL != go_player);
 	assert(go_player->type == GO_TYPE_PLAYER);
@@ -841,4 +842,38 @@ void megamaniac_wipe_projectiles(game_object_p* game_objects, int game_object_co
 			game_objects[i]->recycle = true;
 		}
 	}
+}
+
+bool megamaniac_test_enemy_player_collision(game_object_p go_enemy, game_object_p go_player, bool player_find_save_loc, bool wipe_projectiles, game_p megamaniac) {
+	assert(NULL != go_enemy);
+	assert(NULL != go_player);
+	assert(NULL != megamaniac);
+	assert(go_enemy != go_player);
+
+	int enemy_x = (int) round(go_enemy->x);
+	int enemy_y = (int) round(go_enemy->y);
+	int player_x = (int) round(go_player->x);
+	int player_y = (int) round(go_player->y);
+	
+	if ((enemy_x == player_x) && (enemy_y == player_y)) {
+		go_enemy->active = false;
+		go_enemy->recycle = true;
+
+		game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, megamaniac->game_objects, megamaniac->game_object_count, NULL);
+		go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
+
+		go_lives_data->current_value--;
+
+		if (!player_find_save_loc || !megamaniac_binary_find_save_player_location(megamaniac, go_player, megamaniac->current_level->game_objects, megamaniac->current_level->game_object_count, 0, megamaniac->screen_width)) {
+			go_player->x = (megamaniac->screen_width) / 2;
+		}
+
+		if (wipe_projectiles) {
+			megamaniac_wipe_projectiles(megamaniac->current_level->game_objects, megamaniac->current_level->game_object_count);
+		}
+
+		return true;
+	}
+
+	return false;
 }

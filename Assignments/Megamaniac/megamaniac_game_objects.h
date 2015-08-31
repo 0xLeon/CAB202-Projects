@@ -65,4 +65,6 @@ bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, 
 
 void megamaniac_wipe_projectiles(game_object_p* game_objects, int game_object_count);
 
+bool megamaniac_test_enemy_player_collision(game_object_p go_enemy, game_object_p go_player, bool player_find_save_loc, bool wipe_projectiles, game_p megamaniac);
+
 #endif

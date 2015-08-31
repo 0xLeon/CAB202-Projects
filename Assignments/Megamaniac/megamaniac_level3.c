@@ -144,20 +144,8 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 
 			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			
-			if ((((int) round(game->current_level->game_objects[i]->x)) == ((int) round(go_player->x))) && (((int) round(game->current_level->game_objects[i]->y)) == ((int) round(go_player->y)))) {
-				game->current_level->game_objects[i]->active = false;
-				game->current_level->game_objects[i]->recycle = true;
-
-				game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, game->game_objects, game->game_object_count, NULL);
-				go_additional_data_comparable_int_p go_lives_data = (go_additional_data_comparable_int_p) go_lives->additional_data;
-
-				go_lives_data->current_value--;
-				
-				if (!megamaniac_binary_find_save_player_location(game, go_player, game->current_level->game_objects, game->current_level->game_object_count, 0, game->screen_width)) {
-					go_player->x = (game->screen_width) / 2;
-				}
-
-				megamaniac_wipe_projectiles(game->current_level->game_objects, game->current_level->game_object_count);
+			if (megamaniac_test_enemy_player_collision(game->current_level->game_objects[i], go_player, true, true, game)) {
+				go_enemy_mover_data->theta += go_enemy_mover_data->dtheta;
 
 				return true;
 			}
