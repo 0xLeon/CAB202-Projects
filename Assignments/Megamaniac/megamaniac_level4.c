@@ -210,7 +210,6 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 
 			if (timer_expired(go_enemy_data->speed_change_timer)) {
 				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * ((LEVEL4_ENEMY_SPEED_MIN + (rand() % (LEVEL4_ENEMY_SPEED_MAX - LEVEL4_ENEMY_SPEED_MIN + 1))) / 10.);
-				moved = true;
 			}
 
 			if (timer_expired(go_enemy_data->direction_change_timer)) {
@@ -230,17 +229,13 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 						go_enemy->y = enemy_y;
 
 						go_enemy4_find_next_waypoint(go_enemy, game);
-						
-						moved = false;
 					}
 					else if (go_enemy4_reached_waypoint(go_enemy, go_enemy_data)) {
 						go_enemy4_find_next_waypoint(go_enemy, game);
-
-						moved = false;
 					}
-				}
 
-				did_update = moved || did_update;
+					did_update = true;
+				}
 			}
 		}
 	}
