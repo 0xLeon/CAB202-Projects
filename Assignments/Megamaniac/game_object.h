@@ -27,7 +27,7 @@ typedef struct game_object {
 
 	// methods
 	game_object_update_f update;
-	game_object_recycle_f destroy;	// TODO: second and third parameter always NULL for now
+	game_object_recycle_f destroy;
 
 	// additional data
 	void* additional_data;

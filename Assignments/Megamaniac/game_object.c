@@ -123,6 +123,7 @@ void destroy_game_object(game_object_p game_object) {
 	assert(NULL != game_object);
 
 	if (NULL != game_object->destroy) {
+		// TODO: game and level are always NULL 'cause we don't have them in this context
 		game_object->destroy(game_object, NULL, NULL);
 	}
 
@@ -137,7 +138,6 @@ void destroy_game_object(game_object_p game_object) {
 	}
 
 	if (NULL != game_object->additional_data) {
-		// TODO: what about additional data with dynamic memory?
 		free(game_object->additional_data);
 		game_object->additional_data = NULL;
 	}

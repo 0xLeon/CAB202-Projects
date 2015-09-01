@@ -33,13 +33,21 @@
 
 void megamaniac_level6_load(game_level_p self, game_p megamaniac);
 
-int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int offset);
 
 //-------------------------------------------------------
-// Game Object Update Methods Forward Declarations
+// Game Object Creation Functions Forward Declarations
+//-------------------------------------------------------
+
+int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int offset);
+
+
+//-------------------------------------------------------
+// Game Objects Object Methods Forward Declarations
 //-------------------------------------------------------
 
 bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
+
+void go_enemy6_destroy(game_object_p self, game_p game, game_level_p level);
 
 
 //-------------------------------------------------------
@@ -152,6 +160,7 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 			}
 
 			go_enemy->additional_data = go_enemy_data;
+			go_enemy->destroy = go_enemy6_destroy;
 
 			go_enemy6_find_next_waypoint(go_enemy, megamaniac);
 
@@ -164,7 +173,7 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 
 
 //-------------------------------------------------------
-// Game Object Update Methods
+// Game Objects Object Methods
 //-------------------------------------------------------
 
 bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
@@ -249,6 +258,21 @@ bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p gam
 	}
 
 	return did_update;
+}
+
+void go_enemy6_destroy(game_object_p self, game_p game, game_level_p level) {
+	assert(NULL != self);
+	// TODO: second and third parameter always NULL for now
+	// assert(NULL != game);
+	// assert(NULL != level);
+
+	go_additional_data_enemy6_p go_enemy_data = (go_additional_data_enemy6_p) self->additional_data;
+
+	free(go_enemy_data->direction_change_timer);
+	go_enemy_data->direction_change_timer = NULL;
+
+	free(go_enemy_data->speed_change_timer);
+	go_enemy_data->speed_change_timer = NULL;
 }
 
 
