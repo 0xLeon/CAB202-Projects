@@ -101,17 +101,24 @@ void megamaniac_resize(game_p self, game_resize_descriptor_p resize_descriptor) 
 	game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, self->game_objects, self->game_object_count, NULL);
 	game_object_p go_lives = find_game_object_by_type(GO_TYPE_LIVES, self->game_objects, self->game_object_count, NULL);
 
+	if (NULL != go_line) {
+		destroy_game_object(go_line);
+		self->game_objects[go_line_descriptor.index] = megamaniac_create_go_line(self);
+	}
 
-	destroy_game_object(go_line);
-	self->game_objects[go_line_descriptor.index] = megamaniac_create_go_line(self);
+	if (NULL != go_credits) {
+		go_credits->y = resize_descriptor->new_height - 2;
+	}
 
-	go_credits->y = resize_descriptor->new_height - 2;
+	if (NULL != go_score) {
+		go_score->x = resize_descriptor->new_width - go_score->width - 1;
+		go_score->y = resize_descriptor->new_height - 2;
+	}
 
-	go_score->x = resize_descriptor->new_width - go_score->width - 1;
-	go_score->y = resize_descriptor->new_height - 2;
-
-	go_lives->x = resize_descriptor->new_width - go_lives->width - 1;
-	go_lives->y = resize_descriptor->new_height - 1;
+	if (NULL != go_lives) {
+		go_lives->x = resize_descriptor->new_width - go_lives->width - 1;
+		go_lives->y = resize_descriptor->new_height - 1;
+	}
 }
 
 
@@ -122,12 +129,16 @@ void megamaniac_level_default_resize(game_level_p self, game_resize_descriptor_p
 
 	game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, self->game_objects, self->game_object_count, NULL);
 	game_object_p go_level_name = find_game_object_by_type(GO_TYPE_LEVEL_NAME, self->game_objects, self->game_object_count, NULL);
+	
+	if (NULL != go_player) {
+		go_player->x = (int) round(go_player->x * resize_descriptor->width_ratio);
+		go_player->y = resize_descriptor->new_height - 4;
+	}
 
-	go_player->x = (int) round(go_player->x * resize_descriptor->width_ratio);
-	go_player->y = resize_descriptor->new_height - 4;
-
-	go_level_name->x = (resize_descriptor->new_width - strlen(go_level_name->bitmap)) / 2;
-	go_level_name->y = resize_descriptor->new_height - 1;
+	if (NULL != go_level_name) {
+		go_level_name->x = (resize_descriptor->new_width - strlen(go_level_name->bitmap)) / 2;
+		go_level_name->y = resize_descriptor->new_height - 1;
+	}
 
 	for (int i = 0; i < self->game_object_count; ++i) {
 		if ((NULL != self->game_objects[i]) && !(self->game_objects[i]->recycle)) {
