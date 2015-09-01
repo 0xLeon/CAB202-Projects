@@ -26,7 +26,7 @@
 void megamaniac_level1_load(game_level_p self, game_p megamaniac);
 
 //-------------------------------------------------------
-// Game Object Update Methods Forward Declarations
+// Game Objects Object Methods Forward Declarations
 //-------------------------------------------------------
 
 bool go_enemy1_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
@@ -77,7 +77,7 @@ void megamaniac_level1_load(game_level_p self, game_p megamaniac) {
 
 
 //-------------------------------------------------------
-// Game Object Update Methods
+// Game Objects Object Methods
 //-------------------------------------------------------
 
 bool go_enemy1_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {

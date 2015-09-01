@@ -33,7 +33,7 @@ int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamania
 
 
 //-------------------------------------------------------
-// Game Object Update Methods Forward Declarations
+// Game Objects Object Methods Forward Declarations
 //-------------------------------------------------------
 
 bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
@@ -117,7 +117,7 @@ int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamania
 
 
 //-------------------------------------------------------
-// Game Object Update Methods
+// Game Objects Object Methods
 //-------------------------------------------------------
 
 bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
