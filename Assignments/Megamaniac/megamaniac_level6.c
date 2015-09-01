@@ -9,48 +9,48 @@
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
 #include "megamaniac_game_objects.h"
-#include "megamaniac_level4.h"
+#include "megamaniac_level6.h"
 
-#define LEVEL4_LEVEL_NAME			"Level 4 - Drunken"
-#define LEVEL4_ENEMY_ROW_COUNT			3
-#define LEVEL4_ENEMY_ROW_ODD_COUNT		3
-#define LEVEL4_ENEMY_ROW_EVEN_COUNT		4
-#define LEVEL4_ENEMY_VERTICAL_SPACING		2
-#define LEVEL4_ENEMY_HORIZONTAL_SPACING		5
+#define LEVEL6_LEVEL_NAME			"Level 6 - Drunken"
+#define LEVEL6_ENEMY_ROW_COUNT			3
+#define LEVEL6_ENEMY_ROW_ODD_COUNT		3
+#define LEVEL6_ENEMY_ROW_EVEN_COUNT		4
+#define LEVEL6_ENEMY_VERTICAL_SPACING		2
+#define LEVEL6_ENEMY_HORIZONTAL_SPACING		5
 
-#define LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER	750
-#define LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_UPPER	3500
-#define LEVEL4_ENEMY_MIN_DISTANCE			10.
-#define LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER		1000
-#define LEVEL4_ENEMY_SPEED_CHANGE_TIMER_UPPER		5000
-#define LEVEL4_ENEMY_SPEED_MIN				3
-#define LEVEL4_ENEMY_SPEED_MAX				14
-#define LEVEL4_ENEMY_POSITION_EPSLION			.099609375
+#define LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER	750
+#define LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_UPPER	3500
+#define LEVEL6_ENEMY_MIN_DISTANCE			10.
+#define LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER		1000
+#define LEVEL6_ENEMY_SPEED_CHANGE_TIMER_UPPER		5000
+#define LEVEL6_ENEMY_SPEED_MIN				3
+#define LEVEL6_ENEMY_SPEED_MAX				14
+#define LEVEL6_ENEMY_POSITION_EPSLION			.099609375
 
 //-------------------------------------------------------
 // Level Loading Methods Forward Declarations
 //-------------------------------------------------------
 
-void megamaniac_level4_load(game_level_p self, game_p megamaniac);
+void megamaniac_level6_load(game_level_p self, game_p megamaniac);
 
-int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int offset);
+int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int offset);
 
 //-------------------------------------------------------
 // Game Object Update Methods Forward Declarations
 //-------------------------------------------------------
 
-bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
+bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
 
 
 //-------------------------------------------------------
 // Helper Functions Forward Declarations
 //-------------------------------------------------------
 
-void go_enemy4_find_next_waypoint(game_object_p go_enemy, game_p megamaniac);
+void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac);
 
-bool go_enemy4_is_valid_enemy_position(game_object_p enemy, game_object_p* enemies, int enemy_count);
+bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemies, int enemy_count);
 
-bool go_enemy4_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data);
+bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data);
 
 
 //-------------------------------------------------------
@@ -58,7 +58,7 @@ bool go_enemy4_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy
 //-------------------------------------------------------
 
 // TODO: null checks for game objects
-game_level_p megamaniac_create_level4(game_p megamaniac) {
+game_level_p megamaniac_create_level6(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_level_p level4 = create_level(14);
@@ -67,7 +67,7 @@ game_level_p megamaniac_create_level4(game_p megamaniac) {
 		return NULL;
 	}
 
-	level4->load = megamaniac_level4_load;
+	level4->load = megamaniac_level6_load;
 	level4->resize = megamaniac_level_default_resize;
 	level4->unload = level_default_unload;
 
@@ -79,17 +79,17 @@ game_level_p megamaniac_create_level4(game_p megamaniac) {
 // Level Loading Methods
 //------------------------------------------------------
 
-void megamaniac_level4_load(game_level_p self, game_p megamaniac) {
+void megamaniac_level6_load(game_level_p self, game_p megamaniac) {
 	assert(NULL != self);
 	assert(NULL != megamaniac);
 
 	int i = 0;
 
-	self->game_objects[i++] = megamaniac_create_go_level_name(megamaniac, LEVEL4_LEVEL_NAME);
+	self->game_objects[i++] = megamaniac_create_go_level_name(megamaniac, LEVEL6_LEVEL_NAME);
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
-	self->game_objects[i++] = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy4_mover_update);
+	self->game_objects[i++] = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy6_mover_update);
 	
-	i += megamaniac_level4_create_enemies(self, megamaniac, i);
+	i += megamaniac_level6_create_enemies(self, megamaniac, i);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
 
@@ -105,13 +105,13 @@ void megamaniac_level4_load(game_level_p self, game_p megamaniac) {
 // Game Object Creation Functions
 //-------------------------------------------------------
 
-int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int offset) {
+int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int offset) {
 	assert(NULL != level);
 	assert(NULL != megamaniac);
 	assert(offset > -1);
 	assert(offset < level->game_object_count);
 
-	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY4, LEVEL4_ENEMY_ROW_COUNT, LEVEL4_ENEMY_ROW_ODD_COUNT, LEVEL4_ENEMY_ROW_EVEN_COUNT, LEVEL4_ENEMY_HORIZONTAL_SPACING, LEVEL4_ENEMY_VERTICAL_SPACING, NULL);
+	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY4, LEVEL6_ENEMY_ROW_COUNT, LEVEL6_ENEMY_ROW_ODD_COUNT, LEVEL6_ENEMY_ROW_EVEN_COUNT, LEVEL6_ENEMY_HORIZONTAL_SPACING, LEVEL6_ENEMY_VERTICAL_SPACING, NULL);
 	int successful_enemy_count = 0;
 	int new_offset = offset + enemy_count;
 
@@ -130,7 +130,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->direction_change_timer = create_timer(LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_UPPER - LEVEL4_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + 1)));
+			go_enemy_data->direction_change_timer = create_timer(LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + (rand() % (LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_UPPER - LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + 1)));
 
 			if (NULL == go_enemy_data->direction_change_timer) {
 				destroy_game_object(go_enemy);
@@ -140,7 +140,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->speed_change_timer = create_timer(LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_SPEED_CHANGE_TIMER_UPPER - LEVEL4_ENEMY_SPEED_CHANGE_TIMER_LOWER + 1)));
+			go_enemy_data->speed_change_timer = create_timer(LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER + (rand() % (LEVEL6_ENEMY_SPEED_CHANGE_TIMER_UPPER - LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER + 1)));
 
 			if (NULL == go_enemy_data->speed_change_timer) {
 				destroy_game_object(go_enemy);
@@ -153,7 +153,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 
 			go_enemy->additional_data = go_enemy_data;
 
-			go_enemy4_find_next_waypoint(go_enemy, megamaniac);
+			go_enemy6_find_next_waypoint(go_enemy, megamaniac);
 
 			successful_enemy_count++;
 		}
@@ -167,7 +167,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 // Game Object Update Methods
 //-------------------------------------------------------
 
-bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
 	assert(NULL != self);
 	assert(NULL != update);
 	assert(NULL != game);
@@ -213,11 +213,11 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 			moved = false;
 
 			if (timer_expired(go_enemy_data->speed_change_timer)) {
-				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * ((LEVEL4_ENEMY_SPEED_MIN + (rand() % (LEVEL4_ENEMY_SPEED_MAX - LEVEL4_ENEMY_SPEED_MIN + 1))) / 10.);
+				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * ((LEVEL6_ENEMY_SPEED_MIN + (rand() % (LEVEL6_ENEMY_SPEED_MAX - LEVEL6_ENEMY_SPEED_MIN + 1))) / 10.);
 			}
 
 			if (timer_expired(go_enemy_data->direction_change_timer)) {
-				go_enemy4_find_next_waypoint(go_enemy, game);
+				go_enemy6_find_next_waypoint(go_enemy, game);
 				moved = true;
 			}
 
@@ -229,15 +229,15 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 				if (moved) {
 					game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 					
-					if (!go_enemy4_is_valid_enemy_position(go_enemy, enemies, enemy_count)) {
+					if (!go_enemy6_is_valid_enemy_position(go_enemy, enemies, enemy_count)) {
 						// invalid, return to previous point and find new direction
 						go_enemy->x = enemy_x;
 						go_enemy->y = enemy_y;
 
-						go_enemy4_find_next_waypoint(go_enemy, game);
+						go_enemy6_find_next_waypoint(go_enemy, game);
 					}
-					else if (go_enemy4_reached_waypoint(go_enemy, go_enemy_data)) {
-						go_enemy4_find_next_waypoint(go_enemy, game);
+					else if (go_enemy6_reached_waypoint(go_enemy, go_enemy_data)) {
+						go_enemy6_find_next_waypoint(go_enemy, game);
 					}
 
 					megamaniac_test_enemy_player_collision(go_enemy, go_player, true, true, game);
@@ -256,7 +256,7 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 // Helper Functions
 //-------------------------------------------------------
 
-void go_enemy4_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
+void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 	assert(NULL != go_enemy);
 	assert(GO_TYPE_ENEMY4 == go_enemy->type);
 	assert(NULL != megamaniac);
@@ -272,12 +272,12 @@ void go_enemy4_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 		new_x = rand() % (megamaniac->screen_width);
 		new_y = rand() % (megamaniac->screen_height - 3);
 	}
-	while (sqrt(pow(new_x - current_x, 2) + pow(new_y - current_y, 2)) < LEVEL4_ENEMY_MIN_DISTANCE);
+	while (sqrt(pow(new_x - current_x, 2) + pow(new_y - current_y, 2)) < LEVEL6_ENEMY_MIN_DISTANCE);
 
 	go_enemy_data->next_x = new_x;
 	go_enemy_data->next_y = new_y;
 	go_enemy_data->angle = atan((new_y - go_enemy->y) / (new_x - go_enemy->x));
-	go_enemy_data->speed = (((rand() % 2) == 0) ? (1) : (-1)) * (LEVEL4_ENEMY_SPEED_MIN + (rand() % (LEVEL4_ENEMY_SPEED_MAX - LEVEL4_ENEMY_SPEED_MIN + 1))) / 10.;
+	go_enemy_data->speed = (((rand() % 2) == 0) ? (1) : (-1)) * (LEVEL6_ENEMY_SPEED_MIN + (rand() % (LEVEL6_ENEMY_SPEED_MAX - LEVEL6_ENEMY_SPEED_MIN + 1))) / 10.;
 	
 	go_enemy->dx = go_enemy_data->speed * cos(go_enemy_data->angle);
 	go_enemy->dy = go_enemy_data->speed * sin(go_enemy_data->angle);
@@ -287,7 +287,7 @@ void go_enemy4_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 	reset_timer(go_enemy_data->speed_change_timer);
 }
 
-bool go_enemy4_is_valid_enemy_position(game_object_p enemy, game_object_p* enemies, int enemy_count) {
+bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemies, int enemy_count) {
 	assert(NULL != enemy);
 	assert(NULL != enemies);
 	assert(enemy_count > 0);
@@ -315,9 +315,9 @@ bool go_enemy4_is_valid_enemy_position(game_object_p enemy, game_object_p* enemi
 	return true;
 }
 
-bool go_enemy4_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data) {
+bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data) {
 	assert(NULL != go_enemy);
 	assert(NULL != go_enemy_data);
 
-	return (sqrt(pow(go_enemy_data->next_x - go_enemy->x, 2) + pow(go_enemy_data->next_y - go_enemy->y, 2)) < LEVEL4_ENEMY_POSITION_EPSLION);
+	return (sqrt(pow(go_enemy_data->next_x - go_enemy->x, 2) + pow(go_enemy_data->next_y - go_enemy->y, 2)) < LEVEL6_ENEMY_POSITION_EPSLION);
 }
