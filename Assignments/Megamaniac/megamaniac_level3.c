@@ -151,7 +151,7 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 
 			game->current_level->game_objects[i]->dy = dcos_amp * dcos + (25. / game->screen_width);
 #else
-			game->current_level->game_objects[i]->dy = 3. / game->screen_width;
+			game->current_level->game_objects[i]->dy = 10. / game->screen_width;
 #endif
 
 			// TODO: formation is lost when wrapping at top or bottom edge
