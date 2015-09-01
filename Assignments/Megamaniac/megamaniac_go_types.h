@@ -25,5 +25,6 @@
 #define GO_TYPE_PAUSE_SCREEN	22
 #define GO_TYPE_TRACE_DRAWER	23
 #define GO_TYPE_TRACE		24
+#define GO_TYPE_ENEMY6		25
 
 #endif

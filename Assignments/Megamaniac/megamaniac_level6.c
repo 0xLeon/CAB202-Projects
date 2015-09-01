@@ -50,7 +50,7 @@ void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac);
 
 bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemies, int enemy_count);
 
-bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data);
+bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy6_p go_enemy_data);
 
 
 //-------------------------------------------------------
@@ -111,17 +111,17 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 	assert(offset > -1);
 	assert(offset < level->game_object_count);
 
-	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY4, LEVEL6_ENEMY_ROW_COUNT, LEVEL6_ENEMY_ROW_ODD_COUNT, LEVEL6_ENEMY_ROW_EVEN_COUNT, LEVEL6_ENEMY_HORIZONTAL_SPACING, LEVEL6_ENEMY_VERTICAL_SPACING, NULL);
+	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY6, LEVEL6_ENEMY_ROW_COUNT, LEVEL6_ENEMY_ROW_ODD_COUNT, LEVEL6_ENEMY_ROW_EVEN_COUNT, LEVEL6_ENEMY_HORIZONTAL_SPACING, LEVEL6_ENEMY_VERTICAL_SPACING, NULL);
 	int successful_enemy_count = 0;
 	int new_offset = offset + enemy_count;
 
 	game_object_p go_enemy = NULL;
-	go_additional_data_enemy4_p go_enemy_data = NULL;
+	go_additional_data_enemy6_p go_enemy_data = NULL;
 
 	for (int i = offset; i < new_offset; ++i) {
-		if ((NULL != level->game_objects[i]) && (GO_TYPE_ENEMY4 == level->game_objects[i]->type)) {
+		if ((NULL != level->game_objects[i]) && (GO_TYPE_ENEMY6 == level->game_objects[i]->type)) {
 			go_enemy = level->game_objects[i];
-			go_enemy_data = malloc(sizeof(go_additional_data_enemy4_t));
+			go_enemy_data = malloc(sizeof(go_additional_data_enemy6_t));
 
 			if (NULL == go_enemy_data) {
 				destroy_game_object(go_enemy);
@@ -201,15 +201,15 @@ bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p gam
 	bool move_timer_expired = timer_expired(self->timer);
 
 	game_object_p go_enemy = NULL;
-	go_additional_data_enemy4_p go_enemy_data = NULL;
+	go_additional_data_enemy6_p go_enemy_data = NULL;
 	bool moved;
 	double enemy_x;
 	double enemy_y;
 
 	for (int i = 0; i < enemy_count; ++i) {
-		if (GO_TYPE_ENEMY4 == enemies[i]->type) {
+		if (GO_TYPE_ENEMY6 == enemies[i]->type) {
 			go_enemy = enemies[i];
-			go_enemy_data = (go_additional_data_enemy4_p) go_enemy->additional_data;
+			go_enemy_data = (go_additional_data_enemy6_p) go_enemy->additional_data;
 			moved = false;
 
 			if (timer_expired(go_enemy_data->speed_change_timer)) {
@@ -258,10 +258,10 @@ bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p gam
 
 void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 	assert(NULL != go_enemy);
-	assert(GO_TYPE_ENEMY4 == go_enemy->type);
+	assert(GO_TYPE_ENEMY6 == go_enemy->type);
 	assert(NULL != megamaniac);
 
-	go_additional_data_enemy4_p go_enemy_data = (go_additional_data_enemy4_p) go_enemy->additional_data;
+	go_additional_data_enemy6_p go_enemy_data = (go_additional_data_enemy6_p) go_enemy->additional_data;
 	double current_x = go_enemy->x;
 	double current_y = go_enemy->y;
 	double new_x;
@@ -315,7 +315,7 @@ bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemi
 	return true;
 }
 
-bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy4_p go_enemy_data) {
+bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy6_p go_enemy_data) {
 	assert(NULL != go_enemy);
 	assert(NULL != go_enemy_data);
 
