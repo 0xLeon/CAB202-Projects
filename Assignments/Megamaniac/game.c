@@ -147,11 +147,14 @@ void start_game_loop(game_p game) {
 
 				game->resize(game, resize_descriptor_ptr);
 
-				for (int i = 0; i < game->level_count; ++i) {
-					if ((NULL != game->levels[i]) && (NULL != game->levels[i]->resize)) {
-						game->levels[i]->resize(game->levels[i], resize_descriptor_ptr, game);
-					}
-				}
+				// TODO: resize inactive levels?
+				// for (int i = 0; i < game->level_count; ++i) {
+				// 	if ((NULL != game->levels[i]) && (NULL != game->levels[i]->resize)) {
+				// 		game->levels[i]->resize(game->levels[i], resize_descriptor_ptr, game);
+				// 	}
+				// }
+
+				game->current_level->resize(game->current_level, resize_descriptor_ptr, game);
 
 				update_game(game);
 
