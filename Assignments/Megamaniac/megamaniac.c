@@ -94,6 +94,7 @@ game_p setup_megamaniac() {
 
 void megamaniac_resize(game_p self, game_resize_descriptor_p resize_descriptor) {
 	assert(NULL != self);
+	assert(NULL != resize_descriptor);
 
 	game_object_descriptor_t go_line_descriptor;
 	game_object_p go_line = find_game_object_by_type(GO_TYPE_LINE, self->game_objects, self->game_object_count, &go_line_descriptor);
