@@ -5,8 +5,8 @@ DIRS=-I../../ZDK04 -L../../ZDK04
 FLAGS=-std=gnu99 -Wall -Werror -D_XOPEN_SOURCE=500
 
 clean:
-	-rm *.exe *.stackdump
-	-rm *.alignments *.asmcons *.barriers *.dfinish *.dfinit *.dwarf2 *.expand *.final *.into_cfglayout *.ira *.jump *.jump2 *.mach *.mode_sw *.nothrow *.outof_cfglayout *.pro_and_epilogue *.reginfo *.reload *.shorten *.split1 *.split2 *.stack *.vregs
+	-@rm *.exe *.stackdump 2>/dev/null
+	-@rm *.alignments *.asmcons *.barriers *.dfinish *.dfinit *.dwarf2 *.expand *.final *.into_cfglayout *.ira *.jump *.jump2 *.mach *.mode_sw *.nothrow *.outof_cfglayout *.pro_and_epilogue *.reginfo *.reload *.shorten *.split1 *.split2 *.stack *.vregs 2>/dev/null
 
 rebuild: clean release
 
