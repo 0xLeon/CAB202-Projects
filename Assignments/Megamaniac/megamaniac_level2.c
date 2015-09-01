@@ -75,7 +75,7 @@ void megamaniac_level2_load(game_level_p self, game_p megamaniac) {
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
 	
 	i += megamaniac_level2_create_go_enemy2_mover(self, megamaniac, i);
-	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY2, LEVEL2_ENEMY_ROW_COUNT, LEVEL2_ENEMY_ROW_ODD_COUNT, LEVEL2_ENEMY_ROW_EVEN_COUNT, LEVEL2_ENEMY_HORIZONTAL_SPACING, LEVEL2_ENEMY_VERTICAL_SPACING, NULL);
+	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY2, LEVEL2_ENEMY_ROW_COUNT, LEVEL2_ENEMY_ROW_ODD_COUNT, LEVEL2_ENEMY_ROW_EVEN_COUNT, LEVEL2_ENEMY_HORIZONTAL_SPACING, LEVEL2_ENEMY_VERTICAL_SPACING, true, NULL);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
 

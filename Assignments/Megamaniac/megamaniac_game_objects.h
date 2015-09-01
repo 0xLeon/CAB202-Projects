@@ -48,7 +48,7 @@ game_object_p megamaniac_create_go_bomb_dropper(game_p megamaniac);
 
 game_object_p megamaniac_create_go_trace_drawer(game_p megamaniac, game_object_p game_object);
 
-int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megamaniac, int offset, int enemy_type, int row_count, int odd_count, int even_count, double horizontal_spacing, double vertical_spacing, game_object_update_f enemy_update_f);
+int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megamaniac, int offset, int enemy_type, int row_count, int odd_count, int even_count, double horizontal_spacing, double vertical_spacing, bool do_round, game_object_update_f enemy_update_f);
 
 
 //-------------------------------------------------------

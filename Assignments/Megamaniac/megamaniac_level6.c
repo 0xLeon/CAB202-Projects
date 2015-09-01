@@ -111,7 +111,7 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 	assert(offset > -1);
 	assert(offset < level->game_object_count);
 
-	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY6, LEVEL6_ENEMY_ROW_COUNT, LEVEL6_ENEMY_ROW_ODD_COUNT, LEVEL6_ENEMY_ROW_EVEN_COUNT, LEVEL6_ENEMY_HORIZONTAL_SPACING, LEVEL6_ENEMY_VERTICAL_SPACING, NULL);
+	int enemy_count = megamaniac_create_standard_enemy_formation(level, megamaniac, offset, GO_TYPE_ENEMY6, LEVEL6_ENEMY_ROW_COUNT, LEVEL6_ENEMY_ROW_ODD_COUNT, LEVEL6_ENEMY_ROW_EVEN_COUNT, LEVEL6_ENEMY_HORIZONTAL_SPACING, LEVEL6_ENEMY_VERTICAL_SPACING, true, NULL);
 	int successful_enemy_count = 0;
 	int new_offset = offset + enemy_count;
 

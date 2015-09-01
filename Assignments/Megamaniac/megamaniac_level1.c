@@ -68,7 +68,7 @@ void megamaniac_level1_load(game_level_p self, game_p megamaniac) {
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
 	self->game_objects[i++] = megamaniac_create_go_enemy_mover(megamaniac, 500L, go_enemy1_mover_update);
 
-	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY1, ENEMY_ROW_COUNT, ENEMY_ROW_ODD_COUNT, ENEMY_ROW_EVEN_COUNT, ENEMY_HORIZONTAL_SPACING, ENEMY_VERTICAL_SPACING, NULL);
+	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY1, ENEMY_ROW_COUNT, ENEMY_ROW_ODD_COUNT, ENEMY_ROW_EVEN_COUNT, ENEMY_HORIZONTAL_SPACING, ENEMY_VERTICAL_SPACING, true, NULL);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
 
