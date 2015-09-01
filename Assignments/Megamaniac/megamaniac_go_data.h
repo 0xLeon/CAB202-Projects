@@ -16,6 +16,11 @@ typedef struct go_additional_data_enemy2_mover {
 } go_additional_data_enemy2_mover_t;
 typedef go_additional_data_enemy2_mover_t* go_additional_data_enemy2_mover_p;
 
+typedef struct go_additional_data_enemy4 {
+	timer_id change_timer;
+} go_additional_data_enemy4_t;
+typedef go_additional_data_enemy4_t* go_additional_data_enemy4_p;
+
 typedef struct go_additional_data_enemy6 {
 	timer_id direction_change_timer;
 	timer_id speed_change_timer;
