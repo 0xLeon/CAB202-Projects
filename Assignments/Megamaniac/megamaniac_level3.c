@@ -134,10 +134,14 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 
 	for (int i = 0; i < game->current_level->game_object_count; i++) {
 		if ((NULL != game->current_level->game_objects[i]) && (game->current_level->game_objects[i]->type == GO_TYPE_ENEMY3)) {
+#ifdef LEVEL3_HARMONIC
 			double dcos = (-1. * cos(1.1875 * go_enemy_mover_data->theta * M_PI / 180.) + 1.) - (-1. * cos(1.1875 * (go_enemy_mover_data->theta - go_enemy_mover_data->dtheta) * M_PI / 180.) + 1.);
 			double dcos_amp = round(game->screen_height / 8.);
 
 			game->current_level->game_objects[i]->dy = dcos_amp * dcos + (25. / game->screen_width);
+#else
+			game->current_level->game_objects[i]->dy = 3. / game->screen_width;
+#endif
 
 			// TODO: formation is lost when wrapping at top or bottom edge
 			didMove = megamaniac_move_enemy(game->current_level->game_objects[i], game) || didMove;
