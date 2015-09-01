@@ -40,6 +40,10 @@ int megamaniac_level3_create_go_enemy3_mover(game_level_p self, game_p megamania
 bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
 
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+
+
 //-------------------------------------------------------
 // Level Creation Functions
 //-------------------------------------------------------

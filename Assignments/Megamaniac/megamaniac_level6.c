@@ -61,6 +61,10 @@ bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemi
 bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy6_p go_enemy_data);
 
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+
+
 //-------------------------------------------------------
 // Level Creation Functions
 //-------------------------------------------------------
