@@ -28,7 +28,9 @@ void megamaniac_level3_load(game_level_p self, game_p megamaniac);
 // Game Object Creation Functions Forward Declarations
 //-------------------------------------------------------
 
+#ifdef LEVEL3_HARMONIC
 int megamaniac_level3_create_go_enemy3_mover(game_level_p self, game_p megamaniac, int offset);
+#endif
 
 
 //-------------------------------------------------------
@@ -73,7 +75,12 @@ void megamaniac_level3_load(game_level_p self, game_p megamaniac) {
 	self->game_objects[i++] = megamaniac_create_go_level_name(megamaniac, LEVEL3_LEVEL_NAME);
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
 	
+#ifdef LEVEL3_HARMONIC
 	i += megamaniac_level3_create_go_enemy3_mover(self, megamaniac, i);
+#else
+	self->game_objects[i++] = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy3_mover_update);
+#endif
+
 	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY3, LEVEL3_ENEMY_ROW_COUNT, LEVEL3_ENEMY_ROW_ODD_COUNT, LEVEL3_ENEMY_ROW_EVEN_COUNT, LEVEL3_ENEMY_HORIZONTAL_SPACING, LEVEL3_ENEMY_VERTICAL_SPACING, true, NULL);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
@@ -86,6 +93,7 @@ void megamaniac_level3_load(game_level_p self, game_p megamaniac) {
 // Game Object Creation Functions
 //-------------------------------------------------------
 
+#ifdef LEVEL3_HARMONIC
 int megamaniac_level3_create_go_enemy3_mover(game_level_p self, game_p megamaniac, int offset) {
 	assert(NULL != self);
 	assert(NULL != megamaniac);
@@ -113,6 +121,7 @@ int megamaniac_level3_create_go_enemy3_mover(game_level_p self, game_p megamania
 
 	return 1;
 }
+#endif
 
 
 //-------------------------------------------------------
@@ -129,8 +138,10 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 	}
 
 	bool didMove = false;
-	go_additional_data_enemy2_mover_p go_enemy_mover_data = (go_additional_data_enemy2_mover_p) self->additional_data;
 
+#ifdef LEVEL3_HARMONIC
+	go_additional_data_enemy2_mover_p go_enemy_mover_data = (go_additional_data_enemy2_mover_p) self->additional_data;
+#endif
 
 	for (int i = 0; i < game->current_level->game_object_count; i++) {
 		if ((NULL != game->current_level->game_objects[i]) && (game->current_level->game_objects[i]->type == GO_TYPE_ENEMY3)) {
@@ -149,14 +160,18 @@ bool go_enemy3_mover_update(game_object_p self, game_update_p update, game_p gam
 			game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			
 			if (megamaniac_test_enemy_player_collision(game->current_level->game_objects[i], go_player, true, true, game)) {
+#ifdef LEVEL3_HARMONIC
 				go_enemy_mover_data->theta += go_enemy_mover_data->dtheta;
+#endif
 
 				return true;
 			}
 		}
 	}
 
+#ifdef LEVEL3_HARMONIC
 	go_enemy_mover_data->theta += go_enemy_mover_data->dtheta;
+#endif
 
 	return didMove;
 }
