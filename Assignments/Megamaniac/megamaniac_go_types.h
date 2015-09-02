@@ -26,5 +26,6 @@
 #define GO_TYPE_TRACE_DRAWER	23
 #define GO_TYPE_TRACE		24
 #define GO_TYPE_ENEMY6		25
+#define GO_TYPE_ENEMY_MOVER_R	26
 
 #endif

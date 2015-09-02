@@ -21,6 +21,9 @@
 #define LEVEL4_ENEMY_SPEED_CHANGE_UPPER		3000
 #define LEVEL4_ENEMY_X_MIN_SPEED		5
 #define LEVEL4_ENEMY_X_MAX_SPEED		14
+#define LEVEL4_ENEMY_RETURN_TIMER_LOWER		8000
+#define LEVEL4_ENEMY_RETURN_TIMER_UPPER		10000
+#define LEVEL4_ENEMY_POSITION_EPSLION		.5
 
 
 //-------------------------------------------------------
@@ -34,6 +37,8 @@ void megamaniac_level4_load(game_level_p self, game_p megamaniac);
 // Game Object Creation Forward Declarations
 //-------------------------------------------------------
 
+int megamaniac_level4_create_go_enemy_return_mover(game_level_p level, game_p megamaniac, int offset);
+
 int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int offset);
 
 
@@ -42,6 +47,8 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 //-------------------------------------------------------
 
 bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
+
+bool go_enemy4_return_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
 
 void go_enemy4_destroy(game_object_p self, game_p game, game_level_p level);
 
@@ -67,7 +74,7 @@ bool go_enemy4_is_valid_enemy_position(game_object_p enemy, game_object_p* enemi
 game_level_p megamaniac_create_level4(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_level_p level4 = create_level(14);
+	game_level_p level4 = create_level(15);
 
 	if (NULL == level4) {
 		return NULL;
@@ -95,6 +102,7 @@ void megamaniac_level4_load(game_level_p self, game_p megamaniac) {
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
 	self->game_objects[i++] = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy4_mover_update);
 	
+	// i += megamaniac_level4_create_go_enemy_return_mover(self, megamaniac, i);
 	i += megamaniac_level4_create_enemies(self, megamaniac, i);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
@@ -106,6 +114,22 @@ void megamaniac_level4_load(game_level_p self, game_p megamaniac) {
 //-------------------------------------------------------
 // Game Object Creation Functions
 //-------------------------------------------------------
+
+int megamaniac_level4_create_go_enemy_return_mover(game_level_p level, game_p megamaniac, int offset) {
+	assert(NULL != level);
+	assert(NULL != megamaniac);
+	assert(offset > -1);
+	assert(offset < level->game_object_count);
+
+	int interval = LEVEL4_ENEMY_RETURN_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_RETURN_TIMER_UPPER - LEVEL4_ENEMY_RETURN_TIMER_LOWER + 1));
+	game_object_p go_enemy_return_mover = megamaniac_create_go_enemy_mover(megamaniac, interval, go_enemy4_return_mover_update);
+	
+	go_enemy_return_mover->type = GO_TYPE_ENEMY_MOVER_R;
+
+	level->game_objects[offset++] = go_enemy_return_mover;
+
+	return 1;
+}
 
 int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int offset) {
 	assert(NULL != level);
@@ -133,6 +157,7 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 			}
 
 			go_enemy_data->change_timer = create_timer(LEVEL4_ENEMY_SPEED_CHANGE_LOWER + (rand() % (LEVEL4_ENEMY_SPEED_CHANGE_UPPER - LEVEL4_ENEMY_SPEED_CHANGE_LOWER + 1)));
+			go_enemy_data->original_x = go_enemy->x;
 
 			go_enemy->dx = ((((rand() % 2) == 0) ? (1) : (-1)) * (LEVEL4_ENEMY_X_MIN_SPEED + (rand() % (LEVEL4_ENEMY_X_MAX_SPEED - LEVEL4_ENEMY_X_MIN_SPEED + 1)))) / 10.;
 			go_enemy->additional_data = go_enemy_data;
@@ -222,6 +247,138 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 
 			}
 		}
+	}
+
+	return did_update;
+}
+
+bool go_enemy4_return_mover_update(game_object_p self, game_update_p update, game_p game, game_level_p level) {
+	assert(NULL != self);
+	assert(NULL != update);
+	assert(NULL != level);
+	
+	bool timer_did_expire = timer_expired(self->timer);
+	bool returning = (300L == self->timer->milliseconds);
+	bool did_update = false;
+
+	if (timer_did_expire) {
+		int enemy_count = 0;
+		int enemy4_count = 0;
+		int returned_enemy_count = 0;
+
+		int buffer_size = 10;
+		game_object_p* enemies = malloc(buffer_size * sizeof(game_object_p));
+
+		go_additional_data_enemy4_p go_enemy_data = NULL;
+
+		for (int i = 0, offset = 0; i < game->current_level->game_object_count; ++i) {
+			if ((NULL != game->current_level->game_objects[i]) && !(game->current_level->game_objects[i]->recycle) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
+				enemy_count++;
+
+				if (enemy_count >= buffer_size) {
+					buffer_size += 1;
+
+					game_object_p* new_go_enemies = realloc(enemies, buffer_size * sizeof(game_object_p));
+
+					if (NULL == new_go_enemies) {
+						continue;
+					}
+
+					enemies = new_go_enemies;
+				}
+
+				enemies[offset++] = game->current_level->game_objects[i];
+			}
+		}
+		
+		if (!returning) {
+			// was not returning but timer expired
+			//   --> start returning
+
+			game_object_p go_enemy_mover = find_game_object_by_type(GO_TYPE_ENEMY_MOVER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+
+			go_enemy_mover->active = false;
+
+			for (int i = 0; i < enemy_count; ++i) {
+				if (GO_TYPE_ENEMY4 == enemies[i]->type) {
+					go_enemy_data = (go_additional_data_enemy4_p) enemies[i]->additional_data;
+
+					enemies[i]->dx = GAME_ABSOLUTE(enemies[i]->dx) * GAME_SIGNUM(go_enemy_data->original_x - enemies[i]->x);
+				}
+			}
+
+			self->timer->milliseconds = 300L;
+			reset_timer(self->timer);
+		}
+		else if (returning) {
+			// timer did expire and is returning
+			//   --> in returning mode, keep going
+
+			double enemy_x = 0;
+			bool moved = false;
+
+			for (int i = 0; i < enemy_count; ++i) {
+				if (GO_TYPE_ENEMY4 == enemies[i]->type) {
+					enemy4_count++;
+
+					go_enemy_data = (go_additional_data_enemy4_p) enemies[i]->additional_data;
+
+					if (go_enemy_data->did_return) {
+						returned_enemy_count++;
+					}
+					//else {
+						enemy_x = enemies[i]->x;
+						moved = megamaniac_move_enemy(enemies[i], game);
+
+						if (moved) {
+							if (go_enemy4_is_valid_enemy_position(enemies[i], enemies, enemy_count)) {
+								enemies[i]->x = enemy_x;
+								moved = false;
+							}
+							
+							if (moved) {
+								go_enemy_data->did_return = (GAME_ABSOLUTE(enemies[i]->x - go_enemy_data->original_x) < LEVEL4_ENEMY_POSITION_EPSLION);
+
+								if (go_enemy_data->did_return) {
+									returned_enemy_count++;
+
+									enemies[i]->x = go_enemy_data->original_x;
+									enemies[i]->dx = 0.;
+								}
+							}
+
+							did_update = moved || did_update;
+						}
+					//}
+				}
+			}
+
+			if (enemy4_count == returned_enemy_count) {
+				// all active enemy4s have returned
+				//   --> leave return mode and go back to spread mode
+				
+				game_object_p go_enemy_mover = find_game_object_by_type(GO_TYPE_ENEMY_MOVER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
+
+				for (int i = 0; i < enemy_count; ++i) {
+					if (GO_TYPE_ENEMY4 == enemies[i]->type) {
+						go_enemy_data = (go_additional_data_enemy4_p) enemies[i]->additional_data;
+
+						enemies[i]->dx = (0 == (rand() % 2)) ? (-1) : (1);
+						go_enemy_data->did_return = false;
+
+						go_enemy4_change_speed(enemies[i], go_enemy_data);
+					}
+				}
+				
+				go_enemy_mover->active = true;
+				self->timer->milliseconds = LEVEL4_ENEMY_RETURN_TIMER_LOWER + (rand() % (LEVEL4_ENEMY_RETURN_TIMER_UPPER - LEVEL4_ENEMY_RETURN_TIMER_LOWER + 1));
+
+				reset_timer(self->timer);
+				reset_timer(go_enemy_mover->timer);
+			}
+		}
+
+		free(enemies);
 	}
 
 	return did_update;
