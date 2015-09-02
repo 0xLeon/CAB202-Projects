@@ -25,6 +25,8 @@ typedef struct go_additional_data_enemy6 {
 	timer_id direction_change_timer;
 	timer_id speed_change_timer;
 
+	double previous_x;
+	double previous_y;
 	double next_x;
 	double next_y;
 	double angle;

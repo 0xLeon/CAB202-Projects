@@ -60,6 +60,8 @@ bool go_enemy6_is_valid_enemy_position(game_object_p enemy, game_object_p* enemi
 
 bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy6_p go_enemy_data);
 
+double go_enemy6_get_travelled_distance(go_additional_data_enemy6_p go_enemy_data);
+
 
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
@@ -229,7 +231,7 @@ bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p gam
 				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * ((LEVEL6_ENEMY_SPEED_MIN + (rand() % (LEVEL6_ENEMY_SPEED_MAX - LEVEL6_ENEMY_SPEED_MIN + 1))) / 10.);
 			}
 
-			if (timer_expired(go_enemy_data->direction_change_timer)) {
+			if (timer_expired(go_enemy_data->direction_change_timer) && (go_enemy6_get_travelled_distance(go_enemy_data) >= LEVEL6_ENEMY_MIN_DISTANCE)) {
 				go_enemy6_find_next_waypoint(go_enemy, game);
 				moved = true;
 			}
@@ -302,6 +304,8 @@ void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 	}
 	while (sqrt(pow(new_x - current_x, 2) + pow(new_y - current_y, 2)) < LEVEL6_ENEMY_MIN_DISTANCE);
 
+	go_enemy_data->previous_x = current_x;
+	go_enemy_data->previous_y = current_x;
 	go_enemy_data->next_x = new_x;
 	go_enemy_data->next_y = new_y;
 	go_enemy_data->angle = atan((new_y - go_enemy->y) / (new_x - go_enemy->x));
@@ -348,4 +352,10 @@ bool go_enemy6_reached_waypoint(game_object_p go_enemy, go_additional_data_enemy
 	assert(NULL != go_enemy_data);
 
 	return (sqrt(pow(go_enemy_data->next_x - go_enemy->x, 2) + pow(go_enemy_data->next_y - go_enemy->y, 2)) < LEVEL6_ENEMY_POSITION_EPSLION);
+}
+
+double go_enemy6_get_travelled_distance(go_additional_data_enemy6_p go_enemy_data) {
+	assert(NULL != go_enemy_data);
+
+	return sqrt(pow(go_enemy_data->next_x - go_enemy_data->previous_x, 2) + pow(go_enemy_data->next_y - go_enemy_data->previous_y, 2));
 }
