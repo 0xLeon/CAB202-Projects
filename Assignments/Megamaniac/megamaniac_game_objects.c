@@ -718,10 +718,15 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 	for (int i = 0, c = 0; i < game->current_level->game_object_count; i++) {
 		if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
 			if (c == enemy_index) {
-				// TODO: error checks
-				level_add_game_object(game->current_level, megamaniac_create_go_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1)));
+				game_object_p go_bomb = megamaniac_create_go_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1));
+				
+				if ((NULL != go_bomb) && (go_bomb->y < (game->screen_height - 3))) {
+					level_add_game_object(game->current_level, go_bomb);
 
-				return true;
+					return true;
+				}
+				
+				return false;
 			}
 			else {
 				c++;
