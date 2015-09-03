@@ -107,7 +107,7 @@ void megamaniac_level6_load(game_level_p self, game_p megamaniac) {
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
 
-#if defined(GAME_DEBUG) || defined(ENABLE_TRACER)
+#ifdef ENABLE_TRACER
 	level_add_game_object(self, megamaniac_create_go_trace_drawer(megamaniac, self->game_objects[i - 2]));
 #endif
 
