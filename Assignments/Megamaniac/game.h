@@ -19,6 +19,8 @@
 
 #define GAME_SIGNUM(x)		(((x) > 0) - ((x) < 0))
 #define GAME_ABSOLUTE(x)	((x) * GAME_SIGNUM((x)))
+#define GAME_MAX(a, b)		(((a) > (b)) ? (a) : (b))
+#define GAME_MIN(a, b)		(((a) < (b)) ? (a) : (b))
 
 //-------------------------------------------
 // Type Definitions
