@@ -589,13 +589,13 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 					game->current_level->game_objects[i]->recycle = true;
 					enemy_counter--;
 
-					// TODO: error checking
-					game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
-					go_additional_data_comparable_int_p go_score_data = (go_additional_data_comparable_int_p) go_score->additional_data;
-
 					// destroy bullet
 					self->active = false;
 					self->recycle = true;
+
+					// TODO: error checking
+					game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
+					go_additional_data_comparable_int_p go_score_data = (go_additional_data_comparable_int_p) go_score->additional_data;
 
 					go_score_data->current_value += POINTS_PER_ENEMY;
 
