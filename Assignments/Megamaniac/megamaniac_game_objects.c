@@ -578,14 +578,6 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 	bool did_update = move_game_object(self);
 
 	if (did_update) {
-		if ((self->y < 0.) || (self->y > game->screen_height - 3) || (self->x < 0) || (self->x >= game->screen_width)) {
-			// destroy bullet
-			self->active = false;
-			self->recycle = true;
-
-			return true;
-		}
-
 		int enemy_counter = 0;
 		for (int i = 0; i < game->current_level->game_object_count; i++) {
 			if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
@@ -633,6 +625,16 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 					did_update = true;
 					break;
 				}
+			}
+		}
+
+		if (did_update && self->active) {
+			if ((self->y < 0.) || (self->y > game->screen_height - 3) || (self->x < 0) || (self->x >= game->screen_width)) {
+				// destroy bullet
+				self->active = false;
+				self->recycle = true;
+
+				return true;
 			}
 		}
 	}
