@@ -11,7 +11,7 @@
 #include "megamaniac_game_objects.h"
 #include "megamaniac_level6.h"
 
-#define LEVEL6_LEVEL_NAME			"Level 6 - Drunken"
+#define LEVEL6_LEVEL_NAME			"Level 6 - Crazy"
 #define LEVEL6_ENEMY_ROW_COUNT			3
 #define LEVEL6_ENEMY_ROW_ODD_COUNT		3
 #define LEVEL6_ENEMY_ROW_EVEN_COUNT		4
