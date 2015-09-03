@@ -15,6 +15,7 @@
 #include "megamaniac_level2.h"
 #include "megamaniac_level3.h"
 #include "megamaniac_level4.h"
+#include "megamaniac_level5.h"
 #include "megamaniac_level6.h"
 
 #define MEGAMANIAC_CREDITS	"Stefan Hahn (n9529977)"
@@ -59,7 +60,7 @@ void start_megamaniac() {
 }
 
 game_p setup_megamaniac() {
-	game_p megamaniac = create_game(10., 9, 5);
+	game_p megamaniac = create_game(10., 9, 6);
 	int i = 0;
 
 	if (NULL == megamaniac) {
@@ -83,6 +84,7 @@ game_p setup_megamaniac() {
 	megamaniac->levels[i++] = megamaniac_create_level2(megamaniac);
 	megamaniac->levels[i++] = megamaniac_create_level3(megamaniac);
 	megamaniac->levels[i++] = megamaniac_create_level4(megamaniac);
+	megamaniac->levels[i++] = megamaniac_create_level5(megamaniac);
 	megamaniac->levels[i++] = megamaniac_create_level6(megamaniac);
 
 	megamaniac->current_level = megamaniac->levels[0];

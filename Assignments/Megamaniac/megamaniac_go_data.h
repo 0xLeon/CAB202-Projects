@@ -24,6 +24,16 @@ typedef struct go_additional_data_enemy4 {
 } go_additional_data_enemy4_t;
 typedef go_additional_data_enemy4_t* go_additional_data_enemy4_p;
 
+typedef struct go_additional_data_enemy_indep_controller {
+	game_object_p enemy;
+	bool left_lane;
+	bool reached_group_limit;
+
+	double target_x;
+	double target_y;
+} go_additional_data_enemy_indep_controller_t;
+typedef go_additional_data_enemy_indep_controller_t* go_additional_data_enemy_indep_controller_p;
+
 typedef struct go_additional_data_enemy6 {
 	timer_id direction_change_timer;
 	timer_id speed_change_timer;
