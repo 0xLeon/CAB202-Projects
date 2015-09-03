@@ -343,7 +343,14 @@ bool go_bullet_controller_update(game_object_p self, game_update_p update, game_
 	assert(NULL != update);
 	assert(NULL != game);
 
-	if (('y' == update->key) || ('z' == update->key) || ('c' == update->key)) {
+#ifdef GAME_DEBUG
+	// enable 'y' key as alternative for 'z' in debug mode, because 'Deutsche Tastatur'!
+	bool bullet_control_pressed = ('y' == update->key) || ('z' == update->key) || ('c' == update->key);
+#else
+	bool bullet_control_pressed = ('z' == update->key) || ('c' == update->key);
+#endif
+
+	if (bullet_control_pressed) {
 		game_object_p go_top_bullet = NULL;
 
 #ifdef GAME_DEBUG
