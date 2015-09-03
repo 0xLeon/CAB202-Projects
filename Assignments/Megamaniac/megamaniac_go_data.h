@@ -41,7 +41,8 @@ typedef struct go_additional_data_enemy_indep_controller {
 	double control_y;
 	double target_x;
 	double target_y;
-	double t;
+	
+	int t;
 } go_additional_data_enemy_indep_controller_t;
 typedef go_additional_data_enemy_indep_controller_t* go_additional_data_enemy_indep_controller_p;
 

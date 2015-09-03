@@ -56,6 +56,20 @@ bool go_enemy_indep_choser_update(game_object_p self, game_update_p update, game
 
 bool go_bullet_controller_update(game_object_p self, game_update_p update, game_p game, game_level_p level);
 
+
+//-------------------------------------------------------
+// Helper Functions Forward Declarations
+//-------------------------------------------------------
+
+void go_enemy_indep_controller_reset_data(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_object_p go_enemy);
+
+void go_enemy_indep_controller_calc_curve(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game);
+
+bool go_enemy_indep_controller_did_player_move(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data);
+
+bool go_enemy_indep_controller_move_enemy(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game);
+
+
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 
@@ -130,11 +144,8 @@ game_object_p megamaniac_level5_create_go_enemy_indep_controller(game_p megamani
 		return NULL;
 	}
 
-	go_enemy_indep_controller_data->enemy = NULL;
-	go_enemy_indep_controller_data->left_lane = false;
-	go_enemy_indep_controller_data->reached_group_limit = false;
-	go_enemy_indep_controller_data->target_x = 0.;
-	go_enemy_indep_controller_data->target_y = 0.;
+	go_enemy_indep_controller_data->player = find_game_object_by_type(GO_TYPE_PLAYER, megamaniac->current_level->game_objects, megamaniac->current_level->game_object_count, NULL);
+	go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
 
 	go_enemy_indep_controller->additional_data = go_enemy_indep_controller_data;
 	go_enemy_indep_controller->active = false;
@@ -199,7 +210,6 @@ bool go_enemy_indep_choser_update(game_object_p self, game_update_p update, game
 	if ((NULL != go_enemy_indep_controller_data->enemy) && go_enemy_indep_controller_data->enemy->active) {
 		// active independent enemy
 		// choser deactivates
-
 		self->active = false;
 
 		return false;
@@ -229,14 +239,9 @@ bool go_enemy_indep_choser_update(game_object_p self, game_update_p update, game
 		}
 	}
 
-	go_enemy_indep_controller_data->enemy = enemies[rand() % enemy_count];
+	go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, enemies[rand() % enemy_count]);
+	go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
 	go_enemy_indep_controller_data->enemy->type = GO_TYPE_ENEMY5_INDEP;
-	go_enemy_indep_controller_data->left_lane = false;
-	go_enemy_indep_controller_data->reached_group_limit = false;
-
-	// TODO: correct target
-	go_enemy_indep_controller_data->target_x = 0.;
-	go_enemy_indep_controller_data->target_y = 0.;
 
 	self->active = false;
 	go_enemy_indep_controller->active = true;
@@ -260,14 +265,9 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 	// running, but no enemy set
 	// reset data, activate choser, decativate controller
 	if ((NULL == go_enemy_indep_controller_data->enemy) || !(go_enemy_indep_controller_data->enemy->active)) {
-		game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
-		
-		go_enemy_indep_controller_data->enemy = NULL;
-		go_enemy_indep_controller_data->left_lane = false;
-		go_enemy_indep_controller_data->reached_group_limit = false;
-		go_enemy_indep_controller_data->target_x = 0.;
-		go_enemy_indep_controller_data->target_y = 0.;
+		go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
 
+		game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 		go_enemy_indep_choser->active = true;
 		go_enemy_indep_choser->timer->milliseconds = LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + (rand() % (LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX - LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + 1));
 		reset_timer(go_enemy_indep_choser->timer);
@@ -277,7 +277,9 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 		return false;
 	}
 
+	// running, enemy set, group limit not reached
 	if (!(go_enemy_indep_controller_data->reached_group_limit)) {
+		// running, enemy set, group limit not reached, lane not left
 		if (!(go_enemy_indep_controller_data->left_lane)) {
 			go_enemy_indep_controller_data->enemy->y += 1;
 			go_enemy_indep_controller_data->left_lane = true;
@@ -285,32 +287,46 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 			did_update = true;
 		}
 		else {
-			go_enemy_indep_controller_data->enemy->dx = 1.5;
+			// continue reaching group limit
+			go_enemy_indep_controller_data->enemy->dx = -1.;
 			go_enemy_indep_controller_data->enemy->dy = 0.;
 
 			did_update = megamaniac_move_enemy(go_enemy_indep_controller_data->enemy, game);
 
-			// check if reached group limit
-			bool reached_group_limit = true;
+			if (did_update) {
+				// check if reached group limit
+				bool reached_group_limit = true;
 
-			for (int i = 0; i < game->current_level->game_object_count; ++i) {
-				if ((NULL != game->current_level->game_objects[i]) && !(game->current_level->game_objects[i]->recycle) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
-					if (game->current_level->game_objects[i]->x >= (go_enemy_indep_controller_data->enemy->x + 3)) {
-						reached_group_limit = false;
-						break;
+				for (int i = 0; i < game->current_level->game_object_count; ++i) {
+					if ((NULL != game->current_level->game_objects[i]) && !(game->current_level->game_objects[i]->recycle) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
+						if (game->current_level->game_objects[i]->x >= (go_enemy_indep_controller_data->enemy->x + 3)) {
+							reached_group_limit = false;
+							break;
+						}
 					}
 				}
-			}
 
-			go_enemy_indep_controller_data->reached_group_limit = reached_group_limit;
+				go_enemy_indep_controller_data->reached_group_limit = reached_group_limit;
+
+				if (reached_group_limit) {
+					// start bezier movement
+					go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
+				}
+			}
 		}
 	}
 	else {
-		// TODO: parabolic movement, not straight down
-		go_enemy_indep_controller_data->enemy->dx = 0.;
-		go_enemy_indep_controller_data->enemy->dy = 1.;
+		// running, enemy set, group limit reached, do bezier movement
+		// first, check if player moved
+		// if so, generate new bezier to new player location
+		if (go_enemy_indep_controller_did_player_move(go_enemy_indep_controller_data)) {
+			go_enemy_indep_controller_data->player_previous_x = go_enemy_indep_controller_data->player->x;
+			go_enemy_indep_controller_data->player_previous_y = go_enemy_indep_controller_data->player->y;
 
-		did_update = megamaniac_move_enemy(go_enemy_indep_controller_data->enemy, game);
+			go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
+		}
+
+		did_update = go_enemy_indep_controller_move_enemy(go_enemy_indep_controller_data, game);
 	}
 
 	if (did_update) {
@@ -318,11 +334,7 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 		game_object_p go_player = find_game_object_by_type(GO_TYPE_PLAYER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 
 		if (megamaniac_test_enemy_player_collision(go_enemy_indep_controller_data->enemy, go_player, false, true, game)) {
-			go_enemy_indep_controller_data->enemy = NULL;
-			go_enemy_indep_controller_data->left_lane = false;
-			go_enemy_indep_controller_data->reached_group_limit = false;
-			go_enemy_indep_controller_data->target_x = 0.;
-			go_enemy_indep_controller_data->target_y = 0.;
+			go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
 
 			game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			go_enemy_indep_choser->active = true;
@@ -330,7 +342,7 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 			reset_timer(go_enemy_indep_choser->timer);
 
 			self->active = false;
-			
+
 			did_update = true;
 		}
 	}
@@ -401,3 +413,123 @@ bool go_bullet_controller_update(game_object_p self, game_update_p update, game_
 	return false;
 }
 
+
+//-------------------------------------------------------
+// Helper Functions
+//-------------------------------------------------------
+
+void go_enemy_indep_controller_reset_data(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_object_p go_enemy) {
+	assert(NULL != go_enemy_indep_controller_data);
+	assert((NULL == go_enemy) || (GO_TYPE_ENEMY5 == go_enemy->type));
+
+	if (NULL != go_enemy) {
+		go_enemy_indep_controller_data->enemy = go_enemy;
+	}
+
+	go_enemy_indep_controller_data->left_lane = false;
+	go_enemy_indep_controller_data->reached_group_limit = false;
+
+	go_enemy_indep_controller_data->player_previous_x = go_enemy_indep_controller_data->player->x;
+	go_enemy_indep_controller_data->player_previous_y = go_enemy_indep_controller_data->player->y;
+
+	go_enemy_indep_controller_data->start_x = 0.;
+	go_enemy_indep_controller_data->start_y = 0.;
+	go_enemy_indep_controller_data->control_x = 0.;
+	go_enemy_indep_controller_data->control_y = 0.;
+	go_enemy_indep_controller_data->target_x = go_enemy_indep_controller_data->player->x;
+	go_enemy_indep_controller_data->target_y = go_enemy_indep_controller_data->player->y;
+	go_enemy_indep_controller_data->t = 0;
+}
+
+void go_enemy_indep_controller_calc_curve(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game) {
+	assert(NULL != go_enemy_indep_controller_data);
+	assert(NULL != game);
+	
+	int start_x_100 = (int) round(go_enemy_indep_controller_data->enemy->x * 100);
+	int start_y_100 = (int) round(go_enemy_indep_controller_data->enemy->y * 100);
+
+	// int target_x_100 = (int) round(go_enemy_indep_controller_data->player->x * 100);
+	int target_y_100 = (int) round(go_enemy_indep_controller_data->player->y * 100);
+
+	double control_x = 0;
+	double control_y = 0;
+
+	char bias = rand() % 2;
+	
+	if (0 == bias) {
+		// TODO: doesn't scale on resize
+		control_x = (rand() % (GAME_MAX((start_x_100 - 3000), 100))) / 100.;
+	}
+	else {
+		// TODO: doesn't scale on resize
+		control_x = (GAME_MIN((start_x_100 + 3000), game->screen_width) + (rand() % ((game->screen_width * 100) - start_x_100))) / 100.;
+	}
+
+	control_y = (start_y_100 + (rand() % (GAME_MAX((target_y_100 - start_y_100 + 100), 0)))) / 100.;
+
+	go_enemy_indep_controller_data->start_x = go_enemy_indep_controller_data->enemy->x;
+	go_enemy_indep_controller_data->start_y = go_enemy_indep_controller_data->enemy->y;
+
+	go_enemy_indep_controller_data->target_x = go_enemy_indep_controller_data->player->x;
+	go_enemy_indep_controller_data->target_y = go_enemy_indep_controller_data->player->y;
+
+	go_enemy_indep_controller_data->control_x = control_x;
+	go_enemy_indep_controller_data->control_y = control_y;
+
+	go_enemy_indep_controller_data->t = 0;
+}
+
+bool go_enemy_indep_controller_did_player_move(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data) {
+	assert(NULL != go_enemy_indep_controller_data);
+	
+	return  (go_enemy_indep_controller_data->player->x != go_enemy_indep_controller_data->target_x) ||
+		(go_enemy_indep_controller_data->player->y != go_enemy_indep_controller_data->target_y);
+}
+
+bool go_enemy_indep_controller_move_enemy(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game) {
+	assert(NULL != go_enemy_indep_controller_data);
+	assert(NULL != go_enemy_indep_controller_data->enemy);
+
+	bool did_move = false;
+
+	if (go_enemy_indep_controller_data->t >= 100) {
+		// target reached but still active
+		// calc new target
+		go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
+	}
+
+	double current_x = go_enemy_indep_controller_data->enemy->x;
+	double current_y = go_enemy_indep_controller_data->enemy->y;
+
+	int current_screen_x = (int) round(current_x);
+	int current_screen_y = (int) round(current_y);
+
+	double t = go_enemy_indep_controller_data->t / 100.;
+	double t_sqr = pow(t, 2);
+
+	double p0_x = go_enemy_indep_controller_data->start_x;
+	double p0_y = go_enemy_indep_controller_data->start_y;
+	double p1_x = go_enemy_indep_controller_data->control_x;
+	double p1_y = go_enemy_indep_controller_data->control_y;
+	double p2_x = go_enemy_indep_controller_data->target_x;
+	double p2_y = go_enemy_indep_controller_data->target_y;
+
+	double new_x = (p0_x - 2 * p1_x + p2_x) * t_sqr + (-2 * p0_x + 2 * p1_x) * t + p0_x;
+	double new_y = (p0_y - 2 * p1_y + p2_y) * t_sqr + (-2 * p0_y + 2 * p1_y) * t + p0_y;
+
+	int new_screen_x = (int) round(new_x);
+	int new_screen_y = (int) round(new_y);
+
+	go_enemy_indep_controller_data->enemy->x = new_x;
+	go_enemy_indep_controller_data->enemy->y = new_y;
+
+	go_enemy_indep_controller_data->t += 2;
+
+	did_move = (new_screen_x != current_screen_x) || (new_screen_y != current_screen_y);
+
+	if (did_move) {
+		megamaniac_test_enemy_player_collision(go_enemy_indep_controller_data->enemy, go_enemy_indep_controller_data->player, false, true, game);
+	}
+
+	return did_move;
+}
