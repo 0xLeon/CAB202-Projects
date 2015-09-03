@@ -785,6 +785,7 @@ bool megamaniac_type_is_enemy(int game_object_type) {
 		case GO_TYPE_ENEMY3:
 		case GO_TYPE_ENEMY4:
 		case GO_TYPE_ENEMY5:
+		case GO_TYPE_ENEMY5_INDEP:
 		case GO_TYPE_ENEMY6:
 			return true;
 		default:
