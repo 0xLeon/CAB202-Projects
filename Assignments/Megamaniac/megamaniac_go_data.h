@@ -25,12 +25,23 @@ typedef struct go_additional_data_enemy4 {
 typedef go_additional_data_enemy4_t* go_additional_data_enemy4_p;
 
 typedef struct go_additional_data_enemy_indep_controller {
+	game_object_p player;
+
 	game_object_p enemy;
+
 	bool left_lane;
 	bool reached_group_limit;
 
+	double player_previous_x;
+	double player_previous_y;
+
+	double start_x;
+	double start_y;
+	double control_x;
+	double control_y;
 	double target_x;
 	double target_y;
+	double t;
 } go_additional_data_enemy_indep_controller_t;
 typedef go_additional_data_enemy_indep_controller_t* go_additional_data_enemy_indep_controller_p;
 
