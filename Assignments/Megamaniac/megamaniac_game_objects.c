@@ -578,7 +578,7 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 	bool did_update = move_game_object(self);
 
 	if (did_update) {
-		if (self->y < 0.) {
+		if ((self->y < 0.) || (self->y > game->screen_height - 3) || (self->x < 0) || (self->x >= game->screen_width)) {
 			// destroy bullet
 			self->active = false;
 			self->recycle = true;
