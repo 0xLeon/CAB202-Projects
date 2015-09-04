@@ -313,8 +313,13 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 		if (go_enemy_indep_controller_did_player_move(go_enemy_indep_controller_data)) {
 			go_enemy_indep_controller_data->player_previous_x = go_enemy_indep_controller_data->player->x;
 			go_enemy_indep_controller_data->player_previous_y = go_enemy_indep_controller_data->player->y;
-
+			go_enemy_indep_controller_data->player_position_did_change = true;
+			go_enemy_indep_controller_data->player_position_last_change_time = get_current_time();
+		}
+		
+		if (go_enemy_indep_controller_data->player_position_did_change && ((get_current_time() - go_enemy_indep_controller_data->player_position_last_change_time) >= 1.)) {
 			go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
+			go_enemy_indep_controller_data->player_position_did_change = false;
 		}
 
 		did_update = go_enemy_indep_controller_move_enemy(go_enemy_indep_controller_data, game);
@@ -422,6 +427,8 @@ void go_enemy_indep_controller_reset_data(go_additional_data_enemy_indep_control
 
 	go_enemy_indep_controller_data->player_previous_x = go_enemy_indep_controller_data->player->x;
 	go_enemy_indep_controller_data->player_previous_y = go_enemy_indep_controller_data->player->y;
+	go_enemy_indep_controller_data->player_position_did_change = false;
+	go_enemy_indep_controller_data->player_position_last_change_time = get_current_time();
 
 	go_enemy_indep_controller_data->start_x = 0.;
 	go_enemy_indep_controller_data->start_y = 0.;

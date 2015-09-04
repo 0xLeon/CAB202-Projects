@@ -34,6 +34,8 @@ typedef struct go_additional_data_enemy_indep_controller {
 
 	double player_previous_x;
 	double player_previous_y;
+	bool player_position_did_change;
+	double player_position_last_change_time;
 
 	double start_x;
 	double start_y;
