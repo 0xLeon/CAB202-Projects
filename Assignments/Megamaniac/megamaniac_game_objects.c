@@ -519,7 +519,7 @@ bool go_player_update(game_object_p self, game_update_p update, game_p game, gam
 
 			break;
 		case 's':
-#ifndef GAME_DEBUG
+#if !defined(GAME_DEBUG) && !defined(ENABLE_MULTI_BULLETS)
 			if (NULL != find_game_object_by_type(GO_TYPE_BULLET, game->current_level->game_objects, game->current_level->game_object_count, NULL)) {
 				return false;
 			}
