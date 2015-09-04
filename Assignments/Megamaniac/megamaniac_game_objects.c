@@ -579,7 +579,7 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 
 	if (did_update) {
 		int enemy_counter = 0;
-		for (int i = 0; i < game->current_level->game_object_count; i++) {
+		for (int i = 0; i < game->current_level->game_object_count; ++i) {
 			if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i]) && game->current_level->game_objects[i]->active) {
 				enemy_counter++;
 
@@ -696,7 +696,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 	int enemy_count = 0;
 	int enemy_index = 0;
 
-	for (int i = 0; i < game->current_level->game_object_count; i++) {
+	for (int i = 0; i < game->current_level->game_object_count; ++i) {
 		if (NULL != game->current_level->game_objects[i]) {
 			if (megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
 				enemy_count++;
@@ -715,7 +715,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 
 	enemy_index = rand() % (enemy_count + 1);
 
-	for (int i = 0, c = 0; i < game->current_level->game_object_count; i++) {
+	for (int i = 0, c = 0; i < game->current_level->game_object_count; ++i) {
 		if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
 			if (c == enemy_index) {
 				game_object_p go_bomb = megamaniac_create_go_bomb(game, (int) round(game->current_level->game_objects[i]->x), (int) round(game->current_level->game_objects[i]->y + 1));

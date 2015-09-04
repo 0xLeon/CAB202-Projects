@@ -72,7 +72,7 @@ bool level_add_game_object(game_level_p level, game_object_p game_object) {
 		return true;
 	}
 	else {
-		for (int i = 0; i < level->game_object_count; i++) {
+		for (int i = 0; i < level->game_object_count; ++i) {
 			if (NULL == level->game_objects[i]) {
 				level->game_objects[i] = game_object;
 				
@@ -103,7 +103,7 @@ bool update_level(game_level_p level, game_update_p update, game_p game) {
 		didUpdate = level->update(level, update, game) || didUpdate;
 	}
 
-	for (int i = 0; i < level->game_object_count; i++) {
+	for (int i = 0; i < level->game_object_count; ++i) {
 		if (NULL != level->game_objects[i]) {
 			if (level->game_objects[i]->recycle) {
 				destroy_game_object(level->game_objects[i]);
@@ -122,7 +122,7 @@ void draw_level(game_level_p level) {
 	assert(NULL != level);
 
 	// TODO: maybe parallelize this loop
-	for (int i = 0; i < level->game_object_count; i++) {
+	for (int i = 0; i < level->game_object_count; ++i) {
 		if ((NULL != level->game_objects[i]) && level->game_objects[i]->active && level->game_objects[i]->visual) {
 			draw_game_object(level->game_objects[i]);
 		}
@@ -132,7 +132,7 @@ void draw_level(game_level_p level) {
 void recycle_level(game_level_p level) {
 	assert(NULL != level);
 
-	for (int i = 0; i < level->game_object_count; i++) {
+	for (int i = 0; i < level->game_object_count; ++i) {
 		if ((NULL != level->game_objects[i]) && level->game_objects[i]->recycle) {
 			destroy_game_object(level->game_objects[i]);
 			level->game_objects[i] = NULL;
@@ -144,7 +144,7 @@ void destroy_level(game_level_p level) {
 	assert(NULL != level);
 
 	if (level->game_object_count > 0) {
-		for (int i = 0; i < level->game_object_count; i++) {
+		for (int i = 0; i < level->game_object_count; ++i) {
 			if (NULL != level->game_objects[i]) {
 				destroy_game_object(level->game_objects[i]);
 				level->game_objects[i] = NULL;
@@ -164,7 +164,7 @@ void level_default_unload(game_level_p self, game_p game) {
 	assert(NULL != self);
 	assert(NULL != game);
 
-	for (int i = 0; i < self->game_object_count; i++) {
+	for (int i = 0; i < self->game_object_count; ++i) {
 		if (NULL != self->game_objects[i]) {
 			destroy_game_object(self->game_objects[i]);
 			self->game_objects[i] = NULL;

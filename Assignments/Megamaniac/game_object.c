@@ -108,8 +108,8 @@ void draw_game_object(game_object_p game_object) {
 	int offset = 0;
 	char c;
 
-	for (int row = 0; row < game_object->height; row++) {
-		for (int col = 0; col < game_object->width; col++) {
+	for (int row = 0; row < game_object->height; ++row) {
+		for (int col = 0; col < game_object->width; ++col) {
 			c = game_object->bitmap[offset++] & 0xff;
 
 			if (c != ' ') {
@@ -152,7 +152,7 @@ game_object_p find_game_object_by_type(int type, game_object_p* game_objects, in
 	assert(NULL != game_objects);
 	assert(game_object_count > -1);
 
-	for (int i = 0; i < game_object_count; i++) {
+	for (int i = 0; i < game_object_count; ++i) {
 		if ((NULL != game_objects[i]) && !(game_objects[i]->recycle) && (game_objects[i]->type == type)) {
 			if (NULL != go_descriptor) {
 				go_descriptor->game_object = game_objects[i];
