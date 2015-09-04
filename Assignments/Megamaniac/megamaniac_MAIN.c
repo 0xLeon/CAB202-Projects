@@ -5,10 +5,12 @@
  * Extra functionality:
  *  - The whole game is resizeable during runtime, not only after restarting
  *  - Game can be paused anytime with the 'p' key
- *  - Level 5 enemy independent enemy movement is a quadratic bezier curve
+ *  - Level 4: Spreading done by always changing each enemy's direction if they encounter another enemy
+ *  - Level 5: Independent enemy movement is a quadratic bezier curve instead of quadratic function
  *  - Additional level 6 with enemies picking random screen locations as targets
+ *  - Save position finding is based on a binary search-like algorithm
  * 
- *  - Compiling with -DENABLE_MULTI_BULLETS will enable to shoot more than on bullet at once
+ *  - Compiling with -DENABLE_MULTI_BULLETS will enable to shoot more than one bullet at once
  *  - Compiling with -DLEVEL3_HARMONIC will enable harmonic motion in level 3
  *  - Compiling with -DGAME_DEBUG will enable multi bullets and assertions
  * 
