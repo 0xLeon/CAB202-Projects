@@ -147,6 +147,7 @@ game_object_p megamaniac_level5_create_go_enemy_indep_controller(game_p megamani
 	}
 
 	go_enemy_indep_controller_data->player = find_game_object_by_type(GO_TYPE_PLAYER, megamaniac->current_level->game_objects, megamaniac->current_level->game_object_count, NULL);
+	go_enemy_indep_controller_data->enemy = NULL;
 	go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
 
 	go_enemy_indep_controller->additional_data = go_enemy_indep_controller_data;
