@@ -492,7 +492,7 @@ bool go_enemy_indep_controller_move_enemy(go_additional_data_enemy_indep_control
 
 	bool did_move = false;
 
-	if (go_enemy_indep_controller_data->t >= 100) {
+	if (go_enemy_indep_controller_data->t > 100) {
 		// target reached but still active
 		// calc new target
 		go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
