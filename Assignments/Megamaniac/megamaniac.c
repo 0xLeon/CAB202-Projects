@@ -1,3 +1,20 @@
+/* 
+ * Student Number:	n9529977
+ * Name:		Stefan Hahn
+ * 
+ * Extra functionality:
+ *  - The whole game is resizeable during runtime, not only after restarting
+ *  - Game can be paused anytime with the 'p' key
+ *  - Level 5 enemy independent enemy movement is a quadratic bézier curve
+ *  - Additional level 6 with enemies picking random screen locations as targets
+ * 
+ *  - Compiling with -DENABLE_MULTI_BULLETS will enable to shoot more than on bullet at once
+ *  - Compiling with -DLEVEL3_HARMONIC will enable harmonic motion in level 3
+ *  - Compiling with -DGAME_DEBUG will enable multi bullets and assertions
+ * 
+ *  - Megamaniac is based on an abstract game engline-like framework ('game' headers)
+ */
+
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
