@@ -1,11 +1,11 @@
-/* 
+ï»¿/* 
  * Student Number:	n9529977
  * Name:		Stefan Hahn
  * 
  * Extra functionality:
  *  - The whole game is resizeable during runtime, not only after restarting
  *  - Game can be paused anytime with the 'p' key
- *  - Level 5 enemy independent enemy movement is a quadratic bézier curve
+ *  - Level 5 enemy independent enemy movement is a quadratic bezier curve
  *  - Additional level 6 with enemies picking random screen locations as targets
  * 
  *  - Compiling with -DENABLE_MULTI_BULLETS will enable to shoot more than on bullet at once
@@ -24,7 +24,7 @@
 #include "cab202_graphics.h"
 #include "game_types.h"
 #include "game.h"
-#include "megamaniac.h"
+#include "megamaniac_MAIN.h"
 #include "megamaniac_go_types.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_game_objects.h"

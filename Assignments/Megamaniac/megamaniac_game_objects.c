@@ -10,7 +10,7 @@
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
 #include "megamaniac_game_objects.h"
-#include "megamaniac.h"
+#include "megamaniac_MAIN.h"
 
 //-------------------------------------------------------
 // Game Object Update Methods Forward Declarations

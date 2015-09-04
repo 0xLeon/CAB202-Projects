@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 #include "game_types.h"
 #include "game.h"
-#include "megamaniac.h"
+#include "megamaniac_MAIN.h"
 #include "megamaniac_go_data.h"
 #include "megamaniac_go_types.h"
 #include "megamaniac_game_objects.h"
