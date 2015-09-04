@@ -69,6 +69,8 @@ bool go_enemy_indep_controller_did_player_move(go_additional_data_enemy_indep_co
 
 bool go_enemy_indep_controller_move_enemy(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game);
 
+bool go_enemy_indep_controller_reached_group_limit(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game);
+
 
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
@@ -295,20 +297,9 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 
 			if (did_update) {
 				// check if reached group limit
-				bool reached_group_limit = true;
+				go_enemy_indep_controller_data->reached_group_limit = go_enemy_indep_controller_reached_group_limit(go_enemy_indep_controller_data, game);
 
-				for (int i = 0; i < game->current_level->game_object_count; ++i) {
-					if ((NULL != game->current_level->game_objects[i]) && !(game->current_level->game_objects[i]->recycle) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
-						if (game->current_level->game_objects[i]->x >= (go_enemy_indep_controller_data->enemy->x + 3)) {
-							reached_group_limit = false;
-							break;
-						}
-					}
-				}
-
-				go_enemy_indep_controller_data->reached_group_limit = reached_group_limit;
-
-				if (reached_group_limit) {
+				if (go_enemy_indep_controller_data->reached_group_limit) {
 					// start bezier movement
 					go_enemy_indep_controller_calc_curve(go_enemy_indep_controller_data, game);
 				}
@@ -532,4 +523,40 @@ bool go_enemy_indep_controller_move_enemy(go_additional_data_enemy_indep_control
 	}
 
 	return did_move;
+}
+
+bool go_enemy_indep_controller_reached_group_limit(go_additional_data_enemy_indep_controller_p go_enemy_indep_controller_data, game_p game) {
+	assert(NULL != go_enemy_indep_controller_data);
+	assert(NULL != game);
+
+	int enemy_count = 0;
+	rect_t indep_enemy_rect = {
+		.x0 = (int) round(go_enemy_indep_controller_data->enemy->x - 5),
+		.y0 = (int) round(go_enemy_indep_controller_data->enemy->y - 3),
+		.x1 = (int) round(go_enemy_indep_controller_data->enemy->x + 5),
+		.y1 = (int) round(go_enemy_indep_controller_data->enemy->y + 3)
+	};
+	rect_t other_enemy_rect = {0, 0, 0, 0};
+	rect_p indep_enemy_rect_ptr = &indep_enemy_rect;
+	rect_p other_enemy_rect_ptr = &other_enemy_rect;
+
+	for (int i = 0; i < game->current_level->game_object_count; ++i) {
+		if ((NULL != game->current_level->game_objects[i]) && (go_enemy_indep_controller_data->enemy != game->current_level->game_objects[i]) && !(game->current_level->game_objects[i]->recycle) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {
+			++enemy_count;
+
+			other_enemy_rect.x0 = (int) round(game->current_level->game_objects[i]->x);
+			other_enemy_rect.y0 = (int) round(game->current_level->game_objects[i]->y);
+			other_enemy_rect.x1 = other_enemy_rect.x0;
+			other_enemy_rect.y1 = other_enemy_rect.y0;
+
+			if ((indep_enemy_rect_ptr->x0 <= other_enemy_rect_ptr->x0) &&
+				(other_enemy_rect_ptr->x0 <= indep_enemy_rect_ptr->x1) &&
+				(indep_enemy_rect_ptr->y0 <= other_enemy_rect_ptr->y0) &&
+				(other_enemy_rect_ptr->y0 <= indep_enemy_rect_ptr->y1)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
