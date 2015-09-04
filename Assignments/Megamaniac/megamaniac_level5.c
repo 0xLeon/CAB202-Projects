@@ -148,7 +148,6 @@ game_object_p megamaniac_level5_create_go_enemy_indep_controller(game_p megamani
 	}
 
 	go_enemy_indep_controller_data->player = find_game_object_by_type(GO_TYPE_PLAYER, megamaniac->current_level->game_objects, megamaniac->current_level->game_object_count, NULL);
-	go_enemy_indep_controller_data->enemy = NULL;
 	go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
 
 	go_enemy_indep_controller->additional_data = go_enemy_indep_controller_data;
@@ -333,7 +332,7 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 
 		if (megamaniac_test_enemy_player_collision(go_enemy_indep_controller_data->enemy, go_player, false, true, game)) {
 			go_enemy_indep_controller_reset_data(go_enemy_indep_controller_data, NULL);
-
+			
 			game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			go_enemy_indep_choser->active = true;
 			go_enemy_indep_choser->timer->milliseconds = LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + (rand() % (LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX - LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + 1));
@@ -420,9 +419,7 @@ void go_enemy_indep_controller_reset_data(go_additional_data_enemy_indep_control
 	assert(NULL != go_enemy_indep_controller_data);
 	assert((NULL == go_enemy) || (GO_TYPE_ENEMY5 == go_enemy->type));
 
-	if (NULL != go_enemy) {
-		go_enemy_indep_controller_data->enemy = go_enemy;
-	}
+	go_enemy_indep_controller_data->enemy = go_enemy;
 
 	go_enemy_indep_controller_data->left_lane = false;
 	go_enemy_indep_controller_data->reached_group_limit = false;
