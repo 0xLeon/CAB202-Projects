@@ -30,7 +30,7 @@ void megamaniac_level2_load(game_level_p self, game_p megamaniac);
 // Game Object Creation Functions Forward Declarations
 //-------------------------------------------------------
 
-int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamaniac, int offset);
+game_object_p megamaniac_level2_create_go_enemy2_mover(game_p megamaniac);
 
 
 //-------------------------------------------------------
@@ -78,8 +78,8 @@ void megamaniac_level2_load(game_level_p self, game_p megamaniac) {
 
 	self->game_objects[i++] = megamaniac_create_go_level_name(megamaniac, LEVEL2_LEVEL_NAME);
 	self->game_objects[i++] = megamaniac_create_go_player(megamaniac);
-	
-	i += megamaniac_level2_create_go_enemy2_mover(self, megamaniac, i);
+	self->game_objects[i++] = megamaniac_level2_create_go_enemy2_mover(megamaniac);
+
 	i += megamaniac_create_standard_enemy_formation(self, megamaniac, i, GO_TYPE_ENEMY2, LEVEL2_ENEMY_ROW_COUNT, LEVEL2_ENEMY_ROW_ODD_COUNT, LEVEL2_ENEMY_ROW_EVEN_COUNT, LEVEL2_ENEMY_HORIZONTAL_SPACING, LEVEL2_ENEMY_VERTICAL_SPACING, true, NULL);
 
 	self->game_objects[i++] = megamaniac_create_go_bomb_dropper(megamaniac);
@@ -92,32 +92,27 @@ void megamaniac_level2_load(game_level_p self, game_p megamaniac) {
 // Game Object Creation Functions
 //-------------------------------------------------------
 
-int megamaniac_level2_create_go_enemy2_mover(game_level_p self, game_p megamaniac, int offset) {
-	assert(NULL != self);
+game_object_p megamaniac_level2_create_go_enemy2_mover(game_p megamaniac) {
 	assert(NULL != megamaniac);
-	assert(offset > -1);
-	assert(offset < self->game_object_count);
 
 	game_object_p go_enemy_mover = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy2_mover_update);
 	go_additional_data_enemy2_mover_p go_enemy_mover_data = malloc(sizeof(go_additional_data_enemy2_mover_t));
 
 	if (NULL == go_enemy_mover) {
-		return 0;
+		return NULL;
 	}
 
 	if (NULL == go_enemy_mover_data) {
 		destroy_game_object(go_enemy_mover);
 
-		return 0;
+		return NULL;
 	}
 
 	go_enemy_mover_data->theta = 0.;
 	go_enemy_mover_data->dtheta = 7.;
 	go_enemy_mover->additional_data = (void*) go_enemy_mover_data;
 
-	self->game_objects[offset++] = go_enemy_mover;
-
-	return 1;
+	return go_enemy_mover;
 }
 
 
