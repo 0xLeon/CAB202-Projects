@@ -195,7 +195,7 @@ bool update_game(game_p game) {
 					destroy_game_object(game->game_objects[i]);
 					game->game_objects[i] = NULL;
 				}
-				else if ((NULL != game->game_objects[i]->update) && (game->game_objects[i]->active)) {
+				else if ((NULL != game->game_objects[i]->update) && game->game_objects[i]->active) {
 					didUpdate = game->game_objects[i]->update(game->game_objects[i], update_ptr, game, NULL) || didUpdate;
 				}
 			}
@@ -220,7 +220,7 @@ void draw_game(game_p game) {
 	if (game->running) {
 		// TODO: maybe parallelize this loop
 		for (int i = 0; i < game->game_object_count; ++i) {
-			if ((NULL != game->game_objects[i]) && game->game_objects[i]->active && game->game_objects[i]->visual) {
+			if ((NULL != game->game_objects[i]) && game->game_objects[i]->active && !(game->game_objects[i]->recycle) && game->game_objects[i]->visual) {
 				draw_game_object(game->game_objects[i]);
 			}
 		}

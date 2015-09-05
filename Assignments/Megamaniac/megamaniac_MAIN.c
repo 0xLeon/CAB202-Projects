@@ -166,7 +166,7 @@ void megamaniac_level_default_resize(game_level_p self, game_resize_descriptor_p
 
 	for (int i = 0; i < self->game_object_count; ++i) {
 		if ((NULL != self->game_objects[i]) && !(self->game_objects[i]->recycle)) {
-			if (megamaniac_go_is_enemy(self->game_objects[i]) || (self->game_objects[i]->type == GO_TYPE_BOMB) || (self->game_objects[i]->type == GO_TYPE_BULLET)) {
+			if (megamaniac_go_is_enemy(self->game_objects[i]) || (GO_TYPE_BOMB == self->game_objects[i]->type) || (GO_TYPE_BULLET == self->game_objects[i]->type)) {
 				self->game_objects[i]->x *= resize_descriptor->width_ratio;
 				self->game_objects[i]->y *= resize_descriptor->height_ratio;
 			}

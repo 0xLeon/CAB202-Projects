@@ -285,7 +285,7 @@ int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megama
 		double x;
 		int max;
 
-		if ((i % 2) == 0) {
+		if (0 == (i % 2)) {
 			x = enemy_x_even;
 			max = even_count;
 		}
@@ -307,6 +307,7 @@ int megamaniac_create_standard_enemy_formation(game_level_p level, game_p megama
 	return enemy_count;
 }
 
+
 //-------------------------------------------------------
 // Game Object Update Methods
 //-------------------------------------------------------
@@ -316,7 +317,7 @@ bool go_quit_checker_update(game_object_p self, game_update_p update, game_p gam
 	assert(NULL != update);
 	assert(NULL != game);
 
-	if (update->key == 'q') {
+	if ('q' == update->key) {
 		game->running = false;
 	}
 
@@ -328,7 +329,7 @@ bool go_restarter_update(game_object_p self, game_update_p update, game_p game, 
 	assert(NULL != update);
 	assert(NULL != game);
 
-	if (update->key == 'r') {
+	if ('r' == update->key) {
 		if ((NULL == game->current_level) || (NULL == game->current_level->load) || (NULL == game->current_level->unload)) {
 			return false;
 		}
@@ -364,7 +365,7 @@ bool go_pauser_update(game_object_p self, game_update_p update, game_p game, gam
 
 	bool didUpdate = false;
 
-	if (update->key == 'p') {
+	if ('p' == update->key) {
 		if (NULL != game->current_level) {
 			if (!game->current_level->paused) {
 				level_add_game_object(game->current_level, megamaniac_create_go_pause_screen(game));
@@ -388,7 +389,7 @@ bool go_level_changer_update(game_object_p self, game_update_p update, game_p ga
 	assert(NULL != update);
 	assert(NULL != game);
 
-	if ((update->key == 'l') && !(game->current_level->paused)) {
+	if (('l' == update->key) && !(game->current_level->paused)) {
 
 		int current_level_index = -1;
 		game_level_p next_level = NULL;
@@ -489,7 +490,7 @@ bool go_score_cheater_update(game_object_p self, game_update_p update, game_p ga
 
 	game_object_p go_score = find_game_object_by_type(GO_TYPE_SCORE, game->game_objects, game->game_object_count, NULL);
 
-	if ((NULL != go_score) && (update->key == 'f')) {
+	if ((NULL != go_score) && ('f' == update->key)) {
 		((go_additional_data_comparable_int_p) go_score->additional_data)->current_value += 50;
 	}
 
@@ -702,14 +703,14 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 				enemy_count++;
 				continue;
 			}
-			else if (game->current_level->game_objects[i]->type == GO_TYPE_BOMB) {
+			else if (GO_TYPE_BOMB == game->current_level->game_objects[i]->type) {
 				bomb_count++;
 				continue;
 			}
 		}
 	}
 
-	if ((bomb_count == 4) || (enemy_count == 0)) {
+	if ((4 == bomb_count) || (0 == enemy_count)) {
 		return false;
 	}
 
@@ -746,7 +747,7 @@ bool go_trace_drawer_update(game_object_p self, game_update_p update, game_p gam
 	int current_screen_x = 0;
 	int current_screen_y = 0;
 
-	if (NULL == go_trace_drawer_data->game_object) {
+	if ((NULL == go_trace_drawer_data->game_object) || go_trace_drawer_data->game_object->recycle) {
 		self->active = false;
 		self->recycle = true;
 
@@ -871,7 +872,7 @@ bool megamaniac_binary_find_save_player_location(game_p megamaniac, game_object_
 // TODO: what about wrapping enemies (enemies at top edge with vecttor out of screen reappering on the bottom
 bool megamaniac_is_safe_player_location(int current_test_x, int current_test_y, game_object_p go_player, game_object_p* game_objects, int game_object_count) {
 	assert(NULL != go_player);
-	assert(go_player->type == GO_TYPE_PLAYER);
+	assert(GO_TYPE_PLAYER == go_player->type);
 	assert(NULL != game_objects);
 	assert(game_object_count > 1);
 
@@ -910,7 +911,7 @@ void megamaniac_wipe_projectiles(game_object_p* game_objects, int game_object_co
 	assert(game_object_count > -1);
 
 	for (int i = 0; i < game_object_count; ++i) {
-		if ((NULL != game_objects[i]) && !(game_objects[i]->recycle) && ((game_objects[i]->type == GO_TYPE_BULLET) || (game_objects[i]->type == GO_TYPE_BOMB))) {
+		if ((NULL != game_objects[i]) && !(game_objects[i]->recycle) && ((GO_TYPE_BULLET == game_objects[i]->type) || (GO_TYPE_BOMB == game_objects[i]->type))) {
 			game_objects[i]->active = false;
 			game_objects[i]->recycle = true;
 		}

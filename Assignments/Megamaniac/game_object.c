@@ -99,7 +99,7 @@ game_object_p create_static_string_game_object(int type, double x, double y, dou
 void draw_game_object(game_object_p game_object) {
 	assert(NULL != game_object);
 
-	if (!(game_object->active && game_object->visual)) {
+	if (!(game_object->active) || !(game_object->visual)) {
 		return;
 	}
 

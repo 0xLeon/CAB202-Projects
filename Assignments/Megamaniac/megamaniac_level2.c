@@ -140,7 +140,7 @@ bool go_enemy2_mover_update(game_object_p self, game_update_p update, game_p gam
 
 
 	for (int i = 0; i < game->current_level->game_object_count; ++i) {
-		if ((NULL != game->current_level->game_objects[i]) && (game->current_level->game_objects[i]->type == GO_TYPE_ENEMY2)) {
+		if ((NULL != game->current_level->game_objects[i]) && (GO_TYPE_ENEMY2 == game->current_level->game_objects[i]->type)) {
 			double dcos = (-1. * cos(1.1875 * go_enemy_mover_data->theta * M_PI / 180.) + 1.) - (-1. * cos(1.1875 * (go_enemy_mover_data->theta - go_enemy_mover_data->dtheta) * M_PI / 180.) + 1.);
 			double dcos_amp = round(game->screen_height / 8.);
 

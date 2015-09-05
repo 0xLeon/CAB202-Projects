@@ -109,7 +109,7 @@ bool update_level(game_level_p level, game_update_p update, game_p game) {
 				destroy_game_object(level->game_objects[i]);
 				level->game_objects[i] = NULL;
 			}
-			else if ((NULL != level->game_objects[i]->update) && (level->game_objects[i]->active)) {
+			else if ((NULL != level->game_objects[i]->update) && level->game_objects[i]->active) {
 				didUpdate = level->game_objects[i]->update(level->game_objects[i], update, game, level) || didUpdate;
 			}
 		}
@@ -123,7 +123,7 @@ void draw_level(game_level_p level) {
 
 	// TODO: maybe parallelize this loop
 	for (int i = 0; i < level->game_object_count; ++i) {
-		if ((NULL != level->game_objects[i]) && level->game_objects[i]->active && level->game_objects[i]->visual) {
+		if ((NULL != level->game_objects[i]) && level->game_objects[i]->active && !(level->game_objects[i]->recycle) && level->game_objects[i]->visual) {
 			draw_game_object(level->game_objects[i]);
 		}
 	}

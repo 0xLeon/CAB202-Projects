@@ -107,7 +107,7 @@ bool go_enemy1_mover_update(game_object_p self, game_update_p update, game_p gam
 	}
 
 	for (int i = 0; i < game_object_count; ++i) {
-		if ((NULL != game_objects[i]) && (game_objects[i]->type == GO_TYPE_ENEMY1)) {
+		if ((NULL != game_objects[i]) && (GO_TYPE_ENEMY1 == game_objects[i]->type)) {
 			didMove = megamaniac_move_enemy(game_objects[i], game) || didMove;
 		}
 	}
