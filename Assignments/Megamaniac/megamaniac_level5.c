@@ -250,6 +250,8 @@ bool go_enemy_indep_choser_update(game_object_p self, game_update_p update, game
 	go_enemy_indep_controller->active = true;
 	reset_timer(go_enemy_indep_controller->timer);
 
+	free(enemies);
+
 	return false;
 }
 

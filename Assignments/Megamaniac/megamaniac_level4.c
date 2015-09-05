@@ -226,6 +226,8 @@ bool go_enemy4_mover_update(game_object_p self, game_update_p update, game_p gam
 		}
 	}
 
+	free(enemies);
+
 	return did_update;
 }
 

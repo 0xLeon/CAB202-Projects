@@ -46,7 +46,7 @@ bool level_set_game_object_count(game_level_p level, int new_game_object_count) 
 	assert(NULL != level);
 	assert(new_game_object_count > -1);
 
-	game_object_p* new_game_objects = realloc(level->game_objects, new_game_object_count * sizeof(game_object_t));
+	game_object_p* new_game_objects = realloc(level->game_objects, new_game_object_count * sizeof(game_object_p));
 
 	if (NULL == new_game_objects) {
 		return false;

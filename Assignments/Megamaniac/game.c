@@ -32,6 +32,7 @@ game_p create_game(double framerate, int initial_game_object_count, int initial_
 	game->framerate_timer = game_create_timer((long) round(1000. / framerate));
 
 	if (NULL == game->framerate_timer) {
+		free(game);
 		return NULL;
 	}
 	
@@ -83,7 +84,7 @@ bool game_set_game_object_count(game_p game, int new_game_object_count) {
 	assert(NULL != game);
 	assert(new_game_object_count > 0);
 
-	game_object_p* new_game_objects = realloc(game->game_objects, new_game_object_count * sizeof(game_object_t));
+	game_object_p* new_game_objects = realloc(game->game_objects, new_game_object_count * sizeof(game_object_p));
 
 	if (NULL == new_game_objects) {
 		return false;
@@ -248,24 +249,31 @@ void destroy_game(game_p game) {
 		for (int i = 0; i < game->game_object_count; ++i) {
 			if (NULL != game->game_objects[i]) {
 				destroy_game_object(game->game_objects[i]);
+				game->game_objects[i] = NULL;
 			}
 		}
 		
 		free(game->game_objects);
+		game->game_objects = NULL;
 	}
 
 	if (game->level_count > 0) {
 		for (int i = 0; i < game->level_count; ++i) {
 			if (NULL != game->levels[i]) {
 				destroy_level(game->levels[i]);
+				game->levels[i] = NULL;
 			}
 		}
 
 		free(game->levels);
+		game->levels = NULL;
 	}
 
 	free(game->framerate_timer);
+	game->framerate_timer = NULL;
+
 	free(game);
+	game = NULL;
 }
 
 
