@@ -76,17 +76,17 @@ double go_enemy6_get_travelled_distance(go_additional_data_enemy6_p go_enemy_dat
 game_level_p megamaniac_create_level6(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	game_level_p level4 = create_level(14);
+	game_level_p level6 = create_level(14);
 
-	if (NULL == level4) {
+	if (NULL == level6) {
 		return NULL;
 	}
 
-	level4->load = megamaniac_level6_load;
-	level4->resize = megamaniac_level_default_resize;
-	level4->unload = level_default_unload;
+	level6->load = megamaniac_level6_load;
+	level6->resize = megamaniac_level_default_resize;
+	level6->unload = level_default_unload;
 
-	return level4;
+	return level6;
 }
 
 
