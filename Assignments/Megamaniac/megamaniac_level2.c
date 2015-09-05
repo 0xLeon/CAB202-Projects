@@ -96,11 +96,13 @@ game_object_p megamaniac_level2_create_go_enemy2_mover(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
 	game_object_p go_enemy_mover = megamaniac_create_go_enemy_mover(megamaniac, 300L, go_enemy2_mover_update);
-	go_additional_data_enemy2_mover_p go_enemy_mover_data = malloc(sizeof(go_additional_data_enemy2_mover_t));
+	go_additional_data_enemy2_mover_p go_enemy_mover_data = NULL;
 
 	if (NULL == go_enemy_mover) {
 		return NULL;
 	}
+
+	go_enemy_mover_data = malloc(sizeof(go_additional_data_enemy2_mover_t));
 
 	if (NULL == go_enemy_mover_data) {
 		destroy_game_object(go_enemy_mover);
