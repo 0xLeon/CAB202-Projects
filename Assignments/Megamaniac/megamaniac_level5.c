@@ -159,7 +159,7 @@ game_object_p megamaniac_level5_create_go_enemy_indep_controller(game_p megamani
 game_object_p megamaniac_level5_create_go_enemy_indep_choser(game_p megamaniac) {
 	assert(NULL != megamaniac);
 
-	int interval = LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + (rand() % (LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX - LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + 1));
+	int interval = GAME_RAND_BETWEEN(LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN, LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX);
 
 	return create_null_game_object(GO_TYPE_ENEMY5_INDEP_CHOSER, interval, go_enemy_indep_choser_update);
 }
@@ -274,7 +274,7 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 
 		game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 		go_enemy_indep_choser->active = true;
-		go_enemy_indep_choser->timer->milliseconds = LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + (rand() % (LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX - LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + 1));
+		go_enemy_indep_choser->timer->milliseconds = GAME_RAND_BETWEEN(LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN, LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX);
 		reset_timer(go_enemy_indep_choser->timer);
 
 		self->active = false;
@@ -337,7 +337,7 @@ bool go_enemy_indep_controller_update(game_object_p self, game_update_p update, 
 			
 			game_object_p go_enemy_indep_choser = find_game_object_by_type(GO_TYPE_ENEMY5_INDEP_CHOSER, game->current_level->game_objects, game->current_level->game_object_count, NULL);
 			go_enemy_indep_choser->active = true;
-			go_enemy_indep_choser->timer->milliseconds = LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + (rand() % (LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX - LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN + 1));
+			go_enemy_indep_choser->timer->milliseconds = GAME_RAND_BETWEEN(LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MIN, LEVEL5_ENEMY_START_INDIVIDUAL_DELAY_MAX);
 			reset_timer(go_enemy_indep_choser->timer);
 
 			self->active = false;

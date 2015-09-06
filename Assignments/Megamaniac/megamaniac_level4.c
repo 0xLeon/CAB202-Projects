@@ -132,11 +132,11 @@ int megamaniac_level4_create_enemies(game_level_p level, game_p megamaniac, int 
 
 				continue;
 			}
-
-			go_enemy_data->change_timer = create_timer(LEVEL4_ENEMY_SPEED_CHANGE_LOWER + (rand() % (LEVEL4_ENEMY_SPEED_CHANGE_UPPER - LEVEL4_ENEMY_SPEED_CHANGE_LOWER + 1)));
+			
+			go_enemy_data->change_timer = create_timer(GAME_RAND_BETWEEN(LEVEL4_ENEMY_SPEED_CHANGE_LOWER, LEVEL4_ENEMY_SPEED_CHANGE_UPPER));
 			go_enemy_data->original_x = go_enemy->x;
 
-			go_enemy->dx = ((((rand() % 2) == 0) ? (1) : (-1)) * (LEVEL4_ENEMY_X_MIN_SPEED + (rand() % (LEVEL4_ENEMY_X_MAX_SPEED - LEVEL4_ENEMY_X_MIN_SPEED + 1)))) / 10.;
+			go_enemy->dx = ((((rand() % 2) == 0) ? (1) : (-1)) * GAME_RAND_BETWEEN(LEVEL4_ENEMY_X_MIN_SPEED, LEVEL4_ENEMY_X_MAX_SPEED)) / 10.;
 			go_enemy->additional_data = go_enemy_data;
 			go_enemy->destroy = go_enemy4_destroy;
 
@@ -252,9 +252,9 @@ void go_enemy4_change_speed(game_object_p go_enemy, go_additional_data_enemy4_p 
 	assert(NULL != go_enemy);
 	assert(NULL != go_enemy_data);
 
-	go_enemy->dx = (-1 * GAME_SIGNUM(go_enemy->dx) * (LEVEL4_ENEMY_X_MIN_SPEED + (rand() % (LEVEL4_ENEMY_X_MAX_SPEED - LEVEL4_ENEMY_X_MIN_SPEED + 1)))) / 10.;
+	go_enemy->dx = (-1 * GAME_SIGNUM(go_enemy->dx) * GAME_RAND_BETWEEN(LEVEL4_ENEMY_X_MIN_SPEED, LEVEL4_ENEMY_X_MAX_SPEED)) / 10.;
 
-	go_enemy_data->change_timer->milliseconds = LEVEL4_ENEMY_SPEED_CHANGE_LOWER + (rand() % (LEVEL4_ENEMY_SPEED_CHANGE_UPPER - LEVEL4_ENEMY_SPEED_CHANGE_LOWER + 1));
+	go_enemy_data->change_timer->milliseconds = GAME_RAND_BETWEEN(LEVEL4_ENEMY_SPEED_CHANGE_LOWER, LEVEL4_ENEMY_SPEED_CHANGE_UPPER);
 	reset_timer(go_enemy_data->change_timer);
 }
 

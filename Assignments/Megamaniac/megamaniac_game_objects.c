@@ -714,7 +714,7 @@ bool go_bomb_dropper_update(game_object_p self, game_update_p update, game_p gam
 		return false;
 	}
 
-	enemy_index = rand() % (enemy_count + 1);
+	enemy_index = GAME_RAND_BETWEEN(0, enemy_count);
 
 	for (int i = 0, c = 0; i < game->current_level->game_object_count; ++i) {
 		if ((NULL != game->current_level->game_objects[i]) && megamaniac_go_is_enemy(game->current_level->game_objects[i])) {

@@ -8,6 +8,7 @@
 #endif
 
 #include <stdbool.h>
+#include <math.h>
 #include "cab202_timers.h"
 #include "game_types.h"
 #include "game_timer.h"
@@ -21,6 +22,7 @@
 #define GAME_ABSOLUTE(x)	((x) * GAME_SIGNUM((x)))
 #define GAME_MAX(a, b)		(((a) > (b)) ? (a) : (b))
 #define GAME_MIN(a, b)		(((a) < (b)) ? (a) : (b))
+#define GAME_RAND_BETWEEN(lower, upper)		((lower) + (rand() % ((upper) - (lower) + 1)))
 
 //-------------------------------------------
 // Type Definitions

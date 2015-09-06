@@ -145,7 +145,7 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->direction_change_timer = create_timer(LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + (rand() % (LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_UPPER - LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER + 1)));
+			go_enemy_data->direction_change_timer = create_timer(GAME_RAND_BETWEEN(LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_LOWER, LEVEL6_ENEMY_DIRECTION_CHANGE_TIMER_UPPER));
 
 			if (NULL == go_enemy_data->direction_change_timer) {
 				destroy_game_object(go_enemy);
@@ -155,7 +155,7 @@ int megamaniac_level6_create_enemies(game_level_p level, game_p megamaniac, int 
 				continue;
 			}
 
-			go_enemy_data->speed_change_timer = create_timer(LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER + (rand() % (LEVEL6_ENEMY_SPEED_CHANGE_TIMER_UPPER - LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER + 1)));
+			go_enemy_data->speed_change_timer = create_timer(GAME_RAND_BETWEEN(LEVEL6_ENEMY_SPEED_CHANGE_TIMER_LOWER, LEVEL6_ENEMY_SPEED_CHANGE_TIMER_UPPER));
 
 			if (NULL == go_enemy_data->speed_change_timer) {
 				destroy_game_object(go_enemy);
@@ -229,7 +229,7 @@ bool go_enemy6_mover_update(game_object_p self, game_update_p update, game_p gam
 			moved = false;
 
 			if (timer_expired(go_enemy_data->speed_change_timer)) {
-				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * ((LEVEL6_ENEMY_SPEED_MIN + (rand() % (LEVEL6_ENEMY_SPEED_MAX - LEVEL6_ENEMY_SPEED_MIN + 1))) / 10.);
+				go_enemy_data->speed = GAME_SIGNUM(go_enemy_data->speed) * GAME_RAND_BETWEEN(LEVEL6_ENEMY_SPEED_MIN, LEVEL6_ENEMY_SPEED_MAX) / 10.;
 			}
 
 			if (timer_expired(go_enemy_data->direction_change_timer) && (go_enemy6_get_travelled_distance(go_enemy_data) >= LEVEL6_ENEMY_MIN_DISTANCE)) {
@@ -312,7 +312,7 @@ void go_enemy6_find_next_waypoint(game_object_p go_enemy, game_p megamaniac) {
 	go_enemy_data->next_x = new_x;
 	go_enemy_data->next_y = new_y;
 	go_enemy_data->angle = atan((new_y - go_enemy->y) / (new_x - go_enemy->x));
-	go_enemy_data->speed = (((rand() % 2) == 0) ? (1) : (-1)) * (LEVEL6_ENEMY_SPEED_MIN + (rand() % (LEVEL6_ENEMY_SPEED_MAX - LEVEL6_ENEMY_SPEED_MIN + 1))) / 10.;
+	go_enemy_data->speed = (((rand() % 2) == 0) ? (1) : (-1)) * GAME_RAND_BETWEEN(LEVEL6_ENEMY_SPEED_MIN, LEVEL6_ENEMY_SPEED_MAX) / 10.;
 	
 	go_enemy->dx = go_enemy_data->speed * cos(go_enemy_data->angle);
 	go_enemy->dy = go_enemy_data->speed * sin(go_enemy_data->angle);
