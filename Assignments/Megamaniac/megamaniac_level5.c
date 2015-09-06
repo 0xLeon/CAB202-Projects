@@ -392,17 +392,21 @@ bool go_bullet_controller_update(game_object_p self, game_update_p update, game_
 		if ('c' == update->key) {
 			angle -= .1745329;
 
+#ifdef LEVEL5_BULLET_ANGLE_LIMIT
 			// TODO: workaround, doesn't work with 0 as limit
 			if (angle < 0.1) {
 				angle = 0.01;
 			}
+#endif
 		}
 		else {
 			angle += .1745329;
 
+#ifdef LEVEL5_BULLET_ANGLE_LIMIT
 			if (angle > M_PI) {
 				angle = M_PI;
 			}
+#endif
 		}
 
 		go_top_bullet->dx = -1 * s * cos(angle);

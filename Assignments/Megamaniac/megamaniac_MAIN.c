@@ -12,6 +12,7 @@
  * 
  *  - Compiling with -DENABLE_MULTI_BULLETS will enable to shoot more than one bullet at once
  *  - Compiling with -DLEVEL3_HARMONIC will enable harmonic motion in level 3
+ *  - Compiling with -DLEVEL5_BULLET_ANGLE_LIMIT will limit bullet angles to +/- 90°
  *  - Compiling with -DGAME_DEBUG will enable multi bullets and assertions
  * 
  *  - Megamaniac is based on an abstract game engline-like framework ('game' headers)
