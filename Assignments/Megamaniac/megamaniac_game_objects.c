@@ -630,7 +630,7 @@ bool go_bullet_update(game_object_p self, game_update_p update, game_p game, gam
 		}
 
 		if (did_update && self->active) {
-			if ((self->y < 0.) || (self->y > game->screen_height - 3) || (self->x < 0) || (self->x >= game->screen_width)) {
+			if ((self->y < 0.) || (self->y >= game->screen_height - 4) || (self->x < 0) || (self->x >= game->screen_width)) {
 				// destroy bullet
 				self->active = false;
 				self->recycle = true;
