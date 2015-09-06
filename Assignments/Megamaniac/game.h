@@ -2,9 +2,9 @@
 #define GAME_H_
 
 #ifdef GAME_DEBUG
-#define NDEBUG
-#else
 #define _DEBUG
+#else
+#define NDEBUG
 #endif
 
 #include <stdbool.h>
