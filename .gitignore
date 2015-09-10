@@ -32,6 +32,7 @@
 *.alignments
 *.asmcons
 *.barriers
+*.dep/
 *.dfinish
 *.dfinit
 *.dwarf2
@@ -41,9 +42,11 @@
 *.ira
 *.jump
 *.jump2
+*.lst
 *.mach
 *.mode_sw
 *.nothrow
+*.o.d
 *.outof_cfglayout
 *.pro_and_epilogue
 *.reginfo
