@@ -2,7 +2,7 @@ all: release
 
 LIBS=-lzdk04 -lncurses -lm
 DIRS=-I../../ZDK04 -L../../ZDK04
-FLAGS=-std=gnu99 -Wall -Werror -D_XOPEN_SOURCE=500
+FLAGS=-std=gnu99 -Wall -D_XOPEN_SOURCE=500
 
 clean:
 	-@rm *.exe *.stackdump 2>/dev/null
