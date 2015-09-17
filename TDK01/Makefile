@@ -42,7 +42,7 @@
 
 # Target file name (without extension).
 # You will need to replace "name_of_file" with your file name without the .c extension
-TARGET = cab202_teensy
+TARGET = tdk
 
 
 # List C source files here. (C dependencies are automatically generated.)
