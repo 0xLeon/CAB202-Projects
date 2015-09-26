@@ -67,8 +67,8 @@ void debounceBtn0(void) {
 
 	if (raw_state != button_state) {
 		if (count <= 0) {
+			btn0Changed = 1;
 			btn0Pressed = raw_state;
-			btn0Changed = (button_state != raw_state);
 			button_state = raw_state;
 
 			count = 4;
@@ -90,8 +90,8 @@ void debounceBtn1(void) {
 
 	if (raw_state != button_state) {
 		if (count <= 0) {
+			btn1Changed = 1;
 			btn1Pressed = raw_state;
-			btn1Changed = (button_state != raw_state);
 			button_state = raw_state;
 
 			count = 4;
