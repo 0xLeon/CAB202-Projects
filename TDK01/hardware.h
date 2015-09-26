@@ -7,6 +7,11 @@
 #include "lcd.h"
 #include "graphics.h"
 
+#if !defined(QUT_TEENSY_ONE) && !defined(QUT_TEENSY_TWO)
+#warning No QUT Teensy Board version specified, will assume QUT Teensy One
+#define QUT_TEENSY_ONE
+#endif
+
 #if defined(QUT_TEENSY_ONE)
 #define BTN0_CONF	(DDRB &= ~(1 << PORTB0))
 #define BTN0_PRESSED	((PINB & (1 << PORTB0)) >> PORTB0)
