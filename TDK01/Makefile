@@ -46,10 +46,11 @@ TARGET = tdk
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = graphics.c \
+SRC =  \
+      ram_utils.c \
       lcd.c \
-	  ram_utils.c \
-	  sprite.c
+      graphics.c \
+      sprite.c
 
 # 	print.c
 
@@ -77,7 +78,7 @@ FORMAT = ihex
 # Object files directory
 #     To put object files in current directory, use a dot (.), do NOT make
 #     this an empty or blank macro!
-OBJDIR = .
+OBJDIR = ./.obj
 
 
 # List C++ source files here. (C dependencies are automatically generated.)
