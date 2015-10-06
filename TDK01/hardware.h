@@ -6,6 +6,7 @@
 #include "cpu_speed.h"
 #include "lcd.h"
 #include "graphics.h"
+#include "buttons.h"
 
 #if !defined(QUT_TEENSY_ONE) && !defined(QUT_TEENSY_TWO)
 #warning No QUT Teensy Board version specified, will assume QUT Teensy One
