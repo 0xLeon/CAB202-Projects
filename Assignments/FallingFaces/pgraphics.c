@@ -38,7 +38,7 @@ void p_draw_char(uint8_t x, uint8_t y, char c) {
 	c -= 32U;
 
 	if ((y_sb * LCD_X) < LCD_BUFFER_SIZE) {
-		if (0 == v_offset) {
+		if (0U == v_offset) {
 			for (uint8_t x_sb = x, i = 0; (i < 5U) && (x_sb < x_max); ++i, ++x_sb) {
 				screenBuffer[y_sb * LCD_X + x_sb] |= pgm_read_byte((&(ASCII[c][i])));
 			}
