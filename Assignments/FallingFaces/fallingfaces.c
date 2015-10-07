@@ -115,6 +115,7 @@ game_p create_falling_faces(void) {
 
 	game->lives = 3U;
 	game->score = 0U;
+	game->ended = 0U;
 
 	game->player = calloc(1U, sizeof(psprite_t));
 
@@ -203,6 +204,52 @@ ISR(TIMER1_OVF_vect) {
 	++timer1_ovfl;
 
 	if (timer1_ovfl >= 12U) {
+		if (game->ended) {
+			cli();
+
+			char *message;
+			
+			if (game->score >= 20U) {
+				message = "You Won!";
+			}
+			else if (0U == game->lives) {
+				message = "You Lost!";
+			}
+			else {
+				message = "Unexpected End!";
+			}
+
+			uint8_t i = 5U;
+			do {
+				p_clear_screen();
+				p_draw_string(1U, 16U, message);
+				p_draw_formatted_string(1U, 24U, "Restarting in %1d", i);
+				show_screen();
+				_delay_ms(1000.);
+				--i;
+			}
+			while (i > 0);
+
+			if (NULL != game->current_level->unload) {
+				game->current_level->unload(game->current_level, game);
+			}
+
+			game->ended = 0U;
+			game->lives = 3U;
+			game->score = 0U;
+
+			game->current_level = game->levels[0U];
+			game->current_level->load(game->current_level, game);
+
+			TCNT0 = 0U;
+			TCNT1 = 0U;
+			timer0_ovfl = 0U;
+			timer1_ovfl = 0U;
+			cli();
+
+			redraw = 1U;
+		}
+
 		if (redraw && (NULL != game->current_level->draw)) {
 			p_clear_screen();
 			game->current_level->draw(game->current_level, game);

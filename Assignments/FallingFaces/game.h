@@ -22,6 +22,8 @@ typedef struct game {
 
 	uint16_t lives;
 	uint16_t score;
+
+	uint8_t ended;
 } game_t;
 typedef game_t* game_p;
 

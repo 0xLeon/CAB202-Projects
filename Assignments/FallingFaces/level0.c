@@ -70,4 +70,6 @@ static uint8_t level0_update(level_p self, game_p game) {
 
 static void level0_unload(level_p self, game_p game) {
 	srand(rand_seed);
+	rand_seed = 0U;
+	chosen_level = 1U;
 }
