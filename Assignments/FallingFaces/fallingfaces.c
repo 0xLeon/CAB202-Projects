@@ -5,7 +5,6 @@
 #include "buttons.h"
 #include "hardware.h"
 #include "graphics.h"
-#include "sprite.h"
 #include "pgraphics.h"
 #include "game.h"
 #include "fallingfaces.h"
