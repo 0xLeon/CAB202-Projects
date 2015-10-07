@@ -76,6 +76,16 @@ static uint8_t level1_update(level_p self, game_p game) {
 		game->player->dx = 0.f;
 	}
 
+	if (didUpdate) {
+		if (game->player->x < 0U) {
+			game->player->x = 0.f;
+		}
+		else if (game->player->x >= (LCD_X - game->player->width)) {
+			game->player->x = LCD_X - game->player->width;
+		}
+	}
+
+
 	for (uint8_t i = 0U; i < game->face_count; ++i) {
 		float tmp = game->faces[i]->y;
 		game->faces[i]->y += game->faces[i]->dy;
