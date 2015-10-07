@@ -36,8 +36,10 @@ static void level1_load(level_p self, game_p game) {
 		game->faces[i]->dy = .4f;
 	}
 
-	game->player->is_visible = 1U;
+	game->player->x = (LCD_X - game->player->width) / 2U;
+	game->player->y = 40.f;
 	game->player->dx = 0.f;
+	game->player->is_visible = 1U;
 }
 
 static void level1_draw(level_p self, game_p game) {
