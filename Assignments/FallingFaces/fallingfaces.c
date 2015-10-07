@@ -12,11 +12,6 @@
 #include "level0.h"
 #include "level1.h"
 
-#define FACE_HAPPY	0U
-#define FACE_ANGRY	1U
-#define FACE_MAD	2U
-
-game_p create_falling_faces(void);
 void initializeTimers(void);
 
 unsigned char bm_face_happy[] = {
@@ -78,7 +73,6 @@ unsigned char bm_face_mad[] = {
 	0b00000001, 0b10000000,
 	0b11111111, 0b11111111
 };
-
 
 volatile uint8_t redraw = 1U;
 volatile game_p game = NULL;
