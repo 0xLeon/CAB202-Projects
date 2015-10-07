@@ -9,6 +9,10 @@ static void level1_load(level_p self, game_p game);
 static void level1_draw(level_p self, game_p game);
 static uint8_t level1_update(level_p self, game_p game);
 
+void respawn_faces(game_p game);
+static int rand_sort(const void *a, const void *b);
+
+
 level_p create_level1(game_p game) {
 	level_p level1 = calloc(1U, sizeof(level_t));
 
@@ -26,15 +30,14 @@ level_p create_level1(game_p game) {
 }
 
 static void level1_load(level_p self, game_p game) {
-	for (uint8_t i = 0U; i < game->face_count; ++i) {
-		game->faces[i]->is_visible = 1U;
-		game->faces[i]->dy = 1.f;
+	respawn_faces(game);
+
+	for (uint8_t i = 0; i < game->face_count; ++i) {
+		game->faces[i]->dy = .4f;
 	}
 
 	game->player->is_visible = 1U;
 	game->player->dx = 0.f;
-
-	// TODO: set positions
 }
 
 static void level1_draw(level_p self, game_p game) {
@@ -70,6 +73,7 @@ static uint8_t level1_update(level_p self, game_p game) {
 		}
 
 		game->player->x += game->player->dx;
+		
 		didUpdate = 1U;
 	}
 	else if (!btn1Pressed && btn1Changed) {
@@ -91,13 +95,41 @@ static uint8_t level1_update(level_p self, game_p game) {
 		game->faces[i]->y += game->faces[i]->dy;
 
 		didUpdate = didUpdate || (tmp != game->faces[i]->y);
+	}
 
-		if (game->faces[i]->y > LCD_Y) {
-			game->faces[i]->y = 10.f;
-
-			didUpdate = 1U;
-		}
+	if (game->faces[0]->y > LCD_Y) {
+		respawn_faces(game);
 	}
 
 	return didUpdate;
+}
+
+void respawn_faces(game_p game) {
+	uint8_t face_ids[] = {0U, 1U, 2U};
+	uint8_t max_xes[] = {15U, 47U, 68U};
+	// uint8_t max_xes[] = {26U, 47U, 68U};
+
+	qsort(face_ids, 3U, sizeof(uint8_t), rand_sort);
+
+	uint8_t min_x = 0U;
+	uint8_t max_x = 0U;
+	uint8_t current_x = 0U;
+	uint8_t current_face_id = 0U;
+
+	for (uint8_t i = 0; i < 3U; ++i) {
+		max_x = max_xes[i];
+		current_face_id = face_ids[i];
+
+		current_x = min_x + ((uint8_t) (rand() % (max_x - min_x + 1U)));
+
+		game->faces[current_face_id]->x = current_x;
+		game->faces[current_face_id]->y = 10.f;
+		game->faces[current_face_id]->is_visible = 1U;
+
+		min_x = current_x + game->faces[current_face_id]->width + 5U;
+	}
+}
+
+static int rand_sort(const void *a, const void *b) {
+	return (rand() % 2);
 }
