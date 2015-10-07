@@ -85,6 +85,19 @@ void p_draw_line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
 	draw_line(x1, y1, x2, y2);
 }
 
+
+void p_init_sprite(psprite_p sprite, float x, float y, uint8_t width, uint8_t height, uint8_t *bitmap) {
+	sprite->x = x;
+	sprite->y = y;
+	sprite->width = width;
+	sprite->height = height;
+	sprite->bitmap = bitmap;
+
+	sprite->is_visible = 1U;
+	sprite->dx = 0.f;
+	sprite->dy = 0.f;
+}
+
 void p_draw_sprite(const psprite_p sprite) {
 	if ((NULL == sprite) || !(sprite->is_visible)) {
 		return;

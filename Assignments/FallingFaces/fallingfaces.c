@@ -123,7 +123,7 @@ game_p create_falling_faces(void) {
 		return NULL;
 	}
 
-	init_sprite(game->player, 0.f, 40.f, 5U, 7U, NULL);
+	p_init_sprite(game->player, 0.f, 0.f, 5U, 7U, NULL);
 
 
 	game->faces[FACE_HAPPY] = calloc(1U, sizeof(psprite_t));
@@ -155,9 +155,9 @@ game_p create_falling_faces(void) {
 		return NULL;
 	}
 
-	init_sprite(game->faces[FACE_HAPPY], 0.f, 10.f, 16U, 16U, bm_face_happy);
-	init_sprite(game->faces[FACE_ANGRY], 20.f, 10.f, 16U, 16U, bm_face_angry);
-	init_sprite(game->faces[FACE_MAD], 40.f, 10.f, 16U, 16U, bm_face_mad);
+	p_init_sprite(game->faces[FACE_HAPPY], 0.f, 0.f, 16U, 16U, bm_face_happy);
+	p_init_sprite(game->faces[FACE_ANGRY], 0.f, 0.f, 16U, 16U, bm_face_angry);
+	p_init_sprite(game->faces[FACE_MAD], 0.f, 0.f, 16U, 16U, bm_face_mad);
 	game->face_count = 3;
 
 	return game;
