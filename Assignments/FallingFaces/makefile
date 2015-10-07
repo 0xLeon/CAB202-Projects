@@ -51,6 +51,7 @@ USELOADER = TRUE
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = pgraphics.c \
+      game.c \
       fallingfaces.c \
 	  level0.c \
 	  level1.c

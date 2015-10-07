@@ -3,6 +3,7 @@
 #include "lcd.h"
 #include "buttons.h"
 #include "pgraphics.h"
+#include "game.h"
 #include "level1.h"
 
 static void level1_load(level_p self, game_p game);
@@ -89,6 +90,8 @@ static uint8_t level1_update(level_p self, game_p game) {
 		else if (game->player->x >= (LCD_X - game->player->width)) {
 			game->player->x = LCD_X - game->player->width;
 		}
+
+		check_face_player_collision(game);
 	}
 
 
@@ -102,6 +105,8 @@ static uint8_t level1_update(level_p self, game_p game) {
 	if (game->faces[0]->y > LCD_Y) {
 		respawn_faces(game);
 	}
+
+	check_face_player_collision(game);
 
 	return didUpdate;
 }

@@ -128,6 +128,7 @@ game_p create_falling_faces(void) {
 
 
 	game->faces[FACE_HAPPY] = calloc(1U, sizeof(psprite_t));
+	game->face_collision_handlers[FACE_HAPPY] = default_collision_face_happy;
 
 	if (NULL == game->faces[FACE_HAPPY]) {
 		free(game->player);
@@ -137,6 +138,7 @@ game_p create_falling_faces(void) {
 
 
 	game->faces[FACE_ANGRY] = calloc(1U, sizeof(psprite_t));
+	game->face_collision_handlers[FACE_ANGRY] = default_collision_face_angry;
 
 	if (NULL == game->faces[FACE_ANGRY]) {
 		free(game->faces[FACE_HAPPY]);
@@ -147,6 +149,7 @@ game_p create_falling_faces(void) {
 
 
 	game->faces[FACE_MAD] = calloc(1U, sizeof(psprite_t));
+	game->face_collision_handlers[FACE_MAD] = default_collision_face_mad;
 
 	if (NULL == game->faces[FACE_MAD]) {
 		free(game->faces[FACE_ANGRY]);
