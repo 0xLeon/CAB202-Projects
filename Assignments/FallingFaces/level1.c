@@ -58,7 +58,7 @@ static void level1_draw(level_p self, game_p game) {
 static uint8_t level1_update(level_p self, game_p game) {
 	uint8_t didUpdate = 0U;
 
-	if (btn0Pressed) {
+	if (dpadLeftPressed) {
 		if (game->player->dx > -1.5f) {
 			game->player->dx -= .25f;
 		}
@@ -66,11 +66,11 @@ static uint8_t level1_update(level_p self, game_p game) {
 		game->player->x += game->player->dx;
 		didUpdate = 1U;
 	}
-	else if (!btn0Pressed && btn0Changed) {
+	else if (!dpadLeftPressed && dpadLeftChanged) {
 		game->player->dx = 0.f;
 	}
 
-	if (btn1Pressed) {
+	if (dpadRightPressed) {
 		if (game->player->dx < 1.5f) {
 			game->player->dx += .25f;
 		}
@@ -79,7 +79,7 @@ static uint8_t level1_update(level_p self, game_p game) {
 		
 		didUpdate = 1U;
 	}
-	else if (!btn1Pressed && btn1Changed) {
+	else if (!dpadRightPressed && dpadRightChanged) {
 		game->player->dx = 0.f;
 	}
 

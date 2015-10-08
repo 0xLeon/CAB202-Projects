@@ -186,6 +186,8 @@ ISR(TIMER0_OVF_vect) {
 	if (timer0_ovfl >= 24U) {
 		debounceBtn0();
 		debounceBtn1();
+		debounceDpadLeft();
+		debounceDpadRight();
 		timer0_ovfl = 0U;
 		TCNT0 = 0U;
 	}
@@ -258,6 +260,8 @@ ISR(TIMER1_OVF_vect) {
 
 		btn0Changed = 0U;
 		btn1Changed = 0U;
+		dpadLeftChanged = 0U;
+		dpadRightChanged = 0U;
 		timer1_ovfl = 0U;
 		TCNT1 = 0U;
 	}

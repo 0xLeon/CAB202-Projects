@@ -37,7 +37,7 @@ TDKLIB = -ltdk
 
 
 # QUT Teensy Board Version
-QUT_TEENSY_VERSION = ONE
+QUT_TEENSY_VERSION = TWO
 
 
 # Flag to tell make to call the cli teensy loader
