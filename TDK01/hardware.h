@@ -93,6 +93,7 @@ void initializeHardware(void) {
 #endif
 
 	BTN0_CONF;
+	BTN1_CONF;
 	LED0_CONF;
 	LED1_CONF;
 	LED2_CONF;
