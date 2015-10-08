@@ -21,6 +21,14 @@ void p_clear_screen(void) {
 	memset(screenBuffer, 0U, LCD_BUFFER_SIZE);
 }
 
+void p_show_screen(void) {
+	LCDPosition(0U, 0U);
+
+	for (uint16_t i = 0U; i < LCD_BUFFER_SIZE; ++i) {
+		LCDWrite(LCD_D, screenBuffer[i]);
+	}
+}
+
 void p_draw_char(uint8_t x, uint8_t y, char c) {
 	if ((c < 32U) || (c > 127U)) {
 		return;
