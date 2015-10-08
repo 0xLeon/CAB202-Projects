@@ -40,9 +40,9 @@ static void level0_load(level_p self, game_p game) {
 }
 
 static void level0_draw(level_p self, game_p game) {
-	p_draw_string(1U, 0U, "Stefan Hahn");
-	p_draw_string(1U, 8U, "n9529977");
-	p_draw_formatted_string(1U, 16U, "Level: %1d", chosen_level);
+	p_draw_string(1U, 12U, "Stefan Hahn");
+	p_draw_string(1U, 20U, "n9529977");
+	p_draw_formatted_string(1U, 28U, "Level: %1d", chosen_level);
 }
 
 static uint8_t level0_update(level_p self, game_p game) {
