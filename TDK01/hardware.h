@@ -14,59 +14,59 @@
 #endif
 
 #if defined(QUT_TEENSY_ONE)
-#define BTN0_CONF	(DDRB &= ~(1 << PORTB0))
-#define BTN0_PRESSED	((PINB & (1 << PORTB0)) >> PORTB0)
-#define BTN1_CONF	(DDRB &= ~(1 << PORTB1))
-#define BTN1_PRESSED	((PINB & (1 << PORTB1)) >> PORTB1)
+#define BTN0_CONF	(DDRB &= ~(1U << PORTB0))
+#define BTN0_PRESSED	((PINB & (1U << PORTB0)) >> PORTB0)
+#define BTN1_CONF	(DDRB &= ~(1U << PORTB1))
+#define BTN1_PRESSED	((PINB & (1U << PORTB1)) >> PORTB1)
 #elif defined(QUT_TEENSY_TWO)
-#define BTN0_CONF	(DDRF &= ~(1 << PORTF6))
-#define BTN0_PRESSED	((PINF & (1 << PORTF6)) >> PORTF6)
-#define BTN1_CONF	(DDRF &= ~(1 << PORTF5))
-#define BTN1_PRESSED	((PINF & (1 << PORTF5)) >> PORTF5)
+#define BTN0_CONF	(DDRF &= ~(1U << PORTF6))
+#define BTN0_PRESSED	((PINF & (1U << PORTF6)) >> PORTF6)
+#define BTN1_CONF	(DDRF &= ~(1U << PORTF5))
+#define BTN1_PRESSED	((PINF & (1U << PORTF5)) >> PORTF5)
 
-#define DPAD_CONFIG		((DDRD &= ~((1 << PORTD0) | (1 << PORTD1))), (DDRB &= ~((1 << PORTB0) | (1 << PORTB1) | (1 << PORTB7))))
-#define DPAD_UP_PRESSED		((PIND & (1 << PORTD1)) >> PORTD1)
-#define DPAD_DOWN_PRESSED	((PINB & (1 << PORTB7)) >> PORTB7)
-#define DPAD_LEFT_PRESSED	((PINB & (1 << PORTB1)) >> PORTB1)
-#define DPAD_RIGHT_PRESSED	((PIND & (1 << PORTD0)) >> PORTD0)
-#define DPAD_CENTER_PRESSED	((PINB & (1 << PORTB0)) >> PORTB0)
+#define DPAD_CONFIG		((DDRD &= ~((1U << PORTD0) | (1U << PORTD1))), (DDRB &= ~((1U << PORTB0) | (1U << PORTB1) | (1U << PORTB7))))
+#define DPAD_UP_PRESSED		((PIND & (1U << PORTD1)) >> PORTD1)
+#define DPAD_DOWN_PRESSED	((PINB & (1U << PORTB7)) >> PORTB7)
+#define DPAD_LEFT_PRESSED	((PINB & (1U << PORTB1)) >> PORTB1)
+#define DPAD_RIGHT_PRESSED	((PIND & (1U << PORTD0)) >> PORTD0)
+#define DPAD_CENTER_PRESSED	((PINB & (1U << PORTB0)) >> PORTB0)
 #endif
 
-#define LED0_CONF	(DDRB |= (1 << PORTB2))
-#define LED0_ON		(PORTB |= (1 << PORTB2))
-#define LED0_OFF	(PORTB &= ~(1 << PORTB2))
-#define LED0_TOGGLE	(PORTB ^= (1 << PORTB2))
+#define LED0_CONF	(DDRB |= (1U << PORTB2))
+#define LED0_ON		(PORTB |= (1U << PORTB2))
+#define LED0_OFF	(PORTB &= ~(1U << PORTB2))
+#define LED0_TOGGLE	(PORTB ^= (1U << PORTB2))
 
-#define LED1_CONF	(DDRB |= (1 << PORTB3))
-#define LED1_ON		(PORTB |= (1 << PORTB3))
-#define LED1_OFF	(PORTB &= ~(1 << PORTB3))
-#define LED1_TOGGLE	(PORTB ^= (1 << PORTB3))
+#define LED1_CONF	(DDRB |= (1U << PORTB3))
+#define LED1_ON		(PORTB |= (1U << PORTB3))
+#define LED1_OFF	(PORTB &= ~(1U << PORTB3))
+#define LED1_TOGGLE	(PORTB ^= (1U << PORTB3))
 
-#define	LED2_CONF	(DDRD |= (1 << PORTD6))
-#define LED2_ON		(PORTD |= (1 << PORTD6))
-#define LED2_OFF	(PORTD &= ~(1 << PORTD6))
-#define LED2_TOGGLE	(PORTD ^= (1 << PORTD6))
+#define	LED2_CONF	(DDRD |= (1U << PORTD6))
+#define LED2_ON		(PORTD |= (1U << PORTD6))
+#define LED2_OFF	(PORTD &= ~(1U << PORTD6))
+#define LED2_TOGGLE	(PORTD ^= (1U << PORTD6))
 
-volatile uint8_t btn0Pressed = 0;
-volatile uint8_t btn0Changed = 0;
-volatile uint8_t btn1Pressed = 0;
-volatile uint8_t btn1Changed = 0;
+volatile uint8_t btn0Pressed = 0U;
+volatile uint8_t btn0Changed = 0U;
+volatile uint8_t btn1Pressed = 0U;
+volatile uint8_t btn1Changed = 0U;
 
 #ifdef QUT_TEENSY_TWO
-volatile uint8_t dpadUpPressed = 0;
-volatile uint8_t dpadUpChanged = 0;
+volatile uint8_t dpadUpPressed = 0U;
+volatile uint8_t dpadUpChanged = 0U;
 
-volatile uint8_t dpadDownPressed = 0;
-volatile uint8_t dpadDownChanged = 0;
+volatile uint8_t dpadDownPressed = 0U;
+volatile uint8_t dpadDownChanged = 0U;
 
-volatile uint8_t dpadLeftPressed = 0;
-volatile uint8_t dpadLeftChanged = 0;
+volatile uint8_t dpadLeftPressed = 0U;
+volatile uint8_t dpadLeftChanged = 0U;
 
-volatile uint8_t dpadRightPressed = 0;
-volatile uint8_t dpadRightChanged = 0;
+volatile uint8_t dpadRightPressed = 0U;
+volatile uint8_t dpadRightChanged = 0U;
 
-volatile uint8_t dpadCenterPressed = 0;
-volatile uint8_t dpadCenterChanged = 0;
+volatile uint8_t dpadCenterPressed = 0U;
+volatile uint8_t dpadCenterChanged = 0U;
 #endif
 
 void initializeHardware(void);
@@ -155,116 +155,116 @@ void debounceDpad(void) {
 }
 
 void debounceDpadUp(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_UP_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadUpPressed = raw_state;
 			dpadUpChanged = (button_state != raw_state) || dpadUpChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadDown(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_DOWN_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadDownPressed = raw_state;
 			dpadDownChanged = (button_state != raw_state) || dpadDownChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadLeft(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_LEFT_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadLeftPressed = raw_state;
 			dpadLeftChanged = (button_state != raw_state) || dpadLeftChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadRight(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_RIGHT_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadRightPressed = raw_state;
 			dpadRightChanged = (button_state != raw_state) || dpadRightChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadCenter(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_CENTER_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadCenterPressed = raw_state;
 			dpadCenterChanged = (button_state != raw_state) || dpadCenterChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }

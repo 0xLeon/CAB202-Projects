@@ -66,6 +66,7 @@ void debounceBtn1(void) {
 		--count;
 	}
 }
+
 #ifdef QUT_TEENSY_TWO
 void debounceDpad(void) {
 	debounceDpadUp();
@@ -76,116 +77,116 @@ void debounceDpad(void) {
 }
 
 void debounceDpadUp(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_UP_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadUpPressed = raw_state;
 			dpadUpChanged = (button_state != raw_state) || dpadUpChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadDown(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_DOWN_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadDownPressed = raw_state;
 			dpadDownChanged = (button_state != raw_state) || dpadDownChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadLeft(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_LEFT_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadLeftPressed = raw_state;
 			dpadLeftChanged = (button_state != raw_state) || dpadLeftChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadRight(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_RIGHT_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadRightPressed = raw_state;
 			dpadRightChanged = (button_state != raw_state) || dpadRightChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }
 
 void debounceDpadCenter(void) {
-	static uint8_t count = 0;
-	static uint8_t button_state = 0;
+	static uint8_t count = 0U;
+	static uint8_t button_state = 0U;
 
 	uint8_t raw_state = DPAD_CENTER_PRESSED;
 
 	if (raw_state != button_state) {
-		if (count <= 0) {
+		if (count <= 0U) {
 			dpadCenterPressed = raw_state;
 			dpadCenterChanged = (button_state != raw_state) || dpadCenterChanged;
 			button_state = raw_state;
 
-			count = 4;
+			count = 4U;
 		}
 		else {
 			--count;
 		}
 	}
-	else if (count > 0) {
+	else if (count > 0U) {
 		--count;
 	}
 }

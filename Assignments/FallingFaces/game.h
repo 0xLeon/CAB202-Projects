@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include "pgraphics.h"
 
+#define GAME_SIGNUM(x)		(((x) > 0U) - ((x) < 0U))
+#define GAME_ABSOLUTE(x)	((x) * (GAME_SIGNUM(x)))
+
 struct game;
 typedef void (*collision_function_p)(struct game*);
 
