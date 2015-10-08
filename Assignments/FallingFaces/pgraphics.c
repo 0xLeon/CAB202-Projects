@@ -41,24 +41,25 @@ void p_draw_char(uint8_t x, uint8_t y, char c) {
 
 	uint8_t x_max = MIN((x + 5U), LCD_X);
 	uint8_t v_offset = y - (((uint8_t) floor(y / 8.f)) * 8U);
-	uint8_t y_sb = ((uint8_t) floor(y / 8.f));
+	uint16_t y_sb = ((uint16_t) floor(y / 8.f)) * LCD_X;
 
 	c -= 32U;
 
-	if ((y_sb * LCD_X) < LCD_BUFFER_SIZE) {
+	if (y_sb < LCD_BUFFER_SIZE) {
 		if (0U == v_offset) {
 			for (uint8_t x_sb = x, i = 0; (i < 5U) && (x_sb < x_max); ++i, ++x_sb) {
-				screenBuffer[y_sb * LCD_X + x_sb] |= pgm_read_byte((&(ASCII[c][i])));
+				screenBuffer[y_sb + x_sb] |= pgm_read_byte((&(ASCII[c][i])));
 			}
 		}
 		else {
 			uint8_t i_v_offset = 8U - v_offset;
+			uint16_t inc_y_sb = y_sb + LCD_X;
 
 			for (uint8_t x_sb = x, i = 0; (i < 5U) && (x_sb < x_max); ++i, ++x_sb) {
-				screenBuffer[y_sb * LCD_X + x_sb] |= (pgm_read_byte((&(ASCII[c][i]))) << v_offset);
+				screenBuffer[y_sb + x_sb] |= (pgm_read_byte((&(ASCII[c][i]))) << v_offset);
 
-				if (((y_sb + 1U) * LCD_X) < LCD_BUFFER_SIZE) {
-					screenBuffer[y_sb * LCD_X + x_sb] |= (pgm_read_byte((&(ASCII[c][i]))) >> i_v_offset);
+				if (inc_y_sb < LCD_BUFFER_SIZE) {
+					screenBuffer[inc_y_sb + x_sb] |= (pgm_read_byte((&(ASCII[c][i]))) >> i_v_offset);
 				}
 			}
 		}
