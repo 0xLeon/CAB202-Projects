@@ -1,7 +1,7 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <avr/io.h>
 #include "cpu_speed.h"
 #include "lcd.h"
@@ -47,26 +47,26 @@
 #define LED2_OFF	(PORTD &= ~(1 << PORTD6))
 #define LED2_TOGGLE	(PORTD ^= (1 << PORTD6))
 
-volatile unsigned char btn0Pressed = 0;
-volatile unsigned char btn0Changed = 0;
-volatile unsigned char btn1Pressed = 0;
-volatile unsigned char btn1Changed = 0;
+volatile uint8_t btn0Pressed = 0;
+volatile uint8_t btn0Changed = 0;
+volatile uint8_t btn1Pressed = 0;
+volatile uint8_t btn1Changed = 0;
 
 #ifdef QUT_TEENSY_TWO
-volatile unsigned char dpadUpPressed = 0;
-volatile unsigned char dpadUpChanged = 0;
+volatile uint8_t dpadUpPressed = 0;
+volatile uint8_t dpadUpChanged = 0;
 
-volatile unsigned char dpadDownPressed = 0;
-volatile unsigned char dpadDownChanged = 0;
+volatile uint8_t dpadDownPressed = 0;
+volatile uint8_t dpadDownChanged = 0;
 
-volatile unsigned char dpadLeftPressed = 0;
-volatile unsigned char dpadLeftChanged = 0;
+volatile uint8_t dpadLeftPressed = 0;
+volatile uint8_t dpadLeftChanged = 0;
 
-volatile unsigned char dpadRightPressed = 0;
-volatile unsigned char dpadRightChanged = 0;
+volatile uint8_t dpadRightPressed = 0;
+volatile uint8_t dpadRightChanged = 0;
 
-volatile unsigned char dpadCenterPressed = 0;
-volatile unsigned char dpadCenterChanged = 0;
+volatile uint8_t dpadCenterPressed = 0;
+volatile uint8_t dpadCenterChanged = 0;
 #endif
 
 void initializeHardware(void);
