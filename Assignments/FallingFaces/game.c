@@ -33,6 +33,7 @@ void check_face_player_collision(game_p game) {
 		if (game->faces[i]->is_visible && sprites_collided(game->faces[i], game->player)) {
 			game->faces[i]->is_visible = 0U;
 			game->face_collision_handlers[i](game);
+			--(game->active_face_count);
 			break;
 		}
 	}

@@ -37,6 +37,7 @@ static void level0_load(level_p self, game_p game) {
 	}
 
 	game->player->is_visible = 0U;
+	game->active_face_count = 0U;
 }
 
 static void level0_draw(level_p self, game_p game) {

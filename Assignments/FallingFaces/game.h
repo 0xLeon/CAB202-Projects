@@ -26,6 +26,7 @@ typedef struct game {
 	psprite_p faces[3];
 	collision_function_p face_collision_handlers[3];
 	uint8_t face_count;
+	uint8_t active_face_count;
 
 	uint16_t lives;
 	uint16_t score;

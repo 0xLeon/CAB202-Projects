@@ -156,6 +156,7 @@ game_p create_falling_faces(void) {
 	p_init_sprite(game->faces[FACE_ANGRY], 0.f, 0.f, 16U, 16U, bm_face_angry);
 	p_init_sprite(game->faces[FACE_MAD], 0.f, 0.f, 16U, 16U, bm_face_mad);
 	game->face_count = 3;
+	game->active_face_count = 3U;
 
 	return game;
 }

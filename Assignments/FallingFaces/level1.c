@@ -102,7 +102,7 @@ static uint8_t level1_update(level_p self, game_p game) {
 		didUpdate = didUpdate || (tmp != game->faces[i]->y);
 	}
 
-	if (game->faces[0]->y > LCD_Y) {
+	if ((0U == game->active_face_count) || (game->faces[0]->y > LCD_Y)) {
 		respawn_faces(game);
 	}
 
@@ -135,6 +135,8 @@ void respawn_faces(game_p game) {
 
 		min_x = current_x + game->faces[current_face_id]->width + 5U;
 	}
+
+	game->active_face_count = 3U;
 }
 
 static int rand_sort(const void *a, const void *b) {
