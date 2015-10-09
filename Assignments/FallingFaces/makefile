@@ -35,6 +35,12 @@ TDKDIR = ../../TDK01
 # Name of the build library
 TDKLIB = -ltdk
 
+# USB Serial library folder
+USBSERIALDIR = ../../USBSerial
+
+# Name of the USB Serial library
+USBSERIALLIB = -lusbserial
+
 
 # QUT Teensy Board Version
 QUT_TEENSY_VERSION = TWO
@@ -55,7 +61,8 @@ SRC = pgraphics.c \
       fallingfaces.c \
 	  level0.c \
 	  level1.c \
-	  level2.c
+	  level2.c \
+	  level3.c
 
 
 # MCU name, you MUST set this to match the board you are using
@@ -148,6 +155,7 @@ CFLAGS += -Wstrict-prototypes
 #CFLAGS += -Wsign-compare
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += -I$(TDKDIR)
+CFLAGS += -I$(USBSERIALDIR)
 
 
 
@@ -208,8 +216,10 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += $(EXTMEMOPTS)
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
 LDFLAGS += -L$(TDKDIR)
+LDFLAGS += -L$(USBSERIALDIR)
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 LDFLAGS += $(TDKLIB)
+LDFLAGS += $(USBSERIALLIB)
 
 
 
