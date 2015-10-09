@@ -59,8 +59,8 @@ static uint8_t level1_update(level_p self, game_p game) {
 	uint8_t didUpdate = 0U;
 
 	if (dpadLeftPressed) {
-		if (game->player->dx > -1.5f) {
-			game->player->dx -= .25f;
+		if (game->player->dx > -2.f) {
+			game->player->dx -= .4f;
 		}
 
 		game->player->x += game->player->dx;
@@ -71,8 +71,8 @@ static uint8_t level1_update(level_p self, game_p game) {
 	}
 
 	if (dpadRightPressed) {
-		if (game->player->dx < 1.5f) {
-			game->player->dx += .25f;
+		if (game->player->dx < 2.f) {
+			game->player->dx += .4f;
 		}
 
 		game->player->x += game->player->dx;
