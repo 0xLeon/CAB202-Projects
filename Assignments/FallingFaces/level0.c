@@ -38,6 +38,9 @@ static void level0_load(level_p self, game_p game) {
 
 	game->player->is_visible = 0U;
 	game->active_face_count = 0U;
+
+	rand_seed = 0U;
+	chosen_level = 1U;
 }
 
 static void level0_draw(level_p self, game_p game) {
@@ -71,6 +74,4 @@ static uint8_t level0_update(level_p self, game_p game) {
 
 static void level0_unload(level_p self, game_p game) {
 	srand(rand_seed);
-	rand_seed = 0U;
-	chosen_level = 1U;
 }
