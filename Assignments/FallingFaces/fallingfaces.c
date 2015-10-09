@@ -11,6 +11,7 @@
 
 #include "level0.h"
 #include "level1.h"
+#include "level2.h"
 
 void initializeTimers(void);
 
@@ -102,7 +103,7 @@ game_p create_falling_faces(void) {
 
 	game->levels[0U] = create_level0(game);
 	game->levels[1U] = create_level1(game);
-	// game->levels[2U] = create_level2(game);
+	game->levels[2U] = create_level2(game);
 	// game->levels[3U] = create_level3(game);
 	game->current_level = game->levels[0U];
 

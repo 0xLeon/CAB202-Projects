@@ -54,7 +54,8 @@ SRC = pgraphics.c \
       game.c \
       fallingfaces.c \
 	  level0.c \
-	  level1.c
+	  level1.c \
+	  level2.c
 
 
 # MCU name, you MUST set this to match the board you are using
