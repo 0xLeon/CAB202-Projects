@@ -118,6 +118,47 @@ static uint8_t level3_update(level_p self, game_p game) {
 		spawn_faces(game);
 	}
 
+	uint8_t old_x = 0U;
+	uint8_t old_y = 0U;
+
+	for (uint8_t i = 0U; i < game->face_count; ++i) {
+		if (game->faces[i]->is_visible) {
+			old_x = (uint8_t) game->faces[i]->x;
+			old_y = (uint8_t) game->faces[i]->y;
+
+			game->faces[i]->x += game->faces[i]->dx;
+			game->faces[i]->y += game->faces[i]->dy;
+
+			if (game->faces[i]->x < 0U) {
+				game->faces[i]->x = 0.f;
+
+				game->faces[i]->dx *= -1;
+				game->faces[i]->x += game->faces[i]->dx;
+			}
+			else if (game->faces[i]->x >= (LCD_X - game->faces[i]->width)) {
+				game->faces[i]->x = LCD_X - game->faces[i]->width - 1U;
+
+				game->faces[i]->dx *= -1;
+				game->faces[i]->x += game->faces[i]->dx;
+			}
+
+			if (game->faces[i]->y < 9U) {
+				game->faces[i]->y = 9.f;
+
+				game->faces[i]->dy *= -1;
+				game->faces[i]->y += game->faces[i]->dy;
+			}
+			else if (game->faces[i]->y >= (LCD_Y - game->faces[i]->height)) {
+				game->faces[i]->y = LCD_Y - game->faces[i]->height - 1U;
+
+				game->faces[i]->dy *= -1;
+				game->faces[i]->y += game->faces[i]->dy;
+			}
+
+			didUpdate = didUpdate || (old_x != ((uint8_t) game->faces[i]->x)) || (old_y != ((uint8_t) game->faces[i]->y));
+		}
+	}
+
 	return didUpdate;
 }
 
