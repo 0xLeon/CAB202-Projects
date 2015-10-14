@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "buttons.h"
+#include "graphics.h"
 #include "pgraphics.h"
 #include "game.h"
 
