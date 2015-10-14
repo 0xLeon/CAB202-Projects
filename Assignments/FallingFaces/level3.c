@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 #include "usb_serial.h"
 #include "lcd.h"
