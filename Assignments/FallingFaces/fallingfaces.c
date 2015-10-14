@@ -254,7 +254,7 @@ ISR(TIMER1_OVF_vect) {
 		if (redraw && (NULL != game->current_level->draw)) {
 			p_clear_screen();
 			game->current_level->draw(game->current_level, game);
-			show_screen();
+			p_show_screen();
 		}
 		
 		if (NULL != game->current_level->update) {
