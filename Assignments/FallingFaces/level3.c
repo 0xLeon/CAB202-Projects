@@ -114,6 +114,10 @@ static uint8_t level3_update(level_p self, game_p game) {
 		}
 	}
 
+	if (game->active_face_count < game->face_count) {
+		spawn_faces(game);
+	}
+
 	return didUpdate;
 }
 
