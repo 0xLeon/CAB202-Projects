@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "usb_serial.h"
+#include "lcd.h"
 #include "pgraphics.h"
 #include "level3.h"
 
@@ -8,6 +9,7 @@ static uint8_t level3_update(level_p self, game_p game);
 static void level3_draw(level_p self, game_p game);
 static void level3_unload(level_p self, game_p game);
 
+static void spawn_player(game_p game);
 static void spawn_faces(game_p game);
 
 level_p create_level3(game_p game) {
@@ -27,6 +29,7 @@ level_p create_level3(game_p game) {
 }
 
 static void level3_load(level_p self, game_p game) {
+	spawn_player(game);
 	spawn_faces(game);
 
 	p_clear_screen();
@@ -54,6 +57,11 @@ static void level3_draw(level_p self, game_p game) {
 
 static void level3_unload(level_p self, game_p game) {
 	return;
+}
+
+static void spawn_player(game_p game) {
+	game->player->x = rand() % (LCD_X - game->player->width);
+	game->player->y = 9U + (rand() % (LCD_Y - 9U - game->player->height));
 }
 
 static void spawn_faces(game_p game) {
