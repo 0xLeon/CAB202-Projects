@@ -4,7 +4,12 @@
 #include "lcd.h"
 #include "pgraphics.h"
 #include "game.h"
+#include "fallingfaces.h"
 #include "level3.h"
+
+#define SPEED_MODE_SLOW		0U
+#define SPEED_MODE_MED		1U
+#define SPEED_MODE_FAST		2U
 
 static void level3_load(level_p self, game_p game);
 static uint8_t level3_update(level_p self, game_p game);
@@ -15,6 +20,11 @@ static void spawn_player(game_p game);
 static void spawn_faces(game_p game);
 static uint8_t find_valid_face_location(psprite_p face, game_p game);
 static void randomize_travel_direction(psprite_p sprite, double speed);
+static void level3_collision_face_mad(game_p game);
+
+const static double speed_mode_speeds[] = {.4, .8, 1.2};
+
+static uint8_t speed_mode = SPEED_MODE_SLOW;
 
 level_p create_level3(game_p game) {
 	level_p level3 = calloc(1U, sizeof(level_t));
@@ -33,11 +43,15 @@ level_p create_level3(game_p game) {
 }
 
 static void level3_load(level_p self, game_p game) {
+	speed_mode = SPEED_MODE_SLOW;
+
 	for (uint8_t i = 0U; i < game->face_count; ++i) {
 		game->faces[i]->is_visible = 0U;
 		game->faces[i]->dx = 0.f;
 		game->faces[i]->dy = 0.f;
 	}
+
+	game->face_collision_handlers[FACE_MAD] = level3_collision_face_mad;
 
 	game->active_face_count = 0U;
 
@@ -210,7 +224,7 @@ static void level3_draw(level_p self, game_p game) {
 }
 
 static void level3_unload(level_p self, game_p game) {
-	return;
+	game->face_collision_handlers[FACE_MAD] = default_collision_face_mad;
 }
 
 static void spawn_player(game_p game) {
@@ -222,7 +236,7 @@ static void spawn_faces(game_p game) {
 	for (uint8_t i = 0U; (i < game->face_count) && (game->active_face_count < game->face_count); ++i) {
 		if (!game->faces[i]->is_visible) {
 			if (find_valid_face_location(game->faces[i], game)) {
-				randomize_travel_direction(game->faces[i], .4);
+				randomize_travel_direction(game->faces[i], speed_mode_speeds[speed_mode]);
 				game->faces[i]->is_visible = 1U;
 				++(game->active_face_count);
 			}
@@ -271,4 +285,21 @@ static void randomize_travel_direction(psprite_p sprite, double speed) {
 
 	sprite->dx = ((float) (sin(angle) * speed));
 	sprite->dy = ((float) (cos(angle) * speed));
+}
+
+static void level3_collision_face_mad(game_p game) {
+	if (speed_mode >= 2U) {
+		return;
+	}
+
+	++speed_mode;
+
+	for (uint8_t i = 0U; i < game->face_count; ++i) {
+		if (game->faces[i]->is_visible) {
+			double angle = atan2(game->faces[i]->dy, game->faces[i]->dx);
+
+			game->faces[i]->dx = ((float) GAME_SIGNUM(game->faces[i]->dx) * sin(angle) * speed_mode_speeds[speed_mode]);
+			game->faces[i]->dy = ((float) GAME_SIGNUM(game->faces[i]->dy) * sin(angle) * speed_mode_speeds[speed_mode]);
+		}
+	}
 }
