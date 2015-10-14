@@ -5,6 +5,7 @@
 
 static void level3_load(level_p self, game_p game);
 static uint8_t level3_update(level_p self, game_p game);
+static void level3_draw(level_p self, game_p game);
 static void level3_unload(level_p self, game_p game);
 
 static void spawn_faces(game_p game);
@@ -18,7 +19,7 @@ level_p create_level3(game_p game) {
 	}
 
 	level3->load = level3_load;
-	level3->draw = game->levels[1U]->draw;
+	level3->draw = level3_draw;
 	level3->update = level3_update;
 	level3->unload = level3_unload;
 
@@ -43,6 +44,10 @@ static void level3_load(level_p self, game_p game) {
 
 static uint8_t level3_update(level_p self, game_p game) {
 	return 0U;
+}
+
+static void level3_draw(level_p self, game_p game) {
+	game->levels[1U]->draw(self, game);
 }
 
 static void level3_unload(level_p self, game_p game) {
