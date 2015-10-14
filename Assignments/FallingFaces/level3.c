@@ -39,8 +39,10 @@ static void level3_load(level_p self, game_p game) {
 	usb_init();
 
 	while (!usb_configured() || !usb_serial_get_control());
-}
 
+	usb_serial_flush_input();
+	usb_serial_flush_output();
+}
 
 static uint8_t level3_update(level_p self, game_p game) {
 	return 0U;
