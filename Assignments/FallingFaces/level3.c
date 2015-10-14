@@ -60,7 +60,58 @@ static void level3_load(level_p self, game_p game) {
 }
 
 static uint8_t level3_update(level_p self, game_p game) {
-	return 0U;
+	uint8_t didUpdate = 0U;
+	int16_t c = 0U;
+
+	c = usb_serial_getchar();
+
+	if (c > 0U) {
+		float player_current_x = game->player->x;
+		float player_current_y = game->player->y;
+
+		switch (c) {
+			case 'a':
+				game->player->x -= game->player->dx;
+
+				if (game->player->x <= 0U) {
+					game->player->x = 0U;
+				}
+
+				break;
+			case 'd':
+				game->player->x += game->player->dx;
+
+				if (game->player->x >= (LCD_X - game->player->width)) {
+					game->player->x = LCD_X - game->player->width;
+				}
+
+				break;
+			case 'w':
+				game->player->y -= game->player->dy;
+
+				if (game->player->y <= 9U) {
+					game->player->y = 9U;
+				}
+
+				break;
+			case 's':
+				game->player->y += game->player->dy;
+
+				if (game->player->y >= (LCD_Y - game->player->height)) {
+					game->player->y = LCD_Y - game->player->height;
+				}
+
+				break;
+		}
+
+		didUpdate = (player_current_x != game->player->x) || (player_current_y != game->player->y);
+
+		if (didUpdate) {
+			check_face_player_collision(game);
+		}
+	}
+
+	return didUpdate;
 }
 
 static void level3_draw(level_p self, game_p game) {
