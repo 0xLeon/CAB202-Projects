@@ -135,6 +135,7 @@ static uint8_t level3_update(level_p self, game_p game) {
 
 	uint8_t old_x = 0U;
 	uint8_t old_y = 0U;
+	uint8_t face_didUpdate = 0U;
 
 	for (uint8_t i = 0U; i < game->face_count; ++i) {
 		if (game->faces[i]->is_visible) {
@@ -213,7 +214,17 @@ static uint8_t level3_update(level_p self, game_p game) {
 				}
 			}
 
-			didUpdate = didUpdate || (old_x != ((uint8_t) game->faces[i]->x)) || (old_y != ((uint8_t) game->faces[i]->y));
+			face_didUpdate = (old_x != ((uint8_t) game->faces[i]->x)) || (old_y != ((uint8_t) game->faces[i]->y));
+
+			if (face_didUpdate) {
+				didUpdate = 1U;
+
+				if (sprites_collided(game->faces[i], game->player)) {
+					game->faces[i]->is_visible = 0U;
+					game->face_collision_handlers[i](game);
+					--(game->active_face_count);
+				}
+			}
 		}
 	}
 
