@@ -44,6 +44,9 @@ static void level3_load(level_p self, game_p game) {
 	spawn_player(game);
 	spawn_faces(game);
 
+	game->player->dx = 2.f;
+	game->player->dy = 2.f;
+
 	p_clear_screen();
 
 	p_draw_string(14U, 15U, "Waiting for");
