@@ -155,6 +155,49 @@ static uint8_t level3_update(level_p self, game_p game) {
 				game->faces[i]->y += game->faces[i]->dy;
 			}
 
+			for (uint8_t j = 0U; j < game->face_count; ++j) {
+				if ((game->faces[i] != game->faces[j]) && game->faces[j]->is_visible && sprites_collided(game->faces[i], game->faces[j])) {
+					double delta_x = game->faces[j]->x - game->faces[i]->x;
+					double delta_y = game->faces[i]->y - game->faces[j]->y;
+
+					double angle = (atan2(delta_y, delta_x) * 180.) / M_PI;
+
+					if (angle < 0U) {
+						angle += 360U;
+					}
+
+					double angle_m45 = angle - 45.;
+					double angle_m135 = angle - 135.;
+					double angle_m225 = angle - 225.;
+					double angle_m315 = angle - 315.;
+
+					if ((GAME_ABSOLUTE(angle_m45) < .01) || (GAME_ABSOLUTE(angle_m135) < .01) || (GAME_ABSOLUTE(angle_m225) < .01) || (GAME_ABSOLUTE(angle_m315) < .01)) {
+						game->faces[i]->x -= game->faces[i]->dx;
+						game->faces[i]->y -= game->faces[i]->dy;
+						
+						game->faces[i]->dx *= -1;
+						game->faces[i]->dy *= -1;
+
+						game->faces[i]->x += game->faces[i]->dx;
+						game->faces[i]->y += game->faces[i]->dy;
+					}
+					else if (((angle > 45.) && (angle < 135.)) || ((angle > 225.) && (angle < 315.))) {
+						// top or bottom
+						game->faces[i]->y -= game->faces[i]->dy;
+						game->faces[i]->dy *= -1;
+						game->faces[i]->y += game->faces[i]->dy;
+					}
+					else {
+						// left or right
+						game->faces[i]->x -= game->faces[i]->dx;
+						game->faces[i]->dx *= -1;
+						game->faces[i]->x += game->faces[i]->dx;
+					}
+
+					break;
+				}
+			}
+
 			didUpdate = didUpdate || (old_x != ((uint8_t) game->faces[i]->x)) || (old_y != ((uint8_t) game->faces[i]->y));
 		}
 	}
