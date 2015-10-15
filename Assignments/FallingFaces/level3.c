@@ -273,7 +273,7 @@ static uint8_t find_valid_face_location(psprite_p test_face, game_p game) {
 		test_face_padded_ptr->y = test_face->y - 5U;
 		didCollide = 0U;
 
-		if (sprites_collided(test_face, game->player)) {
+		if (sprites_collided(test_face_padded_ptr, game->player)) {
 			continue;
 		}
 
