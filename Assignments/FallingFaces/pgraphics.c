@@ -29,7 +29,7 @@ void p_show_screen(void) {
 	}
 }
 
-void p_draw_char(uint8_t x, uint8_t y, char c) {
+void p_draw_char(uint8_t x, uint8_t y, uint8_t c) {
 	if ((c < 32U) || (c > 127U)) {
 		return;
 	}

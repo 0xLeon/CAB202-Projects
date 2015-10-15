@@ -22,7 +22,7 @@ void p_clear_screen(void);
 
 void p_show_screen(void);
 
-void p_draw_char(uint8_t x, uint8_t y, char c);
+void p_draw_char(uint8_t x, uint8_t y, uint8_t c);
 
 void p_draw_string(uint8_t x, uint8_t y, char *str);
 
