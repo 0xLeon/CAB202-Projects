@@ -21,7 +21,7 @@ struct level {
 	void_level_func draw;
 	uint8_level_func update;
 	void_level_func unload;
- };
+};
 
 struct game {
 	level_p current_level;
@@ -49,7 +49,7 @@ void default_collision_face_mad(game_p game);
 
 void check_face_player_collision(game_p game);
 
-uint8_t sprites_collided(psprite_p face, psprite_p player);
+uint8_t sprites_collided(psprite_p sprite_a, psprite_p sprite_b);
 
 inline uint8_t isect(uint8_t x, uint8_t lower, uint8_t upper) {
 	return ((x >= lower) && (x <= upper));

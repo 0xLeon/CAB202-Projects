@@ -39,28 +39,28 @@ void check_face_player_collision(game_p game) {
 	}
 }
 
-uint8_t sprites_collided(psprite_p face, psprite_p player) {
-	uint8_t face_x0 = (uint8_t) face->x;
-	uint8_t face_y0 = (uint8_t) face->y;
-	uint8_t face_x1 = face_x0 + face->width - 1U;
-	uint8_t face_y1 = face_y0 + face->height - 1U;
+uint8_t sprites_collided(psprite_p sprite_a, psprite_p sprite_b) {
+	uint8_t sprite_a_x0 = (uint8_t) sprite_a->x;
+	uint8_t sprite_a_y0 = (uint8_t) sprite_a->y;
+	uint8_t sprite_a_x1 = sprite_a_x0 + sprite_a->width - 1U;
+	uint8_t sprite_a_y1 = sprite_a_y0 + sprite_a->height - 1U;
 
-	uint8_t player_x0 = (uint8_t) player->x;
-	uint8_t player_y0 = (uint8_t) player->y;
-	uint8_t player_x1 = player_x0 + player->width - 1U;
-	uint8_t player_y1 = player_y0 + player->height - 1U;
+	uint8_t sprite_b_x0 = (uint8_t) sprite_b->x;
+	uint8_t sprite_b_y0 = (uint8_t) sprite_b->y;
+	uint8_t sprite_b_x1 = sprite_b_x0 + sprite_b->width - 1U;
+	uint8_t sprite_b_y1 = sprite_b_y0 + sprite_b->height - 1U;
 
 	uint8_t inx =
-		isect(player_x0, face_x0, face_x1) ||
-		isect(player_x1, face_x0, face_x1) ||
-		inside(player_x0, player_x1, face_x0, face_x1) ||
-		inside(face_x0, face_x1, player_x0, player_x1);
+		isect(sprite_b_x0, sprite_a_x0, sprite_a_x1) ||
+		isect(sprite_b_x1, sprite_a_x0, sprite_a_x1) ||
+		inside(sprite_b_x0, sprite_b_x1, sprite_a_x0, sprite_a_x1) ||
+		inside(sprite_a_x0, sprite_a_x1, sprite_b_x0, sprite_b_x1);
 
 	uint8_t iny =
-		isect(player_y0, face_y0, face_y1) ||
-		isect(player_y1, face_y0, face_y1) ||
-		inside(player_y0, player_y1, face_y0, face_y1) ||
-		inside(face_y0, face_y1, player_y0, player_y1);
+		isect(sprite_b_y0, sprite_a_y0, sprite_a_y1) ||
+		isect(sprite_b_y1, sprite_a_y0, sprite_a_y1) ||
+		inside(sprite_b_y0, sprite_b_y1, sprite_a_y0, sprite_a_y1) ||
+		inside(sprite_a_y0, sprite_a_y1, sprite_b_y0, sprite_b_y1);
 
 	return (inx && iny);
 }
