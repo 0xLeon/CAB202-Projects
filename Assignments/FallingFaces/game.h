@@ -7,18 +7,23 @@
 #define GAME_SIGNUM(x)		(((x) > 0U) - ((x) < 0U))
 #define GAME_ABSOLUTE(x)	((x) * (GAME_SIGNUM(x)))
 
-struct game;
-typedef void (*collision_function_p)(struct game*);
-
-typedef struct level {
-	void (*load)(level_p, game_p);
-	void (*draw)(level_p, game_p);
-	uint8_t (*update)(level_p, game_p);
-	void (*unload)(level_p, game_p);
-} level_t;
+typedef struct game game_t;
+typedef game_t* game_p;
+typedef struct level level_t;
 typedef level_t* level_p;
 
-typedef struct game {
+typedef void (*collision_function_p)(game_p game);
+typedef void (*void_level_func)(level_p self, game_p game);
+typedef uint8_t (*uint8_level_func)(level_p self, game_p game);
+
+struct level {
+	void_level_func load;
+	void_level_func draw;
+	uint8_level_func update;
+	void_level_func unload;
+ };
+
+struct game {
 	level_p current_level;
 	level_p levels[4];
 
@@ -32,8 +37,7 @@ typedef struct game {
 	uint16_t score;
 
 	uint8_t ended;
-} game_t;
-typedef game_t* game_p;
+};
 
 
 
