@@ -260,8 +260,8 @@ static uint8_t find_valid_face_location(psprite_p test_face, game_p game) {
 	psprite_t test_face_padded;
 	psprite_p test_face_padded_ptr = &test_face_padded;
 
-	test_face_padded_ptr->width = test_face->width + 5U;
-	test_face_padded_ptr->height = test_face->height + 5U;
+	test_face_padded_ptr->width = test_face->width + 10U;
+	test_face_padded_ptr->height = test_face->height + 10U;
 
 	uint8_t found_valid_location = 0U;
 	uint8_t didCollide = 0U;
