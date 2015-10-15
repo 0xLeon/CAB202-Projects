@@ -196,18 +196,25 @@ static uint8_t level3_update(level_p self, game_p game) {
 
 						game->faces[i]->x += game->faces[i]->dx;
 						game->faces[i]->y += game->faces[i]->dy;
+
+						game->faces[j]->dx *= -1;
+						game->faces[j]->dy *= -1;
 					}
 					else if (((angle > 45.) && (angle < 135.)) || ((angle > 225.) && (angle < 315.))) {
 						// top or bottom
 						game->faces[i]->y -= game->faces[i]->dy;
 						game->faces[i]->dy *= -1;
 						game->faces[i]->y += game->faces[i]->dy;
+
+						game->faces[j]->dy *= -1;
 					}
 					else {
 						// left or right
 						game->faces[i]->x -= game->faces[i]->dx;
 						game->faces[i]->dx *= -1;
 						game->faces[i]->x += game->faces[i]->dx;
+
+						game->faces[j]->dx *= -1;
 					}
 
 					break;
