@@ -44,6 +44,8 @@ level_p create_level3(game_p game) {
 }
 
 static void level3_load(level_p self, game_p game) {
+	static uint8_t usb_initialized = 0U;
+
 	speed_mode = SPEED_MODE_SLOW;
 
 	for (uint8_t i = 0U; i < game->face_count; ++i) {
@@ -62,19 +64,24 @@ static void level3_load(level_p self, game_p game) {
 	game->player->dx = 2.f;
 	game->player->dy = 2.f;
 
-	p_clear_screen();
 
-	p_draw_string(14U, 15U, "Waiting for");
-	p_draw_string(0U, 25U, "USB connection...");
+	if (!usb_initialized) {
+		p_clear_screen();
 
-	p_show_screen();
+		p_draw_string(14U, 15U, "Waiting for");
+		p_draw_string(0U, 25U, "USB connection...");
 
-	usb_init();
+		p_show_screen();
 
-	while (!usb_configured() || !usb_serial_get_control());
+		usb_init();
 
-	usb_serial_flush_input();
-	usb_serial_flush_output();
+		while (!usb_configured() || !usb_serial_get_control());
+
+		usb_serial_flush_input();
+		usb_serial_flush_output();
+
+		usb_initialized = 1U;
+	}
 }
 
 static uint8_t level3_update(level_p self, game_p game) {
