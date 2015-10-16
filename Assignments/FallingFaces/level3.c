@@ -81,7 +81,13 @@ static uint8_t level3_update(level_p self, game_p game) {
 	uint8_t didUpdate = 0U;
 	int16_t c = 0U;
 
-	c = usb_serial_getchar();
+	uint8_t buffer_read_cycles = 0U;
+
+	do {
+		c = usb_serial_getchar();
+		++buffer_read_cycles;
+	}
+	while ((usb_serial_available() > 0U) && (buffer_read_cycles < 32U));
 
 	if (c > 0U) {
 		float player_current_x = game->player->x;
