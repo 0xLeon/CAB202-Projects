@@ -44,7 +44,7 @@ static void level1_load(level_p self, game_p game) {
 }
 
 static void level1_draw(level_p self, game_p game) {
-	p_draw_formatted_string(1U, 0U, "L: %1d, S: %2d", game->lives, game->score);
+	p_draw_formatted_string(1U, 0U, "L: %1d | S: %2d", game->lives, game->score);
 
 	p_draw_line(0U, 8U, 83U, 8U);
 
