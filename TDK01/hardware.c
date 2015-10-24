@@ -8,6 +8,11 @@
 void initializeHardware(void) {
 	set_clock_speed(CPU_8MHz);
 	LCDInitialise(LCD_DEFAULT_CONTRAST);
+
+#ifdef QUT_TEENSY_TWO
+	PORTC |= (1U << PORTC7);
+#endif
+
 	clear_screen();
 
 #ifdef QUT_TEENSY_TWO
