@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A1E450A2-CDB6-4BCB-A9FE-1F61A57A1079}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>make debug</NMakeBuildCommandLine>
+    <NMakeOutput>megamaniac.exe</NMakeOutput>
+    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>make drebuild</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_XOPEN_SOURCE=500;__asm__=__asm;inline=__inline;GAME_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</IncludePath>
+    <NMakeIncludeSearchPath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</NMakeIncludeSearchPath>
+    <ExcludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(MSBuild_ExecutablePath);$(VC_LibraryPath_x86);C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;</ExcludePath>
+    <SourcePath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</SourcePath>
+    <LibraryPath>C:\Progs\cygwin\lib;..\..\ZDK04;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>make release</NMakeBuildCommandLine>
+    <NMakeOutput>megamaniac.exe</NMakeOutput>
+    <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>make rebuild</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_XOPEN_SOURCE=500;__asm__=__asm;inline=__inline;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</IncludePath>
+    <NMakeIncludeSearchPath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</NMakeIncludeSearchPath>
+    <ExcludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(MSBuild_ExecutablePath);$(VC_LibraryPath_x86);C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;</ExcludePath>
+    <SourcePath>C:\Progs\cygwin\usr\include;C:\Progs\cygwin\lib\gcc\i686-pc-cygwin\4.9.3\include;..\..\ZDK04;</SourcePath>
+    <LibraryPath>C:\Progs\cygwin\lib;..\..\ZDK04;</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game.c" />
+    <ClCompile Include="game_object.c" />
+    <ClCompile Include="game_timer.c" />
+    <ClCompile Include="game_level.c" />
+    <ClCompile Include="megamaniac_MAIN.c" />
+    <ClCompile Include="megamaniac_level1.c" />
+    <ClCompile Include="megamaniac_level2.c" />
+    <ClCompile Include="megamaniac_level3.c" />
+    <ClCompile Include="megamaniac_level4.c" />
+    <ClCompile Include="megamaniac_level6.c" />
+    <ClCompile Include="megamaniac_level5.c" />
+    <ClCompile Include="megamaniac_game_objects.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="game_object.h" />
+    <ClInclude Include="game_resize.h" />
+    <ClInclude Include="game_timer.h" />
+    <ClInclude Include="game_level.h" />
+    <ClInclude Include="game_types.h" />
+    <ClInclude Include="game_update.h" />
+    <ClInclude Include="megamaniac_MAIN.h" />
+    <ClInclude Include="megamaniac_go_types.h" />
+    <ClInclude Include="megamaniac_go_data.h" />
+    <ClInclude Include="megamaniac_level1.h" />
+    <ClInclude Include="megamaniac_level2.h" />
+    <ClInclude Include="megamaniac_level3.h" />
+    <ClInclude Include="megamaniac_level4.h" />
+    <ClInclude Include="megamaniac_level6.h" />
+    <ClInclude Include="megamaniac_level5.h" />
+    <ClInclude Include="megamaniac_game_objects.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
